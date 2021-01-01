@@ -1,0 +1,571 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>「计网」01-概述 | J1z's Blog</title><meta name="keywords" content="961"><meta name="author" content="Jay"><meta name="copyright" content="Jay"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="Chapter1 - 概述1.1 计算机网络定义与分类一、计算机网络的定义计算机网络(Computer network)是一些互相连接的、自治的计算机的集合。  网络的功能 连通性 资源共享   计算机网络与分布式系统(Distributed system) 在分布式系统中，一组独立的计算机展现给用户的是一个统一的整体，就好像是一个系统似的，常通过覆盖一层专用软件，如: Hadoop  计算机网络">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「计网」01-概述">
+<meta property="og:url" content="http://jay1zhang.github.io/2020/12/31/BUAA/%E3%80%8C%E8%AE%A1%E7%BD%91%E3%80%8D01-%E6%A6%82%E8%BF%B0/index.html">
+<meta property="og:site_name" content="J1z&#39;s Blog">
+<meta property="og:description" content="Chapter1 - 概述1.1 计算机网络定义与分类一、计算机网络的定义计算机网络(Computer network)是一些互相连接的、自治的计算机的集合。  网络的功能 连通性 资源共享   计算机网络与分布式系统(Distributed system) 在分布式系统中，一组独立的计算机展现给用户的是一个统一的整体，就好像是一个系统似的，常通过覆盖一层专用软件，如: Hadoop  计算机网络">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg">
+<meta property="article:published_time" content="2020-12-31T04:00:00.000Z">
+<meta property="article:modified_time" content="2021-01-01T08:26:27.393Z">
+<meta property="article:author" content="Jay">
+<meta property="article:tag" content="961">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://jay1zhang.github.io/2020/12/31/BUAA/%E3%80%8C%E8%AE%A1%E7%BD%91%E3%80%8D01-%E6%A6%82%E8%BF%B0/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-01-01 16:26:27'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/null" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">28</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">7</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">6</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">J1z's Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">「计网」01-概述</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-12-31T04:00:00.000Z" title="Created 2020-12-31 12:00:00">2020-12-31</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-01-01T08:26:27.393Z" title="Updated 2021-01-01 16:26:27">2021-01-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/BUAA/">BUAA</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/BUAA/Computer-Network/">Computer Network</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Chapter1-概述"><a href="#Chapter1-概述" class="headerlink" title="Chapter1 - 概述"></a>Chapter1 - 概述</h1><h2 id="1-1-计算机网络定义与分类"><a href="#1-1-计算机网络定义与分类" class="headerlink" title="1.1 计算机网络定义与分类"></a>1.1 计算机网络定义与分类</h2><h3 id="一、计算机网络的定义"><a href="#一、计算机网络的定义" class="headerlink" title="一、计算机网络的定义"></a>一、计算机网络的定义</h3><p><strong>计算机网络</strong>(Computer network)是一些<strong>互相连接</strong>的、<strong>自治</strong>的计算机的<strong>集合</strong>。</p>
+<ul>
+<li>网络的功能<ul>
+<li>连通性</li>
+<li>资源共享</li>
+</ul>
+</li>
+<li>计算机网络与分布式系统(Distributed system)<ul>
+<li>在分布式系统中，一组独立的计算机展现给用户的是一个统一的整体，就好像是一个系统似的，常通过覆盖一层专用软件，如: Hadoop </li>
+<li><strong>计算机网络不具有这种统一性</strong></li>
+<li>分布式系统是建立在网络之上的</li>
+</ul>
+</li>
+</ul>
+<h3 id="二、计算机网络的分类"><a href="#二、计算机网络的分类" class="headerlink" title="二、计算机网络的分类"></a>二、计算机网络的分类</h3><ul>
+<li><p>按照作用范围分类(或覆盖范围)</p>
+<ul>
+<li>广域网 WAN (Wide Area Network)    <ul>
+<li>作用范围几十到几千公里   </li>
+</ul>
+</li>
+<li>局域网 LAN (Local Area Network)   <ul>
+<li>通常局限在一个建筑物或一个单位内   </li>
+</ul>
+</li>
+<li>城域网 MAN (Metropolitan Area Network)  <ul>
+<li>作用范围通常是一个城市  </li>
+<li>常采用局域网技术建立  </li>
+</ul>
+</li>
+<li>个人区域网 PAN (Personal Area Network)  <ul>
+<li>在个人工作区域实现各种电子设备互联的网络，采用无线技术(如蓝牙)，因此又称为 WPAN(Wireless PAN)，作用范围大约在10m左右</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>从网络的使用者进行分类</p>
+<ul>
+<li>公用网（public network）</li>
+<li>专用网（private network）</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-2-计算机网络与Internet发展概述"><a href="#1-2-计算机网络与Internet发展概述" class="headerlink" title="1.2 计算机网络与Internet发展概述"></a>1.2 计算机网络与Internet发展概述</h2><h3 id="一、计算机网络发展的几个阶段"><a href="#一、计算机网络发展的几个阶段" class="headerlink" title="一、计算机网络发展的几个阶段"></a>一、计算机网络发展的几个阶段</h3><ol>
+<li>主机-终端时代 (20世纪50-60年代)    <ul>
+<li>计算机以大型机的形式存在  </li>
+<li>终端通过专用线路或通信网络连接搭配主机上，实现多用户远程共享主机计算资源</li>
+<li>终端只负责从键盘发送数据和接受数据到屏幕，实际的处理和计算全都在大型主机上进行<br><img src="https://raw.githubusercontent.com/Jay1Zhang/TyporaPictures/master/posts/BUAA/Snipaste_2020-03-04_17-01-08.png"></li>
+</ul>
+</li>
+<li>主机互连时代 (20世纪60-70年代)   <ul>
+<li>需求：不同地区之间的主机需要共享、传输数据</li>
+<li>1969年，<strong>ARPARENT</strong> 建立:<br><img src="https://raw.githubusercontent.com/Jay1Zhang/TyporaPictures/master/posts/BUAA/Snipaste_2020-03-04_17-02-59.png"></li>
+</ul>
+</li>
+<li>网络时代 (20世纪70年代之后)   <ul>
+<li>1978年，TCP/IP协议诞生  </li>
+<li>1983年，ARPANET采用TCP/IP协议   </li>
+<li>加州大学伯克利分校推出内含TCP/IP的BSD UNIX   </li>
+<li>80年代起，以IBM PC为代表的微机大量普及，微机之间的互连需求推动了局域网技术的发展   </li>
+<li>随后局域网间互连需求又推动了Internet的快速发展<ul>
+<li>网络的发展以通信技术为基础，反过来又带动通信技术发展，例如：光纤通信使得宽带网络互连成为可能，网络带来的数据传输需求又带动光纤通信的传输速率不断提高. </li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="二、Internet发展概述"><a href="#二、Internet发展概述" class="headerlink" title="二、Internet发展概述"></a>二、Internet发展概述</h3><ol>
+<li>第一阶段：ARPANET-&gt;网际互联发展 </li>
+<li>第二阶段：建成三级结构的Internet   </li>
+<li>第三阶段：形成多层次ISP结构的Internet  <ul>
+<li><strong>IP地址、域名管理</strong>等均交由专门企业运营 (开始商用)  </li>
+</ul>
+</li>
+</ol>
+<p>注意：<strong>Internet</strong> 特指现在的互联网(又称为因特网)，<strong>internet</strong> 指多个网络互连形成的网络</p>
+<h2 id="1-3-计算机网络的性能"><a href="#1-3-计算机网络的性能" class="headerlink" title="1.3 计算机网络的性能"></a>1.3 计算机网络的性能</h2><h3 id="一、性能指标"><a href="#一、性能指标" class="headerlink" title="一、性能指标"></a>一、性能指标</h3><ul>
+<li>速率<ul>
+<li>传送数据的速率，即数据速率(data rate)或比特率(bit rate)   </li>
+<li>单位：b/s，也写为bps (bit per second)，kb/s、Mb/s、Gb/s、…   </li>
+<li>多数情况下，数据传输方式是以串行方式进行传输的，因而单位常以bit，即二进制位为单位，而非字节Byte。</li>
+</ul>
+</li>
+<li>带宽（bandwidth）<ul>
+<li>有两种含义：<ol>
+<li>原本指某个信号具有的频带宽度，如电话线上信号带宽为3.1kHz(300—3.4kHz)；通信线路允许通过的信号频带范围称为线路带宽</li>
+<li>计算机网络中，指通信线路传送数据的能力，即最高数据率</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>吞吐量（throughput）<ul>
+<li>单位时间内通过网络的数据量(能传输多少数据)  </li>
+<li>速率与带宽通常是指在<strong>一条线路或一条信道</strong>上的指标，而吞吐量通常是指<strong>一个实际网络</strong>的测量指标 </li>
+</ul>
+</li>
+<li>时延（delay, latency）<ul>
+<li>指数据从网络(或链路)一端传送到另一端所需的时间，又称为延迟</li>
+<li>网络时延由多个部分组成<ul>
+<li>发送时延<ul>
+<li>又称<strong>传输</strong>时延，是<u>主机或路由器向数字信道</u>上发送数据的速度</li>
+<li>计算公式：发送时延 = $\frac{数据块长度 (b)}{发送速率 (b/s)}$</li>
+</ul>
+</li>
+<li>传播时延<ul>
+<li>数据在信道中传播一定距离所花费的时间</li>
+<li>计算公式：传播时延 = $\frac{信道长度 (m)}{电磁波在信道上的传播速率 (m/s)}$</li>
+</ul>
+</li>
+<li>处理时延</li>
+<li>排队时延</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>时延带宽积<br>  <img src="https://raw.githubusercontent.com/Jay1Zhang/TyporaPictures/master/posts/BUAA/Snipaste_2020-03-04_17-59-07.png"><ul>
+<li>又称为以比特为单位的链路长度</li>
+</ul>
+</li>
+<li>往返时间(RTT—Round-Trip Time)  <ul>
+<li>又称为环路时延、回路时延</li>
+<li><strong>从发送方发送数据开始，到发送方收到来自接收方的应答所经历的时间</strong></li>
+<li>注意：<ol>
+<li>往返时间不是单向的时延*2，因为在复杂网络中，往返的线路或信道可能不同</li>
+<li>往返时间更容易获取，因为单向的时延需要通过卫星同步两台主机的时钟</li>
+<li>往返时间更有实际意义，因为真实通讯中大多是相互应答</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>利用率<ul>
+<li>包括信道利用率和网络利用率 </li>
+<li><strong>信道利用率</strong>指出<strong>某信道</strong>有百分之几的时间是被利用的(有数据通过)   </li>
+<li><strong>网络利用率</strong>则是<strong>全网络的信道</strong>利用率的<strong>加权平均值</strong>  </li>
+</ul>
+</li>
+</ul>
+<h3 id="二、非性能指标"><a href="#二、非性能指标" class="headerlink" title="二、非性能指标"></a>二、非性能指标</h3><ul>
+<li>费用  </li>
+<li>质量  </li>
+<li>标准化  </li>
+<li>可靠性  </li>
+<li>可扩展性和可升级性  </li>
+<li>易于管理和维护</li>
+</ul>
+<h2 id="1-4-计算机网络体系结构"><a href="#1-4-计算机网络体系结构" class="headerlink" title="1.4 计算机网络体系结构"></a>1.4 计算机网络体系结构</h2><h3 id="一、网络体系结构概述"><a href="#一、网络体系结构概述" class="headerlink" title="一、网络体系结构概述"></a>一、网络体系结构概述</h3><ul>
+<li>计算机网络的体系结构(architecture)是计算机网络的<strong>各层及其协议的集合</strong></li>
+<li>分层原因：实现信息在网络中传输非常复杂，分层是将复杂问题<strong>简单化、局部化</strong>的有效方法<ul>
+<li>传输介质：有线(铜线、光纤)、无线</li>
+<li>连接到网络中的计算机硬软件平台各不相同</li>
+<li>通信双方距离可长可短(可能需经过多条链路)  </li>
+<li>需保证信息传输的可靠性、顺序性  </li>
+<li>需满足各种应用的需要：文件传输、电子邮件、实时多媒体、…  </li>
+</ul>
+</li>
+<li>典型的网络体系结构<ul>
+<li>1974年，IBM SNA(System Network Architecture)    </li>
+<li>1977年，ISO开始制订OSI(Open System Interconnection Reference Model)，1983年形成标准  </li>
+<li>TCP/IP  </li>
+</ul>
+</li>
+</ul>
+<h3 id="二、具有七层和五层协议的体系结构"><a href="#二、具有七层和五层协议的体系结构" class="headerlink" title="二、具有七层和五层协议的体系结构"></a>二、具有七层和五层协议的体系结构</h3><p><img src="https://raw.githubusercontent.com/Jay1Zhang/TyporaPictures/master/posts/BUAA/Snipaste_2020-03-04_18-10-10.png"></p>
+<ul>
+<li>数据在各层之间的传递过程<br>  <img src="https://raw.githubusercontent.com/Jay1Zhang/TyporaPictures/master/posts/BUAA/Snipaste_2020-03-04_18-12-20.png"><ul>
+<li>主机1发送的应用程序数据在向下一层层传输时会加上特定的 <code>Header</code> 便于识别，类比寄快递的过程。</li>
+<li>协议数据单元PDU(Protocol Data Unit)：对等层次之间传送的数据单位(即文件大小多少为1个单位进行传输)  </li>
+<li>有些文献将多个层次的协议称为协议栈(protocol stack)   </li>
+</ul>
+</li>
+</ul>
+<h3 id="三、实体、协议、服务和服务访问点"><a href="#三、实体、协议、服务和服务访问点" class="headerlink" title="三、实体、协议、服务和服务访问点"></a>三、实体、协议、服务和服务访问点</h3><h4 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h4><ul>
+<li>**实体(entity)**：任何可发送或接收信息的硬件或软件进程，在网络结构中不规定某一层是由软件实现还是硬件实现  </li>
+<li>**协议(protocol)**：控制两个对等实体进行通信的规则的集合，如定义文件传输的单位大小，字节编码等规则 </li>
+<li>在协议的控制下，两个对等实体间的通信使得本层能够向上一层提供<strong>服务</strong>(service)；要实现本层协议，还需要使用下层所提供的服务</li>
+<li>同一系统相邻两层的实体进行交互的地方，称为<strong>服务访问点SAP</strong>(Service Access Point)  </li>
+</ul>
+<h4 id="几个概念之间的区别与联系"><a href="#几个概念之间的区别与联系" class="headerlink" title="几个概念之间的区别与联系"></a>几个概念之间的区别与联系</h4><ul>
+<li>接口与服务的关系：<strong>通过接口提供服务</strong>    </li>
+<li>协议与服务的关系：<strong>服务建立在相同的协议之上</strong></li>
+<li><strong>协议是水平的，服务是垂直的</strong>：同层之间要确保协议一致才能正常，服务只需要解决自己的功能，不需要关系其他层</li>
+<li>协议对上层的服务用户是透明的，服务用户只能看到下层提供的服务<br><img src="https://raw.githubusercontent.com/Jay1Zhang/TyporaPictures/master/posts/BUAA/Snipaste_2020-03-04_18-22-02.png"></li>
+</ul>
+<h4 id="网络协议的经典问题：两军问题（蓝白军问题）"><a href="#网络协议的经典问题：两军问题（蓝白军问题）" class="headerlink" title="网络协议的经典问题：两军问题（蓝白军问题）"></a>网络协议的经典问题：两军问题（蓝白军问题）</h4><p>  <img src="https://raw.githubusercontent.com/Jay1Zhang/TyporaPictures/master/posts/BUAA/Snipaste_2020-03-04_18-23-31.png"></p>
+<ul>
+<li>蓝军中间的白军使得信息的交换不可靠</li>
+<li>在现实中也是假设大部分的信息是可靠的，但也存在着误码率等因素 </li>
+<li>在日常的环境下，如果信道的可靠性降得比较低，就不能保证信息的传输</li>
+</ul>
+<h3 id="四、TCP-IP的体系结构"><a href="#四、TCP-IP的体系结构" class="headerlink" title="四、TCP/IP的体系结构"></a>四、TCP/IP的体系结构</h3><p><img src="https://raw.githubusercontent.com/Jay1Zhang/TyporaPictures/master/posts/BUAA/Snipaste_2020-03-04_18-24-46.png"><br><img src="https://raw.githubusercontent.com/Jay1Zhang/TyporaPictures/master/posts/BUAA/Snipaste_2020-03-04_18-25-03.png"></p>
+<h3 id="五、分层结构的优缺点（重点）"><a href="#五、分层结构的优缺点（重点）" class="headerlink" title="五、分层结构的优缺点（重点）"></a>五、分层结构的优缺点（重点）</h3><h4 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h4><ul>
+<li>各层之间是独立的。每一层不需要知道下层是如何实现的，只需要知道层间的接口和所提供的服务。  </li>
+<li>灵活性好。当任何一层发生变化时，只要层间接口关系保持不变，则在这层以上或以下各层均不受影响。</li>
+<li>结构上可分割开。各层都可以采用最合适的技术来实现。</li>
+<li>易于实现和维护。</li>
+<li>能促进标准化工作。因为每一层的功能及其所提供的服务都已有了精确的说明。</li>
+</ul>
+<h4 id="不足"><a href="#不足" class="headerlink" title="不足"></a>不足</h4><ul>
+<li>层次数量与内容不是最佳的，会话层和表示层这两层几乎是空的，而数据链路层和网络层包含的内容太多，有很多的子层插入，每个子层都有不同的功能。</li>
+<li>模型及相应的服务定义和协议及其复杂，它们很难实现，有些功能，如流量控制和差错控制，都会在每一层上重复出现，降低了系统的效率。</li>
+</ul>
+<h2 id="1-5-网络标准化"><a href="#1-5-网络标准化" class="headerlink" title="1.5 网络标准化"></a>1.5 网络标准化</h2><h3 id="一、概述"><a href="#一、概述" class="headerlink" title="一、概述"></a>一、概述</h3><ul>
+<li>标准化对于计算机网络<strong>至关重要</strong><ul>
+<li>为了实现不同厂商的软硬件互联，大家必须遵守统一的标准 </li>
+</ul>
+</li>
+<li>标准的分类<ul>
+<li>法定标准：由权威机构制定的正式的、合法的标准，如：国标，ISO</li>
+<li>事实标准：某些公司的产品在竞争中占据了主流，时间长了，这些产品中的协议和技术就成了标准。如TCP/IP，大家都按照他的标准去适配生产。 </li>
+</ul>
+</li>
+</ul>
+<h3 id="二、标准化组织"><a href="#二、标准化组织" class="headerlink" title="二、标准化组织"></a>二、标准化组织</h3><ul>
+<li>ITU-T  <ul>
+<li>国际电信联盟电信委员会(International Telecommunication Union)，前身是国际电报电话咨询委员会(CCITT)  </li>
+<li>各国按条约建立的机构，主要成员是各国的邮电部，主要负责<strong>制定电信行业的标准</strong>。</li>
+<li>比如4G,5G,6G等等。</li>
+</ul>
+</li>
+<li>ISO<ul>
+<li>国际标准化组织(International Standard Organization)  </li>
+<li><strong>义务性组织</strong>，主要成员是各大公司技术人员、大学教授、政府官员。  </li>
+<li>负责各行业的标准制定，主要贡献：ISO/OSI RM  </li>
+</ul>
+</li>
+<li>IEEE<ul>
+<li>电子、电气学工程师学会(The Institute of Electrical and Electronics Engineers)  </li>
+<li><strong>专业性组织</strong>，学术团体，主要贡献：IEEE 802系列局域网标准。</li>
+</ul>
+</li>
+<li>IETF<ul>
+<li>Internet工程任务组(Internet Engineering Task Force)  </li>
+<li>负责Internet相关标准的制定  </li>
+<li>标准形式：RFC xxxx，RFC指Request for Comment，可以免费下载</li>
+</ul>
+</li>
+</ul>
+<h2 id="附：基本指令介绍"><a href="#附：基本指令介绍" class="headerlink" title="附：基本指令介绍"></a>附：基本指令介绍</h2><h3 id="1-PING"><a href="#1-PING" class="headerlink" title="1. PING"></a>1. PING</h3><h4 id="Ping的作用与原理"><a href="#Ping的作用与原理" class="headerlink" title="Ping的作用与原理"></a>Ping的作用与原理</h4><ul>
+<li><p>简单来说，「ping」是用来探测本机与网络中另一主机之间是否可达的命令，如果两台主机之间ping不通，则表明这两台主机不能建立起连接。ping是定位网络通不通的一个重要手段。</p>
+</li>
+<li><p>ping 命令是基于 ICMP 协议来工作的，「 ICMP 」全称为 Internet 控制报文协议（<a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc792">Internet Control Message Protocol</a>）。ping 命令会发送一份ICMP回显请求报文给目标主机，并等待目标主机返回ICMP回显应答。因为ICMP协议会要求目标主机在收到消息之后，必须返回ICMP应答消息给源主机，如果源主机在一定时间内收到了目标主机的应答，则表明两台主机之间网络是可达的。</p>
+</li>
+</ul>
+<h5 id="举一个例子来描述「ping」命令的工作过程："><a href="#举一个例子来描述「ping」命令的工作过程：" class="headerlink" title="举一个例子来描述「ping」命令的工作过程："></a><strong>举一个例子来描述「ping」命令的工作过程：</strong></h5><p><strong>1）</strong> 假设有两个主机，主机A（192.168.0.1）和主机B（192.168.0.2），现在我们要监测主机A和主机B之间网络是否可达，那么我们在主机A上输入命令：ping 192.168.0.2；</p>
+<p><strong>2）</strong> 此时，ping命令会在主机A上构建一个 ICMP的请求数据包（数据包里的内容后面再详述），然后 ICMP协议会将这个数据包以及目标IP（192.168.0.2）等信息一同交给IP层协议；</p>
+<p><strong>3）</strong> IP层协议得到这些信息后，将源地址（即本机IP）、目标地址（即目标IP：192.168.0.2）、再加上一些其它的控制信息，构建成一个IP数据包；</p>
+<p><strong>4）</strong> IP数据包构建完成后，还不够，还需要加上MAC地址，因此，还需要通过ARP映射表找出目标IP所对应的MAC地址。当拿到了目标主机的MAC地址和本机MAC后，一并交给数据链路层，组装成一个数据帧，依据以太网的介质访问规则，将它们传送出出去；</p>
+<p><strong>5）</strong> 当主机B收到这个数据帧之后，会首先检查它的目标MAC地址是不是本机，如果是就接收下来处理，接收之后会检查这个数据帧，将数据帧中的IP数据包取出来，交给本机的IP层协议，然后IP层协议检查完之后，再将ICMP数据包取出来交给ICMP协议处理，当这一步也处理完成之后，就会构建一个ICMP应答数据包，回发给主机A；</p>
+<p><strong>6）</strong> 在一定的时间内，如果主机A收到了应答包，则说明它与主机B之间网络可达，如果没有收到，则说明网络不可达。除了监测是否可达以外，还可以利用应答时间和发起时间之间的差值，计算出数据包的延迟耗时。</p>
+<h4 id="多次-Ping-同一个网址，时延不同的原因是什么？"><a href="#多次-Ping-同一个网址，时延不同的原因是什么？" class="headerlink" title="多次 Ping 同一个网址，时延不同的原因是什么？"></a>多次 Ping 同一个网址，时延不同的原因是什么？</h4><p>我的回答：<br>网络时延包括发送时延、传播时延、处理时延、排队时延。而在不同时刻路由表中各个中间节点的处理时延、排队时延以及转发数据时的发送时延等等可能因为各种因素而不同，因此总时延往往不一样。</p>
+<h4 id="Ping-不通的几种可能原因"><a href="#Ping-不通的几种可能原因" class="headerlink" title="Ping 不通的几种可能原因"></a>Ping 不通的几种可能原因</h4><p>见 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/lcchuguo/p/4069514.html">ping不通的几种可能原因</a>。</p>
+<h3 id="2-Tracert"><a href="#2-Tracert" class="headerlink" title="2. Tracert"></a>2. Tracert</h3><h4 id="Tracert的作用及原理"><a href="#Tracert的作用及原理" class="headerlink" title="Tracert的作用及原理"></a>Tracert的作用及原理</h4><ul>
+<li>Tracert 程序关键是对 IP 头部生存时间（time to live）TTL 字段的使用，程序实现是向目的主机发送一个 ICMP 回显请求报文，初始时 TTL 等于 1 ，这样当该数据报抵达途中的第一个路由器时，TTL 的值就被减为 0，导致发送超时错误，因此该路由生成一份 ICMP 超时差错报文返回给源主机。</li>
+<li>随后，主机将数据报的 TTL 值递增 1 ，以便 IP 报能传送到下一个路由器，并由下一个路由器生成 ICMP 超时差错报文返回给源主机。不断重复这个过程，直到数据报达到目的主机或超过跳数限制，到达目的主机后，目的主机返回 ICMP 回显应答报文。</li>
+<li>这样，源主机只需要对返回的每一份 ICMP 报文进行解析处理，就可以掌握数据报从源主机到达目的主机途中所经过的路由信息。</li>
+<li>每次 ，Traceroute都打印出一系列数据,包括所经过的路由设备的域名及 IP地址, <strong>三个包每次来回所花时间</strong>。</li>
+<li>最终，Tracert将会显示一个返回 ICMP“超时”消息的中间路由器的顺序列表。</li>
+</ul>
+<ul>
+<li>这里有个<strong>问题</strong>是我不太确定，这三个延时指的是从上个节点到这个节点的延迟时间，还是从本机到当前节点的往返时间。</li>
+</ul>
+<h5 id="举一个例子来描述「Tracert」命令的工作过程："><a href="#举一个例子来描述「Tracert」命令的工作过程：" class="headerlink" title="举一个例子来描述「Tracert」命令的工作过程："></a><strong>举一个例子来描述「Tracert」命令的工作过程：</strong></h5><blockquote>
+<p>Traceroute/Tracert的实现都借助了TTL：通过向目的地址发送一系列的探测包，设置探测包的TTL初始值<strong>分别为1,2,3…</strong>，根据返回的超时通知（ICMP Time Exceeded Message）得到源地址与目的地址之间的每一跳路由信息。</p>
+<ol>
+<li><p>从源地址发出一个UDP探测包到目的地址，并将TTL设置为1；</p>
+</li>
+<li><p>到达路由器时，将TTL减1；</p>
+</li>
+<li><p>当TTL变为0时，包被丢弃，路由器向源地址发回一个ICMP超时通知（ICMP Time Exceeded Message），内含发送IP包的源地址，IP包的所有内容及路由器的IP地址；</p>
+</li>
+<li><p>当源地址收到该ICMP包时，显示这一跳路由信息；</p>
+</li>
+<li><p>重复1～5，并每次设置TTL加1；</p>
+</li>
+<li><p>直至目标地址收到探测数据包，并返回ICMP回应答复（ICMPEcho Reply）；</p>
+</li>
+<li><p>当源地址收到ICMP Echo Reply包时停止tracert。</p>
+</li>
+</ol>
+</blockquote>
+<h4 id="Tracert的用法"><a href="#Tracert的用法" class="headerlink" title="Tracert的用法"></a>Tracert的用法</h4><p><strong>用法:</strong> </p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tracert [-d] [-h maximum_hops] [-j host-list] [-w timeout]</span><br><span class="line">               [-R] [-S srcaddr] [-<span class="number">4</span>] [-<span class="number">6</span>] target_name</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>选项:</strong></p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-d                 不将地址解析成主机名。</span><br><span class="line">-h maximum_hops    搜索目标的最大跃点数。</span><br><span class="line">-j host-list       与主机列表一起的松散源路由(仅适用于 IPv4)。</span><br><span class="line">-w timeout         等待每个回复的超时时间(以毫秒为单位)。</span><br><span class="line">-R                 跟踪往返行程路径(仅适用于 IPv6)。</span><br><span class="line">-S srcaddr         要使用的源地址(仅适用于 IPv6)。</span><br><span class="line">-<span class="number">4</span>                 强制使用 IPv4。</span><br><span class="line">-<span class="number">6</span>                 强制使用 IPv6。</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="Tracert-与-Ping-的区别"><a href="#Tracert-与-Ping-的区别" class="headerlink" title="Tracert 与 Ping 的区别"></a>Tracert 与 Ping 的区别</h4><ul>
+<li><code>tracert</code> 在某种方面与 <code>ping</code> 类似，它也是向目的端发出一些网络报，返回这些包的响应结果，如果有响应也返回响应的延迟。</li>
+<li>但 <code>tracert</code> 与 <code>ping</code> 的最大区别在于 <code>tracert</code> 是把端到端的线路按线路所经过的路由器分成多段，然后以每段返回响应与延迟。如果端到端不同，则用该工具可以检查到那个路由器之前都能正常响应，到哪个路由器就不能响应了，这样就很容易知道如果线路出现故障，则故障源可能出在哪里。</li>
+<li>另一方面，如果在线路中某个路由器的路由配置不当，导致路由循环，用 <code>tracert</code> 工具可以方便地发现问题。即 <code>tracert</code> 一端到另一端时，发现到某一路由器之后，出现的下一个路由器正是上一个路由器，结果出现循环，两个路由器返回的结果中间来回交替出现，这时往往是<strong>那个路由器的路由配置指向了前一个路由器导致路由循环了</strong>。</li>
+</ul>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://q2l.gitbook.io/notes/5-junior2/2-computernetwork/2-layermodel">q2l’s gitbook</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/45110873">每天都在用的Ping命令，它到底是什么？</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/lcchuguo/p/4069514.html">ping不通的几种可能原因</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/network/118221.html">路由追踪程序Traceroute分析与科普</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u013271921/article/details/45488173">ICMP的应用之路由追踪程序（Tracert）</a></li>
+<li><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1004762">从Traceroute看网络问题</a></li>
+</ul>
+<h2 id="考点积累"><a href="#考点积累" class="headerlink" title="考点积累"></a>考点积累</h2><h4 id="常考知识点"><a href="#常考知识点" class="headerlink" title="常考知识点"></a>常考知识点</h4><ul>
+<li><p>是否采用<strong>分组存储转发</strong>与<strong>路由选择机制</strong>是点对点式网络与广播式网络的重要区别。</p>
+<ul>
+<li>广域网基本都属于点对点网络</li>
+<li>局域网基本都属于广播式网络</li>
+</ul>
+</li>
+<li><p>对于高速链路，提高的<strong>仅是数据发送速率</strong>，而<strong>非</strong>比特在链路上的传播速率。提高发送速率只是为了减少数据的发送时延。</p>
+</li>
+<li><p>传统上，局域网使用<strong>广播</strong>技术，而广域网使用<strong>交换</strong>技术。因此，局域网和广域网的差异在于它们<strong>所使用的协议不同</strong>。</p>
+</li>
+<li><p>计算机网络最最基本的功能是<strong>数据通信</strong>。</p>
+</li>
+<li><p>广播式网络共享广播信道（如总线），通常是局域网的一种通信方式</p>
+<ul>
+<li>而<strong>局域网工作在数据链路层，因此不需要网络层</strong>，因而也不存在路由选择方式。</li>
+<li>但数据链路层使用物理层提供的服务必须通过<strong>服务访问点SAP</strong>来实现。</li>
+</ul>
+</li>
+<li><p>注意区分“服务”和“协议”的概念</p>
+<ul>
+<li>服务是垂直的，协议是水平的；</li>
+<li>服务是由下层通过SAP向上层提供的，协议是控制对等实体之间通信的规则；</li>
+<li>只有本层协议的实现，才能保证向上一层提供服务，但并非在一层内完成的全部功能都称为服务，只有那些能够被高一层实体“看得见”的功能才称为服务。</li>
+</ul>
+</li>
+<li><p><strong>集线器（Hub）</strong>是一种多端口的中继器，工作在<strong>物理层</strong>。</p>
+</li>
+</ul>
+<h5 id="计算机网络的组成"><a href="#计算机网络的组成" class="headerlink" title="计算机网络的组成"></a>计算机网络的组成</h5><p>从功能组成上看，计算机网络由<strong>通信子网和资源子网</strong>组成。</p>
+<ul>
+<li>通信子网：<ul>
+<li>由<u>各种传输介质、通信设备和相应的网络协议</u>组成；</li>
+<li>实现联机<strong>数据通信</strong></li>
+</ul>
+</li>
+<li>资源子网<ul>
+<li>网络资源包括硬件资源、软件资源和数据资源；</li>
+<li>实现<strong>资源共享</strong>功能的设备及其软件的集合。</li>
+</ul>
+</li>
+</ul>
+<h5 id="OSI参考模型"><a href="#OSI参考模型" class="headerlink" title="OSI参考模型"></a>OSI参考模型</h5><ul>
+<li><p>OSI的低三层统称为通信子网；高三层统称为资源子网；传输层承上启下。</p>
+</li>
+<li><p>注意，传输信息所利用的一些<strong>物理媒体</strong>，如双绞线、光缆、无线信道等，并不在物理层协议之内而在物理层协议下面。</p>
+<ul>
+<li>因此，有人把物理媒体当作第0层</li>
+</ul>
+</li>
+<li><p>数据链路层的功能可以概括为：①成帧；②差错控制；③流量控制；④传输管理。</p>
+<ul>
+<li>流量控制：协调A的发送速率和B的接收速率。</li>
+</ul>
+</li>
+<li><p>网络层的关键问题是对分组进行<strong>路由选择</strong>，并实现流量控制、<strong>拥塞控制</strong>、差错控制和网际互联等功能。</p>
+</li>
+<li><p>传输层的功能是为<strong>端到端连接</strong>提供可靠的传输服务。</p>
+<ul>
+<li>数据链路层提供的是<strong>点到点的通信</strong>，传输层提供的是<strong>端到端的通信</strong>。</li>
+<li>点到点：可以理解为主机到主机之间的通信，一个点指一个硬件地址或IP地址</li>
+<li>端到端：指运行在不同主机内的两个进程之间的通信，一个进程由一个端口来标识；</li>
+</ul>
+</li>
+</ul>
+<h5 id="TCP-IP模型"><a href="#TCP-IP模型" class="headerlink" title="TCP/IP模型"></a>TCP/IP模型</h5><ul>
+<li><p>网络接口层，功能类似于OSI的物理层和数据链路层，表示与物理网络的接口。</p>
+</li>
+<li><p>网际层（主机-主机）是关键，对分组进行路由选择。</p>
+<ul>
+<li>但它<strong>不保证各个分组的有序到达</strong>，有序交付由高层负责。</li>
+</ul>
+</li>
+<li><p>传输层主要使用以下两种协议</p>
+<ul>
+<li>传输控制协议 TCP</li>
+<li>用户数据报学习 UDP</li>
+</ul>
+</li>
+</ul>
+<h5 id="两种模型的不同"><a href="#两种模型的不同" class="headerlink" title="两种模型的不同"></a>两种模型的不同</h5><ul>
+<li>常考点：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>OSI参考模型</th>
+<th>TCP/IP模型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>网络层</td>
+<td>支持无连接和面向连接的通信</td>
+<td>仅有一种无连接的通信模式</td>
+</tr>
+<tr>
+<td>传输层</td>
+<td>仅有面向连接的通信</td>
+<td>支持无连接和面向连接两种模式</td>
+</tr>
+</tbody></table>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Jay</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://jay1zhang.github.io/2020/12/31/BUAA/%E3%80%8C%E8%AE%A1%E7%BD%91%E3%80%8D01-%E6%A6%82%E8%BF%B0/">http://jay1zhang.github.io/2020/12/31/BUAA/%E3%80%8C%E8%AE%A1%E7%BD%91%E3%80%8D01-%E6%A6%82%E8%BF%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/961/">961</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/12/31/BUAA/%E3%80%8C%E8%AE%A1%E7%BD%91%E3%80%8D02-%E7%89%A9%E7%90%86%E5%B1%82/"><img class="prev-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">「计网」02-物理层</div></div></a></div><div class="next-post pull-right"><a href="/2020/12/31/BUAA/%E3%80%8C%E7%B3%BB%E7%BB%9F%E3%80%8D00-%E6%A6%82%E8%BF%B0/"><img class="next-cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">「系统」00-概述</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2020/12/31/BUAA/「计网」02-物理层/" title="「计网」02-物理层"><img class="cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-12-31</div><div class="title">「计网」02-物理层</div></div></a></div><div><a href="/2020/12/31/BUAA/「计网」05-传输层/" title="「计网」05-传输层"><img class="cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-12-31</div><div class="title">「计网」05-传输层</div></div></a></div><div><a href="/2020/12/31/BUAA/「计网」07-IPv6协议/" title="「计网」07-IPv6协议"><img class="cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-12-31</div><div class="title">「计网」07-IPv6协议</div></div></a></div><div><a href="/2020/12/31/BUAA/「计网」08-无线局域网/" title="「计网」08-无线局域网"><img class="cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-12-31</div><div class="title">「计网」08-无线局域网</div></div></a></div><div><a href="/2020/12/31/BUAA/「计网」04-网络层/" title="「计网」04-网络层"><img class="cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-12-31</div><div class="title">「计网」04-网络层</div></div></a></div><div><a href="/2020/12/31/BUAA/「计网」03-数据链路层/" title="「计网」03-数据链路层"><img class="cover" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-12-31</div><div class="title">「计网」03-数据链路层</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/null" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Jay</div><div class="author-info__description">here is description</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">28</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">7</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">6</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Chapter1-%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">Chapter1 - 概述</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%AE%9A%E4%B9%89%E4%B8%8E%E5%88%86%E7%B1%BB"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 计算机网络定义与分类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">1.1.1.</span> <span class="toc-text">一、计算机网络的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-number">1.1.2.</span> <span class="toc-text">二、计算机网络的分类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%B8%8EInternet%E5%8F%91%E5%B1%95%E6%A6%82%E8%BF%B0"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 计算机网络与Internet发展概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8F%91%E5%B1%95%E7%9A%84%E5%87%A0%E4%B8%AA%E9%98%B6%E6%AE%B5"><span class="toc-number">1.2.1.</span> <span class="toc-text">一、计算机网络发展的几个阶段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81Internet%E5%8F%91%E5%B1%95%E6%A6%82%E8%BF%B0"><span class="toc-number">1.2.2.</span> <span class="toc-text">二、Internet发展概述</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E6%80%A7%E8%83%BD"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 计算机网络的性能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87"><span class="toc-number">1.3.1.</span> <span class="toc-text">一、性能指标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E9%9D%9E%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87"><span class="toc-number">1.3.2.</span> <span class="toc-text">二、非性能指标</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="toc-number">1.4.</span> <span class="toc-text">1.4 计算机网络体系结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E6%A6%82%E8%BF%B0"><span class="toc-number">1.4.1.</span> <span class="toc-text">一、网络体系结构概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%85%B7%E6%9C%89%E4%B8%83%E5%B1%82%E5%92%8C%E4%BA%94%E5%B1%82%E5%8D%8F%E8%AE%AE%E7%9A%84%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="toc-number">1.4.2.</span> <span class="toc-text">二、具有七层和五层协议的体系结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%AE%9E%E4%BD%93%E3%80%81%E5%8D%8F%E8%AE%AE%E3%80%81%E6%9C%8D%E5%8A%A1%E5%92%8C%E6%9C%8D%E5%8A%A1%E8%AE%BF%E9%97%AE%E7%82%B9"><span class="toc-number">1.4.3.</span> <span class="toc-text">三、实体、协议、服务和服务访问点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.4.3.1.</span> <span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%87%A0%E4%B8%AA%E6%A6%82%E5%BF%B5%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB%E4%B8%8E%E8%81%94%E7%B3%BB"><span class="toc-number">1.4.3.2.</span> <span class="toc-text">几个概念之间的区别与联系</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%BB%8F%E5%85%B8%E9%97%AE%E9%A2%98%EF%BC%9A%E4%B8%A4%E5%86%9B%E9%97%AE%E9%A2%98%EF%BC%88%E8%93%9D%E7%99%BD%E5%86%9B%E9%97%AE%E9%A2%98%EF%BC%89"><span class="toc-number">1.4.3.3.</span> <span class="toc-text">网络协议的经典问题：两军问题（蓝白军问题）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E3%80%81TCP-IP%E7%9A%84%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="toc-number">1.4.4.</span> <span class="toc-text">四、TCP&#x2F;IP的体系结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%88%86%E5%B1%82%E7%BB%93%E6%9E%84%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="toc-number">1.4.5.</span> <span class="toc-text">五、分层结构的优缺点（重点）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%98%E5%8A%BF"><span class="toc-number">1.4.5.1.</span> <span class="toc-text">优势</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8D%E8%B6%B3"><span class="toc-number">1.4.5.2.</span> <span class="toc-text">不足</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-5-%E7%BD%91%E7%BB%9C%E6%A0%87%E5%87%86%E5%8C%96"><span class="toc-number">1.5.</span> <span class="toc-text">1.5 网络标准化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%A6%82%E8%BF%B0"><span class="toc-number">1.5.1.</span> <span class="toc-text">一、概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%A0%87%E5%87%86%E5%8C%96%E7%BB%84%E7%BB%87"><span class="toc-number">1.5.2.</span> <span class="toc-text">二、标准化组织</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%EF%BC%9A%E5%9F%BA%E6%9C%AC%E6%8C%87%E4%BB%A4%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.6.</span> <span class="toc-text">附：基本指令介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-PING"><span class="toc-number">1.6.1.</span> <span class="toc-text">1. PING</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Ping%E7%9A%84%E4%BD%9C%E7%94%A8%E4%B8%8E%E5%8E%9F%E7%90%86"><span class="toc-number">1.6.1.1.</span> <span class="toc-text">Ping的作用与原理</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%BE%E4%B8%80%E4%B8%AA%E4%BE%8B%E5%AD%90%E6%9D%A5%E6%8F%8F%E8%BF%B0%E3%80%8Cping%E3%80%8D%E5%91%BD%E4%BB%A4%E7%9A%84%E5%B7%A5%E4%BD%9C%E8%BF%87%E7%A8%8B%EF%BC%9A"><span class="toc-number">1.6.1.1.1.</span> <span class="toc-text">举一个例子来描述「ping」命令的工作过程：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E6%AC%A1-Ping-%E5%90%8C%E4%B8%80%E4%B8%AA%E7%BD%91%E5%9D%80%EF%BC%8C%E6%97%B6%E5%BB%B6%E4%B8%8D%E5%90%8C%E7%9A%84%E5%8E%9F%E5%9B%A0%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">1.6.1.2.</span> <span class="toc-text">多次 Ping 同一个网址，时延不同的原因是什么？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Ping-%E4%B8%8D%E9%80%9A%E7%9A%84%E5%87%A0%E7%A7%8D%E5%8F%AF%E8%83%BD%E5%8E%9F%E5%9B%A0"><span class="toc-number">1.6.1.3.</span> <span class="toc-text">Ping 不通的几种可能原因</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Tracert"><span class="toc-number">1.6.2.</span> <span class="toc-text">2. Tracert</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Tracert%E7%9A%84%E4%BD%9C%E7%94%A8%E5%8F%8A%E5%8E%9F%E7%90%86"><span class="toc-number">1.6.2.1.</span> <span class="toc-text">Tracert的作用及原理</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%BE%E4%B8%80%E4%B8%AA%E4%BE%8B%E5%AD%90%E6%9D%A5%E6%8F%8F%E8%BF%B0%E3%80%8CTracert%E3%80%8D%E5%91%BD%E4%BB%A4%E7%9A%84%E5%B7%A5%E4%BD%9C%E8%BF%87%E7%A8%8B%EF%BC%9A"><span class="toc-number">1.6.2.1.1.</span> <span class="toc-text">举一个例子来描述「Tracert」命令的工作过程：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Tracert%E7%9A%84%E7%94%A8%E6%B3%95"><span class="toc-number">1.6.2.2.</span> <span class="toc-text">Tracert的用法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Tracert-%E4%B8%8E-Ping-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.6.2.3.</span> <span class="toc-text">Tracert 与 Ping 的区别</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#reference"><span class="toc-number">1.7.</span> <span class="toc-text">reference</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%80%83%E7%82%B9%E7%A7%AF%E7%B4%AF"><span class="toc-number">1.8.</span> <span class="toc-text">考点积累</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%B8%E8%80%83%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="toc-number">1.8.0.1.</span> <span class="toc-text">常考知识点</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E7%BB%84%E6%88%90"><span class="toc-number">1.8.0.1.1.</span> <span class="toc-text">计算机网络的组成</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#OSI%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.8.0.1.2.</span> <span class="toc-text">OSI参考模型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#TCP-IP%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.8.0.1.3.</span> <span class="toc-text">TCP&#x2F;IP模型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%A4%E7%A7%8D%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%8D%E5%90%8C"><span class="toc-number">1.8.0.1.4.</span> <span class="toc-text">两种模型的不同</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2020/12/31/BUAA/%E3%80%8C%E8%AE%A1%E7%BD%91%E3%80%8D05-%E4%BC%A0%E8%BE%93%E5%B1%82/" title="「计网」05-传输层"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="「计网」05-传输层"/></a><div class="content"><a class="title" href="/2020/12/31/BUAA/%E3%80%8C%E8%AE%A1%E7%BD%91%E3%80%8D05-%E4%BC%A0%E8%BE%93%E5%B1%82/" title="「计网」05-传输层">「计网」05-传输层</a><time datetime="2020-12-31T04:00:00.000Z" title="Created 2020-12-31 12:00:00">2020-12-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/12/31/BUAA/%E3%80%8C%E7%B3%BB%E7%BB%9F%E3%80%8D05-%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/" title="「系统」05-文件管理"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="「系统」05-文件管理"/></a><div class="content"><a class="title" href="/2020/12/31/BUAA/%E3%80%8C%E7%B3%BB%E7%BB%9F%E3%80%8D05-%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/" title="「系统」05-文件管理">「系统」05-文件管理</a><time datetime="2020-12-31T04:00:00.000Z" title="Created 2020-12-31 12:00:00">2020-12-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/12/31/Tricks/README/" title="「README」Tricks"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="「README」Tricks"/></a><div class="content"><a class="title" href="/2020/12/31/Tricks/README/" title="「README」Tricks">「README」Tricks</a><time datetime="2020-12-31T04:00:00.000Z" title="Created 2020-12-31 12:00:00">2020-12-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/12/31/Tricks/%E8%A7%A3%E5%86%B3Win10%E6%A1%8C%E9%9D%A2%E5%9B%BE%E6%A0%87%E6%98%BE%E7%A4%BA%E4%B8%8D%E6%AD%A3%E5%B8%B8/" title="解决Win10桌面图标显示不正常"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="解决Win10桌面图标显示不正常"/></a><div class="content"><a class="title" href="/2020/12/31/Tricks/%E8%A7%A3%E5%86%B3Win10%E6%A1%8C%E9%9D%A2%E5%9B%BE%E6%A0%87%E6%98%BE%E7%A4%BA%E4%B8%8D%E6%AD%A3%E5%B8%B8/" title="解决Win10桌面图标显示不正常">解决Win10桌面图标显示不正常</a><time datetime="2020-12-31T04:00:00.000Z" title="Created 2020-12-31 12:00:00">2020-12-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/12/31/Tricks/Win10%20+%20Anaconda/" title="Win10+Anaconda"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Win10+Anaconda"/></a><div class="content"><a class="title" href="/2020/12/31/Tricks/Win10%20+%20Anaconda/" title="Win10+Anaconda">Win10+Anaconda</a><time datetime="2020-12-31T04:00:00.000Z" title="Created 2020-12-31 12:00:00">2020-12-31</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Jay</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

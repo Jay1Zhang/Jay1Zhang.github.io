@@ -1,0 +1,387 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>J1z's Blog</title><meta name="author" content="Jay"><meta name="copyright" content="Jay"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="here is description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="J1z&#39;s Blog">
+<meta property="og:url" content="http://jay1zhang.github.io/page/2/index.html">
+<meta property="og:site_name" content="J1z&#39;s Blog">
+<meta property="og:description" content="here is description">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://jay1zhang.github.io/null">
+<meta property="article:author" content="Jay">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://jay1zhang.github.io/null"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://jay1zhang.github.io/page/2/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2021-01-01 16:58:06'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/null" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">28</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">7</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">6</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">J1z's Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">J1z's Blog</h1><div id="site-subtitle"><span id="subtitle"></span></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2020/12/31/LeetCode/Algorithm/%E3%80%8C%E7%AE%97%E6%B3%95%E3%80%8D05-%E5%88%86%E6%B2%BB/" title="「算法」05-分治">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="「算法」05-分治"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/12/31/LeetCode/Algorithm/%E3%80%8C%E7%AE%97%E6%B3%95%E3%80%8D05-%E5%88%86%E6%B2%BB/" title="「算法」05-分治">「算法」05-分治</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2020-12-31T04:00:00.000Z" title="Created 2020-12-31 12:00:00">2020-12-31</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/LeetCode/">LeetCode</a><i class="fas fa-angle-right"></i><a class="article-meta__categories" href="/categories/LeetCode/Algorithm/">Algorithm</a></span></div><div class="content">分治1. 给表达式加括号题目描述给定一个含有数字和运算符的字符串，为表达式添加括号，改变其运算优先级以求出不同的结果。你需要给出所有可能的组合的结果。有效的运算符号包含 +, - 以及 * 。
+题解带备忘录的分治法
+区间选择：使用[left, right)的左闭右开区间。
+区间划分：遍历字符串，根据符号来划分左右区间，直至区间内只有一个纯数字（最小子问题）。
+区间合并：每个区间都有一个vector存储所有可能的计算结果，将左右两个区间的结果分别进行对应的op操作。
+
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748class Solution &#123;private:    map&lt;pair&lt;int, int&gt;, vector&lt;int&gt;&gt; m;    int calc(char op, int l, int r) &#123;        switch(op) &#123;                case &#x ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2020/12/31/LeetCode/Algorithm/%E3%80%8C%E7%AE%97%E6%B3%95%E3%80%8D06-%E6%90%9C%E7%B4%A2/" title="「算法」06-搜索">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="「算法」06-搜索"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/12/31/LeetCode/Algorithm/%E3%80%8C%E7%AE%97%E6%B3%95%E3%80%8D06-%E6%90%9C%E7%B4%A2/" title="「算法」06-搜索">「算法」06-搜索</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2020-12-31T04:00:00.000Z" title="Created 2020-12-31 12:00:00">2020-12-31</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/LeetCode/">LeetCode</a><i class="fas fa-angle-right"></i><a class="article-meta__categories" href="/categories/LeetCode/Algorithm/">Algorithm</a></span></div><div class="content">搜索content
+BFS
+计算在网格中从原点到特定点的最短路径长度
+组成整数的最小平方数数量
+最短单词路径
+
+
+DFS
+查找最大的连通面积
+矩阵中的连通分量数目
+好友关系的连通分量数目
+填充封闭区域
+能到达的太平洋和大西洋的区域
+
+
+Backtracking
+数字键盘组合
+IP 地址划分
+在矩阵中寻找字符串
+输出二叉树中所有从根到叶子的路径
+排列
+含有相同元素求排列
+组合
+组合求和
+含有相同元素的组合求和
+1-9 数字的组合求和
+子集
+含有相同元素求子集
+分割字符串使得每个部分都是回文数
+数独
+N 皇后
+
+
+
+BFS1. 计算在网格中从原点到特定点的最短路径长度2. 组成整数的最小平方数数量3. 最短单词路径DFS1. 查找最大的连通面积2. 矩阵中的连通分量数目3. 好友关系的连通分量数目4. 填充封闭区域5. 能到达的太平洋和大西洋的区域Backtracking1. 数字键盘组合2. IP 地址划分3. 在矩阵中寻找字符串4. 输出二叉树中所有从根到叶子的路径5. 排列6. 含有相同元素求排列7. 组合8. 组合求和9. 含有相同元素的组合求和10. 1-9 数字的组合求和11. ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2020/12/31/LeetCode/Algorithm/%E3%80%8C%E7%AE%97%E6%B3%95%E3%80%8D01-%E5%8F%8C%E6%8C%87%E9%92%88/" title="「算法」01-双指针">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="「算法」01-双指针"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/12/31/LeetCode/Algorithm/%E3%80%8C%E7%AE%97%E6%B3%95%E3%80%8D01-%E5%8F%8C%E6%8C%87%E9%92%88/" title="「算法」01-双指针">「算法」01-双指针</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2020-12-31T04:00:00.000Z" title="Created 2020-12-31 12:00:00">2020-12-31</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/LeetCode/">LeetCode</a><i class="fas fa-angle-right"></i><a class="article-meta__categories" href="/categories/LeetCode/Algorithm/">Algorithm</a></span></div><div class="content">双指针双指针主要用于遍历数组，两个指针指向不同的元素，从而协同完成任务。
+1. 有序数组的 Two Sum题目描述在有序数组中找出两个数，使它们的和为 target。
+题解使用双指针，一个指针指向值较小的元素，一个指针指向值较大的元素。指向较小元素的指针从头向尾遍历，指向较大元素的指针从尾向头遍历。
+
+利用两个指针分别从前向后以及从后向前遍历
+如果两个指针指向元素的和 sum == target，那么得到要求的结果；
+如果 sum &gt; target，移动较大的元素，使 sum 变小一些；
+如果 sum &lt; target，移动较小的元素，使 sum 变大一些。  
+
+
+
+1234567891011121314151617181920class Solution &#123;public:    vector&lt;int&gt; twoSum(vector&lt;int&gt;&amp; nums, int target) &#123;        int i = 0, j  = nums.size() - 1;        while(i &lt; j) &#123;  ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2020/12/31/BUAA/%E3%80%8CPaper%E3%80%8D%E8%AE%BA%E6%96%87%E5%9B%9B%E8%A6%81%E7%B4%A0/" title="「Paper」论文四要素">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="「Paper」论文四要素"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/12/31/BUAA/%E3%80%8CPaper%E3%80%8D%E8%AE%BA%E6%96%87%E5%9B%9B%E8%A6%81%E7%B4%A0/" title="「Paper」论文四要素">「Paper」论文四要素</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2020-12-31T04:00:00.000Z" title="Created 2020-12-31 12:00:00">2020-12-31</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/BUAA/">BUAA</a></span></div><div class="content">论文四要素一、高效可靠的文件检索文献检索的定义
+系统地收集与研究主题相关的公认文献
+“系统地”指以结构化和专业的方式检索
+“公认”指文献是已经接受过检验的高质量文献
+
+
+公认文献的类型
+书、专业期刊、专业会议、在线文档等
+
+
+
+重点查找的文献类型建议
+最主要的研究主要来自于本领域重要期刊和会议，因此建议首先从这些期刊和会议获取相关知识
+通过查看论文引用情况来决定先从哪些论文开始
+查看论文的引用文献，根据步骤1，2来判断深入阅读的优先级
+不断重复这个步骤，直到基本的概念都清晰出来
+
+
+如何判断高质量论文
+使用 Scholar.google.com/scholar.glgoo.org ，观察引文数，同时观察引文的质量
+是否在DBLP论文库中
+是否出现在Core,CCF,Conference Ranking等排名中
+是否是著名的出版社
+ACM，IEEE，Elsevier，Springer？
+Taylor &amp; Francis, WorldScientific…
+
+
+是否是SCI/SSCI/EI等检索？
+
+
+
+高质量文献查找途径
+联机公共查询目录
+对图书馆进行文献检索
+通过作者姓名、文献 ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2020/12/31/Tricks/Foxmail%E9%85%8D%E7%BD%AEGmail/" title="Foxmail配置Gmail">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Foxmail配置Gmail"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/12/31/Tricks/Foxmail%E9%85%8D%E7%BD%AEGmail/" title="Foxmail配置Gmail">Foxmail配置Gmail</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2020-12-31T04:00:00.000Z" title="Created 2020-12-31 12:00:00">2020-12-31</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Tricks/">Tricks</a></span></div><div class="content">Foxmail配置GmailFoxmail设置Gmail提示“用户名或密码不正确”解决办法：
+
+登录Google，进入账户界面；
+选择“安全性”，并开启“使用两步验证”；
+此时会出现“应用专用密码”选项，选择开启，将会获得一个临时密钥，用次密钥登录即可。
+
+</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2020/12/31/BUAA/%E3%80%8C%E8%AE%A1%E7%BD%91%E3%80%8D06-%E5%BA%94%E7%94%A8%E5%B1%82/" title="「计网」06-应用层">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="「计网」06-应用层"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/12/31/BUAA/%E3%80%8C%E8%AE%A1%E7%BD%91%E3%80%8D06-%E5%BA%94%E7%94%A8%E5%B1%82/" title="「计网」06-应用层">「计网」06-应用层</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2020-12-31T04:00:00.000Z" title="Created 2020-12-31 12:00:00">2020-12-31</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/BUAA/">BUAA</a><i class="fas fa-angle-right"></i><a class="article-meta__categories" href="/categories/BUAA/Computer-Network/">Computer Network</a></span></div><div class="content">Chapter6 - 应用层本章最重要的内容是：
+
+域名系统DNS——从域名解析出IP地址。
+万维网和HTTP协议。
+电子邮件的传送过程，SMTP协议和POP3协议、IMAP协议使用的场合。
+系统调用和应用编程接口的基本概念。
+
+6.1 系统调用和应用编程接口一、系统调用
+大多数操作系统使用 系统调用（system call） 的机制在应用程序和操作之间传递控制权。
+当某个应用进程启动系统调用时，控制权就从应用进程传递给了系统调用接口；
+此接口再把控制权传递给操作系统；
+操作系统把这个调用转给某个内部过程，并执行锁清秋的操作；
+内部过程一旦执行完毕，控制权就又通过系统调用接口返回给应用进程。
+
+
+因此，系统调用接口实际上就是应用进程的控制权和操作系统的控制权进行转换的一个接口，这种系统调用接口又称为应用编程接口（API — Application Programming Interface）。
+
+
+二、套接字编程接口
+套接字(socket)是最常用的应用层编程接口
+名称起源于Berkeley UNIX操作系统
+
+
+经典的socket编程接口采用同步调用方式(又称阻塞式)
+例：调用rec ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2020/12/31/BUAA/%E3%80%8C%E8%AE%A1%E7%BD%91%E3%80%8D07-IPv6%E5%8D%8F%E8%AE%AE/" title="「计网」07-IPv6协议">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="「计网」07-IPv6协议"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/12/31/BUAA/%E3%80%8C%E8%AE%A1%E7%BD%91%E3%80%8D07-IPv6%E5%8D%8F%E8%AE%AE/" title="「计网」07-IPv6协议">「计网」07-IPv6协议</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2020-12-31T04:00:00.000Z" title="Created 2020-12-31 12:00:00">2020-12-31</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/BUAA/">BUAA</a><i class="fas fa-angle-right"></i><a class="article-meta__categories" href="/categories/BUAA/Computer-Network/">Computer Network</a></span></div><div class="content">Chapter7 - IPv6协议7.1 概述
+随着Internet的快速发展，现在IPv4已很不适用
+
+IP地址空间耗尽问题
+安全性问题
+服务质量问题
+… 
+
+
+解决IP地址耗尽问题的措施：
+
+采用无类别编址CIDR，使IP地址的分配更加合理
+采用网络地址转换NAT方法以节省全球 IP地址
+采用具有更大地址空间的新版本的IP协议 IPv6
+
+
+IPv6仍支持无连接的传送，但将协议数据单元PDU称为分组，而不是IPv4的数据报
+
+IPv6所引进的主要变化如下：
+
+更大的地址空间。IPv6把地址从IPv4的32位增大到4倍，即增大到128位，使地址空间增大了 $2^{96}$ 倍。这样大的地址空间在可预见的将来是不会用完的。
+扩展的地址层次结构。IPv6由于地址空间很大，因此可以划分为更多的层次。
+灵活的首部格式。IPv6数据报的首部和IPv4的并不兼容。IPv6定义了许多可选的扩展首部，不仅可提供比IPv4更多的功能，而且还可提高路由器的处理效率，这是因为路由器对扩展首部不进行处理(除逐跳扩展首部外)。
+改进的选项。IPv6允许数据报包含有选项的控制信息，因而可以包含一些新的选项。但I ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2020/12/31/BUAA/%E3%80%8C%E8%AE%A1%E7%BD%91%E3%80%8D08-%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91/" title="「计网」08-无线局域网">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="「计网」08-无线局域网"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/12/31/BUAA/%E3%80%8C%E8%AE%A1%E7%BD%91%E3%80%8D08-%E6%97%A0%E7%BA%BF%E5%B1%80%E5%9F%9F%E7%BD%91/" title="「计网」08-无线局域网">「计网」08-无线局域网</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2020-12-31T04:00:00.000Z" title="Created 2020-12-31 12:00:00">2020-12-31</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/BUAA/">BUAA</a><i class="fas fa-angle-right"></i><a class="article-meta__categories" href="/categories/BUAA/Computer-Network/">Computer Network</a></span></div><div class="content">Chapter8 - 无线局域网本章最重要的内容是：
+(1)    无线局域网的组成，特别是分配系统DS (Distribution System)和接入点AP (Access Point)的作用。(2)    无线局域网使用的CSMA/CA协议(弄清与载波监听多点接入/碰撞检测CSMA/CD的区别)和无线局域网MAC帧使用的几种地址。(3)    移动用户在移动时怎样保持IP地址不变。(4)    蜂窝移动通信网中对移动用户的路由选择问题。
+8.1 概述
+IEEE802系列局域网标准
+
+IEEE 802.1a 综述与体系结构
+IEEE 802.1b 寻址、互联、管理
+IEEE 802.2 逻辑链路控制(LLC)
+IEEE 802.3 CSMA/CD介质访问控制(MAC)与物理层技术规范
+IEEE 802.3u 快速以太网(Fast Ethernet)
+IEEE 802.3z 千兆以太网(Gigabit Ethernet)
+
+
+IEEE 802.4 Token Bus介质访问控制与物理层技术规范
+IEEE 802.5 Token Ring介质访问控制与物理层技术规范
+IEEE 802. ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2020/12/31/BUAA/%E3%80%8C%E8%AE%A1%E7%BD%91%E3%80%8D04-%E7%BD%91%E7%BB%9C%E5%B1%82/" title="「计网」04-网络层">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="「计网」04-网络层"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/12/31/BUAA/%E3%80%8C%E8%AE%A1%E7%BD%91%E3%80%8D04-%E7%BD%91%E7%BB%9C%E5%B1%82/" title="「计网」04-网络层">「计网」04-网络层</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2020-12-31T04:00:00.000Z" title="Created 2020-12-31 12:00:00">2020-12-31</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/BUAA/">BUAA</a><i class="fas fa-angle-right"></i><a class="article-meta__categories" href="/categories/BUAA/Computer-Network/">Computer Network</a></span></div><div class="content">Chapter4 - 网络层本章最重要的内容是：
+
+虚拟互联网络的概念
+IP地址与物理地址的关系
+传统的分类的IP地址（包括子网掩码）和无分类域间路由选择CIDR
+路由选择协议的工作原理
+
+4.1 网络层提供的两种服务
+在计算机网络领域，网络层应该向运输层提供怎样的服务？
+两种选择：面向连接 or 无连接
+争论焦点的实质：数据的可靠传输应该由网络还是端系统来负责？
+
+
+面向连接的服务，即虚电路（virtual circuit）
+通信双方在开始数据传输前，先由网络建立连接（在分组交换中是建立一条虚电路），之后的数据均通过该连接进行，由网络保证数据传输的可靠性
+虚电路只是一种逻辑连接，分组沿着这条逻辑连接按照存储转发方式传送 ，而并不是真正建立了一条物理连接。这样分组的首部不需要填写完整的目的主机地址，而只需要填写这条虚电路的编号，因而减少了分组的开销。
+这种通信方式如果再使用可靠的网络协议，就可使所发送的分组无差错按序到达终点。
+支持方：以电信公司为代表的一派
+
+
+无连接的服务，即数据报（datagram）
+设计思路：网络层向上只提供简单灵活的、无连接的、尽最大努力交付的数据报服务。（这 ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2020/12/31/BUAA/%E3%80%8C%E8%AE%A1%E7%BD%91%E3%80%8D03-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/" title="「计网」03-数据链路层">     <img class="post_bg" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="「计网」03-数据链路层"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/12/31/BUAA/%E3%80%8C%E8%AE%A1%E7%BD%91%E3%80%8D03-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/" title="「计网」03-数据链路层">「计网」03-数据链路层</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2020-12-31T04:00:00.000Z" title="Created 2020-12-31 12:00:00">2020-12-31</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/BUAA/">BUAA</a><i class="fas fa-angle-right"></i><a class="article-meta__categories" href="/categories/BUAA/Computer-Network/">Computer Network</a></span></div><div class="content">Chapter3 - 数据链路层3.1 数据链路层设计要点一、数据链路层概述
+物理层实现了比特流的传输，而数据链路层在其基础上实现**帧(frame)**的传输
+数据链路传输的协议数据单元(PDU)是帧
+
+
+
+
+
+数据链路层使用的信道类型
+点对点信道
+使用一对一的点对点通信方式，如光纤
+
+
+广播信道
+使用一对多的广播通信方式
+广播信道上连接多个主机，必须采用专门的共享信道协议来协调数据发送
+比如两个主机不能同时发送信息，否则会影响主干路的电信号。
+
+
+
+
+
+
+数据链路层涉及的问题
+**成帧(framing)**：怎样组成帧、怎样使接收方识别帧
+差错控制：帧在传输过程中出错的检测
+流量控制及可靠传输：仅是数据链路层的选项
+广播信道中的介质访问控制
+
+
+
+二、成帧方法
+成帧要考虑：接收方如何识别帧的边界？
+常用的成帧方法：（2，3在本章PPP协议中可看到实例）
+
+
+字符计数法
+在帧头部字段中指明本帧的字节数
+
+
+字符填充的首尾定界法
+定义专门的字符作为帧的起始/结束标志，并使用字符填充方式将标志字符与数据区分开
+字符填充方式：若用户传输的数据中包含该标志字符，则需要对其进行替换
+
+
+比特填 ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/null" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Jay</div><div class="author-info__description">here is description</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">28</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">7</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">6</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2020/12/31/BUAA/%E3%80%8C%E8%AE%A1%E7%BD%91%E3%80%8D05-%E4%BC%A0%E8%BE%93%E5%B1%82/" title="「计网」05-传输层"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="「计网」05-传输层"/></a><div class="content"><a class="title" href="/2020/12/31/BUAA/%E3%80%8C%E8%AE%A1%E7%BD%91%E3%80%8D05-%E4%BC%A0%E8%BE%93%E5%B1%82/" title="「计网」05-传输层">「计网」05-传输层</a><time datetime="2020-12-31T04:00:00.000Z" title="Created 2020-12-31 12:00:00">2020-12-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/12/31/BUAA/%E3%80%8C%E7%B3%BB%E7%BB%9F%E3%80%8D05-%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/" title="「系统」05-文件管理"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="「系统」05-文件管理"/></a><div class="content"><a class="title" href="/2020/12/31/BUAA/%E3%80%8C%E7%B3%BB%E7%BB%9F%E3%80%8D05-%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/" title="「系统」05-文件管理">「系统」05-文件管理</a><time datetime="2020-12-31T04:00:00.000Z" title="Created 2020-12-31 12:00:00">2020-12-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/12/31/Tricks/README/" title="「README」Tricks"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="「README」Tricks"/></a><div class="content"><a class="title" href="/2020/12/31/Tricks/README/" title="「README」Tricks">「README」Tricks</a><time datetime="2020-12-31T04:00:00.000Z" title="Created 2020-12-31 12:00:00">2020-12-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/12/31/Tricks/%E8%A7%A3%E5%86%B3Win10%E6%A1%8C%E9%9D%A2%E5%9B%BE%E6%A0%87%E6%98%BE%E7%A4%BA%E4%B8%8D%E6%AD%A3%E5%B8%B8/" title="解决Win10桌面图标显示不正常"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="解决Win10桌面图标显示不正常"/></a><div class="content"><a class="title" href="/2020/12/31/Tricks/%E8%A7%A3%E5%86%B3Win10%E6%A1%8C%E9%9D%A2%E5%9B%BE%E6%A0%87%E6%98%BE%E7%A4%BA%E4%B8%8D%E6%AD%A3%E5%B8%B8/" title="解决Win10桌面图标显示不正常">解决Win10桌面图标显示不正常</a><time datetime="2020-12-31T04:00:00.000Z" title="Created 2020-12-31 12:00:00">2020-12-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2020/12/31/Tricks/Win10%20+%20Anaconda/" title="Win10+Anaconda"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Win10+Anaconda"/></a><div class="content"><a class="title" href="/2020/12/31/Tricks/Win10%20+%20Anaconda/" title="Win10+Anaconda">Win10+Anaconda</a><time datetime="2020-12-31T04:00:00.000Z" title="Created 2020-12-31 12:00:00">2020-12-31</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>Categories</span></div><ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/BUAA/"><span class="card-category-list-name">BUAA</span><span class="card-category-list-count">15</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/BUAA/Computer-Network/"><span class="card-category-list-name">Computer Network</span><span class="card-category-list-count">8</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/BUAA/Computer-System/"><span class="card-category-list-name">Computer System</span><span class="card-category-list-count">6</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/LeetCode/"><span class="card-category-list-name">LeetCode</span><span class="card-category-list-count">7</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/LeetCode/Algorithm/"><span class="card-category-list-name">Algorithm</span><span class="card-category-list-count">6</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Tricks/"><span class="card-category-list-name">Tricks</span><span class="card-category-list-count">5</span></a></li>
+            
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>Tags</span></div><div class="card-tag-cloud"><a href="/tags/961/" style="font-size: 1.5em; color: #99a9bf">961</a> <a href="/tags/Algorithm/" style="font-size: 1.37em; color: #99a4b2">Algorithm</a> <a href="/tags/Anaconda/" style="font-size: 1.1em; color: #999">Anaconda</a> <a href="/tags/Paper/" style="font-size: 1.1em; color: #999">Paper</a> <a href="/tags/README/" style="font-size: 1.23em; color: #999ea6">README</a> <a href="/tags/Win10/" style="font-size: 1.23em; color: #999ea6">Win10</a> <a href="/tags/example/" style="font-size: 1.1em; color: #999">example</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>Archives</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/12/"><span class="card-archive-list-date">December 2020</span><span class="card-archive-list-count">28</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>Info</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">Article :</div><div class="item-count">28</div></div><div class="webinfo-item"><div class="item-name">UV :</div><div class="item-count" id="busuanzi_value_site_uv"></div></div><div class="webinfo-item"><div class="item-name">PV :</div><div class="item-count" id="busuanzi_value_site_pv"></div></div><div class="webinfo-item"><div class="item-name">Last Push :</div><div class="item-count" id="last-push-date" data-lastPushDate="2021-01-01T08:58:05.644Z"></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Jay</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>
