@@ -1,0 +1,577 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>「系统」04-磁盘管理 | J1z's Blog</title><meta name="keywords" content="961"><meta name="author" content="Jay"><meta name="copyright" content="Jay"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="Chapter4 - 磁盘管理0x00 概述磁盘存储器不仅容量大，存取速度快，且可以实现随机存取，是实现虚拟存储系统所必需的硬件。 磁盘存储管理的主要任务是：  为文件分配必要的存储空间 提高磁盘存储空间的利用率 提高对磁盘的I&#x2F;O速度，以改善文件系统的性能 采取必要的冗余措施，确保文件系统的可靠性  0x01 磁盘工作原理1. 磁盘结构 在磁盘设备中，可包含一个或多个盘片，每片分两面。  每个面">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「系统」04-磁盘管理">
+<meta property="og:url" content="http://jay1zhang.github.io/2020/12/31/BUAA/Operating%20System/%E3%80%8C%E7%B3%BB%E7%BB%9F%E3%80%8D04-%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="J1z&#39;s Blog">
+<meta property="og:description" content="Chapter4 - 磁盘管理0x00 概述磁盘存储器不仅容量大，存取速度快，且可以实现随机存取，是实现虚拟存储系统所必需的硬件。 磁盘存储管理的主要任务是：  为文件分配必要的存储空间 提高磁盘存储空间的利用率 提高对磁盘的I&#x2F;O速度，以改善文件系统的性能 采取必要的冗余措施，确保文件系统的可靠性  0x01 磁盘工作原理1. 磁盘结构 在磁盘设备中，可包含一个或多个盘片，每片分两面。  每个面">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://jayyy1.gitee.io/images/pictures/cartoons/037.jpg">
+<meta property="article:published_time" content="2020-12-31T04:04:00.000Z">
+<meta property="article:modified_time" content="2021-03-26T04:54:54.443Z">
+<meta property="article:author" content="Jay">
+<meta property="article:tag" content="961">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://jayyy1.gitee.io/images/pictures/cartoons/037.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://jay1zhang.github.io/2020/12/31/BUAA/Operating%20System/%E3%80%8C%E7%B3%BB%E7%BB%9F%E3%80%8D04-%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.5/dist/instantsearch.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.5/dist/instantsearch.min.js" defer></script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"WKEK6XV2V5","apiKey":"e093fbb9f29fdf5c7ddd56ec43e9ae05","indexName":"Jay","hits":{"per_page":10},"languages":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}.","hits_stats":"${hits} results found in ${time} ms"}},
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"Traditional Chinese Activated Manually","cht_to_chs":"Simplified Chinese Activated Manually","day_to_night":"Dark Mode Activated Manually","night_to_day":"Light Mode Activated Manually","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-03-26 12:54:54'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">39</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">12</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-heart"></i><span> Link</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(http://jayyy1.gitee.io/images/pictures/cartoons/037.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">J1z's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-heart"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">「系统」04-磁盘管理</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-12-31T04:04:00.000Z" title="Created 2020-12-31 12:04:00">2020-12-31</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-03-26T04:54:54.443Z" title="Updated 2021-03-26 12:54:54">2021-03-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/BUAA/">BUAA</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/BUAA/Operating-System/">Operating System</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">4.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>13min</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Chapter4-磁盘管理"><a href="#Chapter4-磁盘管理" class="headerlink" title="Chapter4 - 磁盘管理"></a>Chapter4 - 磁盘管理</h1><h2 id="0x00-概述"><a href="#0x00-概述" class="headerlink" title="0x00 概述"></a>0x00 概述</h2><p>磁盘存储器不仅容量大，存取速度快，且可以实现随机存取，是实现虚拟存储系统所必需的硬件。</p>
+<p>磁盘存储管理的主要任务是：</p>
+<ul>
+<li>为文件分配必要的存储空间</li>
+<li>提高磁盘存储空间的利用率</li>
+<li>提高对磁盘的I/O速度，以改善文件系统的性能</li>
+<li>采取必要的冗余措施，确保文件系统的可靠性</li>
+</ul>
+<h2 id="0x01-磁盘工作原理"><a href="#0x01-磁盘工作原理" class="headerlink" title="0x01 磁盘工作原理"></a>0x01 磁盘工作原理</h2><h3 id="1-磁盘结构"><a href="#1-磁盘结构" class="headerlink" title="1. 磁盘结构"></a>1. 磁盘结构</h3><ul>
+<li><p>在磁盘设备中，可包含一个或多个<strong>盘片</strong>，每片<strong>分两面</strong>。</p>
+</li>
+<li><p>每个面上都有一个<strong>磁头</strong>，且每面又可分成若干条<strong>磁道</strong>。</p>
+</li>
+<li><p>在每条磁道上可存储相同数目的二进制位，每英寸中所存储的位数称为<strong>磁盘密度</strong>。</p>
+<ul>
+<li>显然，内层磁道的密度较外层磁道的密度高</li>
+</ul>
+</li>
+<li><p>每条磁道又分成若干个<strong>扇区</strong>，每个扇区的大小相当于一个盘块</p>
+<ul>
+<li>0扇区是最外层煮面的第一个磁道的第一个扇区</li>
+</ul>
+</li>
+<li><p>磁盘的顺序首先是磁道不同的扇区，然后是同一柱面的不同磁道，最后是由外向内的不同<strong>柱面</strong>。</p>
+<ul>
+<li>即磁盘大小：柱面数 x 一个柱面上的磁道数（盘片*2） x 每条磁道上的扇区数 x 每个扇区的大小</li>
+</ul>
+</li>
+</ul>
+<img src="http://jayyy1.gitee.io/images/posts/BUAA/image-20200925154109389.png" alt="image-20200925154109389" style="zoom:80%;" />
+
+<p>补充：</p>
+<ul>
+<li>对于磁盘，<strong>每个磁道的扇区数并不是常量。</strong></li>
+<li>绝大多数磁盘都有一些缺陷扇区，因此映射必须用磁盘上的其他空闲扇区来替代这些<strong>缺陷扇区</strong>。</li>
+</ul>
+<h3 id="2-磁盘缺陷"><a href="#2-磁盘缺陷" class="headerlink" title="2. 磁盘缺陷"></a>2. 磁盘缺陷</h3><p>硬盘的实际扇区数比硬盘标签上标定的大，其中</p>
+<ul>
+<li><p><strong>一部分用于存储硬盘的固件</strong>。</p>
+</li>
+<li><p>一部分是用户存储数据的区域，即<strong>工作区</strong>，也就是<strong>硬盘标定容量的扇区</strong>。</p>
+</li>
+<li><p>剩下的为<strong>保留区</strong>。</p>
+</li>
+</ul>
+<img src="http://jayyy1.gitee.io/images/posts/BUAA/image-20200925154456497.png" alt="image-20200925154456497" style="zoom:80%;" />
+
+
+
+<p>几个概念：</p>
+<ul>
+<li>P表，又称永久缺陷列表<ul>
+<li>用于记录硬盘<strong>生产过程中</strong>产生的缺陷。</li>
+<li>读到该扇区将直接<strong>跳过</strong>。</li>
+</ul>
+</li>
+<li>G表：又称为增长缺陷列表<ul>
+<li>用于记录硬盘<strong>使用过程中</strong>由于磁介质性能变弱而引起的缺陷</li>
+<li>读到坏扇区将<strong>转读原保留区</strong>。</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-磁盘的组织"><a href="#3-磁盘的组织" class="headerlink" title="3. 磁盘的组织"></a>3. 磁盘的组织</h3><h4 id="1）主引导扇区-MBR"><a href="#1）主引导扇区-MBR" class="headerlink" title="1）主引导扇区(MBR)"></a>1）主引导扇区(MBR)</h4><p>硬盘的<strong>0柱面，0磁头，1扇区</strong>成为主引导扇区（也称主引导记录MBR），该记录占用<strong>512</strong>个字节，<strong>用于硬盘启动时将系统控制权转给</strong><u>用户指定的、在分区表中登记了</u><strong>某个操作系统分区</strong>。</p>
+<p>MBR包含三部分内容</p>
+<ul>
+<li>0~446字节为启动代码及数据；</li>
+<li>447-510字节（64个字节）则是<strong>分区表（DPT）</strong><ul>
+<li>分区表由四个分区项组成，每个分区项16字节，记录了启动时需要的分区参数。</li>
+</ul>
+</li>
+<li>最后两个字节AA和55被成为<strong>幻数（Magic Number）</strong><ul>
+<li>BIOS读取MBR时会检查是否有这两个幻术，若无则认为该硬盘未分区。</li>
+</ul>
+</li>
+</ul>
+<img src="http://jayyy1.gitee.io/images/posts/BUAA/image-20200925155308370.png" alt="image-20200925155308370" style="zoom:80%;" />
+
+
+
+<p>硬盘分区有三种：<strong>主磁盘分区、扩展磁盘分区、逻辑分区</strong>。</p>
+<p>由于MBR的限制，最多只能有4个分区。</p>
+<ul>
+<li>一个硬盘<strong>主分区</strong>至少有1个，最多4个；<ul>
+<li>主分区<strong>只能有一个是激活的</strong>（active），其余为inactive，且<strong>操作系统必须装载主分区上面</strong>。</li>
+</ul>
+</li>
+<li>分出主分区后，其余的部分可以分成<strong>扩展分区</strong>，扩展分区可以没有，但最多1个；<ul>
+<li>扩展分区不能直接使用，必须分成若干逻辑分区。</li>
+</ul>
+</li>
+<li>主分区+扩展分区总共不能超过4个，所有的逻辑分区都是扩展分区的一部分。</li>
+</ul>
+<h4 id="2）硬盘分区表-DPT"><a href="#2）硬盘分区表-DPT" class="headerlink" title="2）硬盘分区表(DPT)"></a>2）硬盘分区表(DPT)</h4><p>从偏移01BEH开始到偏移01FDH结束的64字节，包含四个分区，每个分区16字节，其内容与含义如下 ：</p>
+<ul>
+<li>第0个字节是自举标志，其值为80H时表示该分区是当前<strong>活动分区</strong></li>
+<li>第4个字节是<strong>分区类型</strong></li>
+</ul>
+<img src="http://jayyy1.gitee.io/images/posts/BUAA/image-20200925160303055.png" alt="image-20200925160303055" style="zoom:80%;" />
+
+
+
+<h4 id="3）分区引导扇区-DBR"><a href="#3）分区引导扇区-DBR" class="headerlink" title="3）分区引导扇区(DBR)"></a>3）分区引导扇区(DBR)</h4><ul>
+<li><p>DBR是由硬盘的MBR装载的程序段。</p>
+</li>
+<li><p>DBR装入内存后，即开始执行该引导程序段，其主要功能是<strong>完成操作系统的自举并将控制权交给操作系统</strong>。</p>
+</li>
+<li><p>每个分区都有引导扇区，但只有被设为<strong>活动分区</strong>的DBR才会被MBR装入内存运行。</p>
+</li>
+</ul>
+<h4 id="4）磁盘地址与块号的转换"><a href="#4）磁盘地址与块号的转换" class="headerlink" title="4）磁盘地址与块号的转换"></a>4）磁盘地址与块号的转换</h4><ul>
+<li><strong>磁盘地址</strong>（CHS）：Cylinder, Head, Sector</li>
+<li><strong>块号</strong>：又称逻辑块号（LBA）, Logic Block Address，<strong>逻辑块是最小的传输单位**</strong>。</li>
+</ul>
+<img src="http://jayyy1.gitee.io/images/posts/BUAA/image-20200925161029468.png" alt="image-20200925161029468" style="zoom:70%;" />
+
+
+
+<h3 id="4-磁盘访问时间"><a href="#4-磁盘访问时间" class="headerlink" title="4. 磁盘访问时间"></a>4. 磁盘访问时间</h3><p>磁盘的访问时间，包括以下三部分。</p>
+<ul>
+<li><strong>寻道时间 Ts</strong><ul>
+<li>把磁头从当前位置<strong>移动到指定磁道</strong>上所经历的时间，*<em>Ts = m * n + s*</em></li>
+<li>即，启动磁盘的时间s与磁头移动n条磁道所花费的时间之和</li>
+<li>其中m是一常量，与磁盘驱动器的速度有关。<ul>
+<li>对于一般磁盘，m = 0.3</li>
+<li>对于高速磁盘，m &lt;= 0.1</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>旋转延迟时间 Tr</strong><ul>
+<li>把磁头从当前磁道<strong>移动到指定扇区</strong>下所经历的时间，<strong>Tr = 1/(2r)</strong></li>
+<li>对于硬盘，典型的旋转速度为 3600r/min，每转需16.7ms，平均旋转延迟时间Tr为8.3ms。</li>
+<li>对于软盘，旋转速度为300或600r/min，平均旋转延迟时间Tr为50~100ms。</li>
+</ul>
+</li>
+<li><strong>传输时间 Tt</strong><ul>
+<li>Tt是指<strong>把数据从磁盘读出</strong>，或<strong>向磁盘写入数据</strong>所经历的时间，<strong>Tt = b / (rN)</strong></li>
+<li>Tt的大小与每次所读/写的字节数b，旋转速度r以及磁道上的字节数N有关</li>
+<li>典型的N值为一个扇区：512Byte，旋转速度为3600RPM ~ 15000RPM，故硬盘1s可传输的数据为2MB ~ 50MB</li>
+</ul>
+</li>
+</ul>
+<p><strong>访问时间</strong></p>
+<ul>
+<li>寻道时间 + 旋转延迟时间 + 传输时间，即 Ta = Ts + 1/(2r) + b/(rN) 。</li>
+</ul>
+<h2 id="0x02-磁盘调度（重点）"><a href="#0x02-磁盘调度（重点）" class="headerlink" title="0x02 磁盘调度（重点）"></a>0x02 磁盘调度（重点）</h2><h3 id="1-磁盘调度算法"><a href="#1-磁盘调度算法" class="headerlink" title="1. 磁盘调度算法"></a>1. 磁盘调度算法</h3><h4 id="1）先来先服务算法（FCFS）"><a href="#1）先来先服务算法（FCFS）" class="headerlink" title="1）先来先服务算法（FCFS）"></a>1）先来先服务算法（FCFS）</h4><p>按访问请求<strong>到达的先后次序</strong>服务。</p>
+<h4 id="2）最短寻道时间优先算法（SSTF，Shortest-Seek-Time-First）"><a href="#2）最短寻道时间优先算法（SSTF，Shortest-Seek-Time-First）" class="headerlink" title="2）最短寻道时间优先算法（SSTF，Shortest Seek Time First）"></a>2）最短寻道时间优先算法（SSTF，Shortest Seek Time First）</h4><p>优先选择<strong>距当前磁头最近的访问请求</strong>进行服务。</p>
+<h4 id="3）扫描算法（SCAN）"><a href="#3）扫描算法（SCAN）" class="headerlink" title="3）扫描算法（SCAN）"></a>3）扫描算法（SCAN）</h4><p>当有访问请求时，磁头<strong>按一个方向移动</strong>，在移动过程中对遇到的访问请求进行服务，然后判断该方向上是否还有访问请求，如果有则继续扫描；否则改变移动方向，并为经过的访问请求服务。</p>
+<ul>
+<li>克服了最短寻道优先的缺点，既考虑了距离，同时又考虑了方向</li>
+<li>由于SCAN算法偏向于处理那些接近最里或最外的磁道的访问请求，所以使用改进型的C-SCAN算法可避免这个问题。</li>
+</ul>
+<h4 id="4）循环扫描算法（CSCAN）"><a href="#4）循环扫描算法（CSCAN）" class="headerlink" title="4）循环扫描算法（CSCAN）"></a>4）循环扫描算法（CSCAN）</h4><p>当磁头到达最后一个柱面后，快速返回0号柱面；返回时不为任何的等待访问者服务，返回后再次进行扫描。</p>
+<h4 id="5）LOOK-和-C-LOOK"><a href="#5）LOOK-和-C-LOOK" class="headerlink" title="5）LOOK 和 C-LOOK"></a>5）LOOK 和 C-LOOK</h4><p>SCAN与C-SCAN磁头总是严格地遵循从盘面的一端到另一端，显然，<strong>磁头移动只需要到达最远端的一个请求即可返回，不需要到达磁盘端点</strong>。这种形式的SCAN与C-SCAN算法称为LOOK 和 C-LOOK调度。</p>
+<h3 id="2-算法比较"><a href="#2-算法比较" class="headerlink" title="2. 算法比较"></a>2. 算法比较</h3><img src="http://jayyy1.gitee.io/images/posts/BUAA/image-20200925162934919.png" alt="image-20200925162934919" style="zoom:70%;" />
+
+
+
+<h2 id="0x03-磁盘空间管理"><a href="#0x03-磁盘空间管理" class="headerlink" title="0x03 磁盘空间管理"></a>0x03 磁盘空间管理</h2><h4 id="1）位图法"><a href="#1）位图法" class="headerlink" title="1）位图法"></a>1）位图法</h4><p>用一串二进制位反应磁盘空间中分配使用情况，每个物理块对应一位，分配的物理块为0，否则为1。</p>
+<img src="http://jayyy1.gitee.io/images/posts/BUAA/image-20200925163333477.png" alt="image-20200925163333477" style="zoom:67%;" />
+
+
+
+<h4 id="2）空闲表法"><a href="#2）空闲表法" class="headerlink" title="2）空闲表法"></a>2）空闲表法</h4><p>将所有空闲块记录在一个表中，即空闲表；</p>
+<ul>
+<li>主要记录两项内容：起始块号，块数</li>
+</ul>
+<img src="http://jayyy1.gitee.io/images/posts/BUAA/image-20200925163341670.png" alt="image-20200925163341670" style="zoom:67%;" />
+
+
+
+<h4 id="3）空闲链表法"><a href="#3）空闲链表法" class="headerlink" title="3）空闲链表法"></a>3）空闲链表法</h4><p>把所有空闲块链成一个表，但链会很长。</p>
+<h4 id="4）成组链接法"><a href="#4）成组链接法" class="headerlink" title="4）成组链接法"></a>4）成组链接法</h4><p>把空白物理块分成组，在通过指针把组与组之间链接起来。</p>
+<p>成组链接法的<strong>优点</strong>：</p>
+<ol>
+<li><p>空白块号登记不占用额外空间；</p>
+</li>
+<li><p>节省时间；</p>
+</li>
+<li><p>采用后进先出的栈结构思想</p>
+</li>
+</ol>
+<img src="http://jayyy1.gitee.io/images/posts/BUAA/image-20200925163618359.png" alt="image-20200925163618359" style="zoom:70%;" />
+
+
+
+<h2 id="0x04-廉价冗余磁盘阵列（RAID）"><a href="#0x04-廉价冗余磁盘阵列（RAID）" class="headerlink" title="0x04 廉价冗余磁盘阵列（RAID）"></a>0x04 廉价冗余磁盘阵列（RAID）</h2><blockquote>
+<p>考虑<strong>可靠性</strong>，具有N个磁盘的磁盘组中某些磁盘比特定磁盘具有较高的出错率。假设单个磁盘的平均损坏时间为100000小时，具有100个磁盘的阵列中某些磁盘的平均损坏时间为100000/100小时，大约是41.66天。这样高的数据丢失率是不能接受的。</p>
+<p>解决可靠性问题的方法是引入冗余技术存储一般不需要的额外的信息，可以在磁盘损坏时用来恢复丢失的信息。</p>
+</blockquote>
+<p>廉价冗余磁盘阵列（Redundant Arrays of Inexpensive Disks, RAID）</p>
+<ul>
+<li>其基本思想就是把多个相对便宜的硬盘组合起来，成为一个硬盘阵列组，使性能达到甚至超过一个价格昂贵、容量巨大的硬盘。</li>
+<li>根据选择的版本不同，RAID比单颗硬盘有以下一个或多个方面的好处：<ul>
+<li>增强数据集成度，增强容错功能，增加处理量或容量。</li>
+<li>另外，磁盘阵列对于电脑来说，看起来就像一个单独的硬盘或逻辑存储单元</li>
+</ul>
+</li>
+</ul>
+<p>磁盘阵列中针对不同的应用使用不同的技术，称为 RAID level。每一 level 代表一种技术，不同 level 并不代表技术的高低。</p>
+<h3 id="RAID0：无差错控制的带区组"><a href="#RAID0：无差错控制的带区组" class="headerlink" title="RAID0：无差错控制的带区组"></a>RAID0：无差错控制的带区组</h3><p><strong>条带化（Stripe）存储</strong>，RAID0需要两个以上的磁盘来组成带区组，数据分为<strong>数据块</strong>保存在<strong>不同的驱动器</strong>上。</p>
+<img src="http://jayyy1.gitee.io/images/posts/BUAA/image-20200925165350553.png" alt="image-20200925165350553" style="zoom:67%;" />
+
+<p>由于数据分布在不同驱动器上，所以<strong>数据吞吐率大大提高</strong>，驱动器的负载也比较平衡。</p>
+<ul>
+<li>理论上说，有N个磁盘组成的RAID0是单个磁盘读写速度的N倍。</li>
+</ul>
+<p>RAID0不计算校验码，因而没有冗余校验功能，也没有数据差错控制，因此它并不能算是真正的RAID结构。</p>
+<h3 id="RAID1：镜像结构"><a href="#RAID1：镜像结构" class="headerlink" title="RAID1：镜像结构"></a>RAID1：镜像结构</h3><p>它是<strong>镜象（Mirror）磁盘冗余阵列</strong>，将每一数据块<strong>重复存入镜像磁盘</strong>，以改善磁盘机的可靠性。</p>
+<ul>
+<li>镜像盘也称为拷贝盘，相当于一个不断进行备份操作的磁盘。</li>
+</ul>
+<img src="http://jayyy1.gitee.io/images/posts/BUAA/image-20200925165747113.png" alt="image-20200925165747113" style="zoom:67%;" />
+
+<ul>
+<li><p>优势：</p>
+<ul>
+<li>当原始数据繁忙时，可直接从镜像拷贝中读取数据，因此RAID 1可以<strong>提高读取性能</strong>。</li>
+<li>当一个磁盘失效时，系统可以自动切换到镜像磁盘上读写，而不需要重组失效的数据，提供了<strong>很高的数据安全性和可用性</strong>。</li>
+</ul>
+</li>
+<li><p>缺点：</p>
+<ul>
+<li>RAID 1的硬盘容量利用率只有50%，是所有RAID级别中最低的，因而<strong>单位成本也最高</strong>。</li>
+</ul>
+</li>
+</ul>
+<h3 id="RAID2：带海明码校验"><a href="#RAID2：带海明码校验" class="headerlink" title="RAID2：带海明码校验"></a>RAID2：带海明码校验</h3><p>RAID 2是采用<strong>海明码</strong>（Hamming Code）纠错冗余的磁盘阵列，将数据位交叉写入几个磁盘中，并利用几个磁盘驱动器进行按位的出错检查，冗余度比RAID1小。</p>
+<img src="http://jayyy1.gitee.io/images/posts/BUAA/image-20200925170525302.png" alt="image-20200925170525302" style="zoom:67%;" />
+
+<ul>
+<li>特点：<ul>
+<li><strong>并行存取</strong>，各个驱动器同步工作。</li>
+<li>使用海明编码来进行错误检测和纠正，<strong>数据传输率高</strong>。</li>
+<li><strong>需要多个磁盘来存放海明校验码信息</strong>，冗余磁盘数量与数据磁盘数量的对数成正比。</li>
+<li>这种阵列的数据读写操作涉及阵列中的每一个磁盘，影响小文件的传输率，因此它<strong>适合大量顺序数据访问</strong>。</li>
+<li>是一种在多磁盘易出错环境中的有效选择，并<strong>未被广泛应用</strong>，目前还没有商业化产品</li>
+</ul>
+</li>
+</ul>
+<h3 id="RAID3：带奇偶校验的并行传送"><a href="#RAID3：带奇偶校验的并行传送" class="headerlink" title="RAID3：带奇偶校验的并行传送"></a>RAID3：带奇偶校验的并行传送</h3><p>RAID 3采用奇偶校验冗余的磁盘阵列，阵列中只有一个<strong>共享校验盘</strong>，将数据按位交叉写到几个磁盘上，用一个校验盘检查数据错误，数据条带<strong>存储单位为字节</strong>。</p>
+<ul>
+<li>基本思想：<ul>
+<li>将磁盘分组，读写要访问组中所有盘，每组中有一个盘作为校验盘。</li>
+<li>简单理解：先将分布在各个数据盘上的一组数据加起来，将和存放在冗余盘上。一旦某一个盘出错，只要将冗余盘上的和减去所有正确盘上的数据，得到的差就是出错的盘上的数据。</li>
+</ul>
+</li>
+</ul>
+<img src="http://jayyy1.gitee.io/images/posts/BUAA/image-20200925171256055.png" alt="image-20200925171256055" style="zoom:67%;" />
+
+<ul>
+<li>特点<ul>
+<li>它同RAID 2非常类似，都是将数据条块化分布于不同的硬盘上，<strong>区别在于RAID 3使用简单的奇偶校验</strong>，并<strong>用单块磁盘存放奇偶校验信息</strong>。</li>
+<li>RAID 3对于<strong>大量的连续数据</strong>可提供很好的传输率，但对于随机数据来说，奇偶盘会成为写操作的瓶颈。</li>
+</ul>
+</li>
+</ul>
+<h3 id="RAID4：带奇偶校验码的独立磁盘结构"><a href="#RAID4：带奇偶校验码的独立磁盘结构" class="headerlink" title="RAID4：带奇偶校验码的独立磁盘结构"></a>RAID4：带奇偶校验码的独立磁盘结构</h3><p>RAID 4也是用一个校验盘，但和RAID 3不一样。RAID 4是<strong>以扇区作为数据分段</strong>，各磁盘相同位置的分段形成一个校验磁盘分段，放在校验盘。</p>
+<ul>
+<li>特点：<ul>
+<li><strong>冗余代价与RAID3相同</strong></li>
+<li><strong>访问数据的方法与RAID3不同</strong></li>
+<li>在RAID3中，一次磁盘访问将对磁盘阵列中的<strong>所有</strong>磁盘进行操作。</li>
+<li>RAID4出现的原因：希望使用<strong>较少</strong>的磁盘参与操作，以使磁盘阵列可以并行进行多个数据的磁盘操作</li>
+</ul>
+</li>
+</ul>
+<h3 id="RAID5：分布式奇偶校验的独立磁盘结构"><a href="#RAID5：分布式奇偶校验的独立磁盘结构" class="headerlink" title="RAID5：分布式奇偶校验的独立磁盘结构"></a>RAID5：分布式奇偶校验的独立磁盘结构</h3><p>RAID 5 避免了 RAID 4 的瓶颈，校验数据分布式存储，数据条带<strong>存储单位为块</strong>。</p>
+<p>RAID 5不单独指定的奇偶盘，而是在所有磁盘上交叉地存取数据及奇偶校验信息。在RAID 5上，读/写指针可同时对阵列设备进行操作，提供了更高的数据流量。</p>
+<img src="http://jayyy1.gitee.io/images/posts/BUAA/image-20200925172249451.png" alt="image-20200925172249451" style="zoom:67%;" />
+
+<ul>
+<li>特点<ul>
+<li>RAID 5更<strong>适合于小数据块和随机读写的数据</strong>。</li>
+<li>RAID 3与RAID 5相比，最主要的区别在于RAID 3每进行一次数据传输就需涉及到<strong>所有</strong>的阵列盘；而对于RAID 5来说，大部分数据传输只对<strong>一块磁盘</strong>操作，并可进行<strong>并行</strong>操作。</li>
+<li>在RAID 5中有“写损失”，即每一次写操作将产生四个实际的读/写操作，其中两次读旧的数据及奇偶信息，两次写新的数据及奇偶信息。</li>
+<li>当进行恢复时，如我们需要恢复图中的A0，这里就必须需要B0、C0、D0加0 parity才能计算并得出A0，进行数据恢复。所以当有两块盘坏掉的时候，整个RAID的数据失效。</li>
+</ul>
+</li>
+</ul>
+<h3 id="RAID6：带有两种分布存储的奇偶校验码的独立磁盘结构"><a href="#RAID6：带有两种分布存储的奇偶校验码的独立磁盘结构" class="headerlink" title="RAID6：带有两种分布存储的奇偶校验码的独立磁盘结构"></a>RAID6：带有两种分布存储的奇偶校验码的独立磁盘结构</h3><p>两个分布式存储的校验数据，数据条带存储单位为块。</p>
+<p>与RAID 5相比，RAID 6增加了第二个独立的奇偶校验信息块。两个独立的奇偶系统<strong>使用不同的算法</strong>，数据的<strong>可靠性非常</strong>高，即使两块磁盘同时失效也不会影响数据的使用。</p>
+<img src="http://jayyy1.gitee.io/images/posts/BUAA/image-20200925172451397.png" alt="image-20200925172451397" style="zoom:67%;" />
+
+<ul>
+<li>特点<ul>
+<li>RAID 6需要分配给奇偶校验信息更大的磁盘空间</li>
+<li>写入数据要访问1个数据盘和2个冗余盘，相对于RAID 5有更大的“写损失”，因此“写性能”非常差；</li>
+<li>可容忍双盘出错；</li>
+<li>存储开销是RAID5的两倍（多一个冗余盘）。</li>
+<li>较差的性能和复杂的实施方式使得RAID 6很少得到实际应用</li>
+</ul>
+</li>
+</ul>
+<h3 id="RAID-level-比较"><a href="#RAID-level-比较" class="headerlink" title="RAID level 比较"></a>RAID level 比较</h3><img src="http://jayyy1.gitee.io/images/posts/BUAA/image-20200925172551030.png" alt="image-20200925172551030" style="zoom:80%;" />
+
+
+
+<h3 id="RAID-小结"><a href="#RAID-小结" class="headerlink" title="RAID 小结"></a>RAID 小结</h3><ul>
+<li><p>条带化：一个字节块可能存放在多个数据盘上</p>
+<ul>
+<li>优点：并行存取，性能好，磁盘负载均衡</li>
+<li>缺点：可靠性、不同IO请求需要排队</li>
+</ul>
+</li>
+<li><p>镜像：数据完全拷贝一份</p>
+<ul>
+<li>优点：可靠性</li>
+<li>缺点：存储开销</li>
+</ul>
+</li>
+<li><p>校验：数据通过某种运算（异或）得出，用以检验该组数字的正确性</p>
+<ul>
+<li>优点：可靠性，快速恢复</li>
+<li>缺点：开销</li>
+</ul>
+</li>
+</ul>
+<h2 id="0x05-提高磁盘I-O速度"><a href="#0x05-提高磁盘I-O速度" class="headerlink" title="0x05 提高磁盘I/O速度"></a>0x05 提高磁盘I/O速度</h2><p>提高I/O速度的主要途径</p>
+<ul>
+<li>选择性能好的磁盘</li>
+<li>并行化</li>
+<li>采用适当的调度算法</li>
+<li>设置磁盘<strong>高速缓冲区</strong></li>
+</ul>
+<h3 id="1-磁盘高速缓存"><a href="#1-磁盘高速缓存" class="headerlink" title="1. 磁盘高速缓存"></a>1. 磁盘高速缓存</h3><p>这里所说的高速缓存，<strong>并非</strong>通常意义下载内存和CPU之间所增设的一个小容量高速存储器，而是指<strong>利用内存中的存储空间，暂存从磁盘中读出的一系列盘块中的信息</strong>。</p>
+<ul>
+<li>即这里的高速缓存是<strong>一组在逻辑上属于磁盘，而在物理上是驻留在内存中的盘块</strong>。</li>
+</ul>
+<h4 id="1）磁盘高速缓存的形式"><a href="#1）磁盘高速缓存的形式" class="headerlink" title="1）磁盘高速缓存的形式"></a>1）磁盘高速缓存的形式</h4><p>高速缓存在内存中可分为两种形式：</p>
+<ul>
+<li><strong>独立缓存</strong>：在内存中开辟一个单独的存储空间作为磁盘高速缓存，其<strong>大小固定</strong>。</li>
+<li><strong>虚拟内存为缓存</strong>：把所有未利用的内存空间变为一个缓冲池，供请求分页系统和磁盘I/O共享，<strong>大小不固定</strong>。</li>
+</ul>
+<h4 id="2）数据交付"><a href="#2）数据交付" class="headerlink" title="2）数据交付"></a>2）数据交付</h4><p>数据交付（data delivery）是指<u>将磁盘高速缓冲中的数据传送给<strong>请求者进程</strong></u>。</p>
+<p>主要有以下两种形式：</p>
+<ul>
+<li><strong>直接交付</strong>：直接将高速缓存中的数据<strong>copy</strong>到请求者进程的内存工作区中。</li>
+<li><strong>指针交付</strong>：只将指向高速缓存中某区域的<strong>指针</strong>，交付给请求者进程。</li>
+</ul>
+<h4 id="3）置换算法"><a href="#3）置换算法" class="headerlink" title="3）置换算法"></a>3）置换算法</h4><p>LRU</p>
+<h4 id="4）周期性写回"><a href="#4）周期性写回" class="headerlink" title="4）周期性写回"></a>4）周期性写回</h4><p>周期性地将disk cache中被修改过的内容写回磁盘。</p>
+<h3 id="2-提高磁盘I-O速度的其他方法"><a href="#2-提高磁盘I-O速度的其他方法" class="headerlink" title="2. 提高磁盘I/O速度的其他方法"></a>2. 提高磁盘I/O速度的其他方法</h3><h4 id="1）预读（Read-Ahead）"><a href="#1）预读（Read-Ahead）" class="headerlink" title="1）预读（Read-Ahead）"></a>1）预读（Read-Ahead）</h4><p>顺序访问时，常采用<strong>提前读</strong>入下一块到缓冲区中。</p>
+<h4 id="2）延迟写"><a href="#2）延迟写" class="headerlink" title="2）延迟写"></a>2）延迟写</h4><p>将本应立即写回磁盘的数据挂到空闲缓冲区的队列的末尾，直到该数据块移到链头时才将其写回磁盘，再作为空闲区分配出去（可靠性？）</p>
+<h4 id="3）虚拟盘（virtual-disk）"><a href="#3）虚拟盘（virtual-disk）" class="headerlink" title="3）虚拟盘（virtual disk）"></a>3）虚拟盘（virtual disk）</h4><p>利用<strong>内存空间去</strong>仿真磁盘（RAM盘）</p>
+<ul>
+<li>Vitual disk 与disk cache的区别是：<ul>
+<li>Vitual disk的存放的内容由用户完全控制</li>
+<li>Disk cache中的内容完全是由操作系统控制</li>
+</ul>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Jay</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://jay1zhang.github.io/2020/12/31/BUAA/Operating%20System/%E3%80%8C%E7%B3%BB%E7%BB%9F%E3%80%8D04-%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86/">http://jay1zhang.github.io/2020/12/31/BUAA/Operating%20System/%E3%80%8C%E7%B3%BB%E7%BB%9F%E3%80%8D04-%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/961/">961</a></div><div class="post_share"><div class="social-share" data-image="http://jayyy1.gitee.io/images/pictures/cartoons/037.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/12/31/BUAA/Operating%20System/%E3%80%8C%E7%B3%BB%E7%BB%9F%E3%80%8D05-%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/"><img class="prev-cover" src="http://jayyy1.gitee.io/images/pictures/cartoons/032.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">「系统」05-文件管理</div></div></a></div><div class="next-post pull-right"><a href="/2020/12/31/BUAA/Operating%20System/%E3%80%8C%E7%B3%BB%E7%BB%9F%E3%80%8D03-%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86/"><img class="next-cover" src="http://jayyy1.gitee.io/images/pictures/cartoons/031.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">「系统」03-设备管理</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2020/12/31/BUAA/Computer Network/「计网」05-传输层/" title="「计网」05-传输层"><img class="cover" src="http://jayyy1.gitee.io/images/pictures/cartoons/028.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-12-31</div><div class="title">「计网」05-传输层</div></div></a></div><div><a href="/2020/12/31/BUAA/Computer Network/「计网」07-IPv6协议/" title="「计网」07-IPv6协议"><img class="cover" src="http://jayyy1.gitee.io/images/pictures/cartoons/005.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-12-31</div><div class="title">「计网」07-IPv6协议</div></div></a></div><div><a href="/2020/12/31/BUAA/Computer Network/「计网」01-概述/" title="「计网」01-概述"><img class="cover" src="http://jayyy1.gitee.io/images/pictures/cartoons/025.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-12-31</div><div class="title">「计网」01-概述</div></div></a></div><div><a href="/2020/12/31/BUAA/Computer Network/「计网」02-物理层/" title="「计网」02-物理层"><img class="cover" src="http://jayyy1.gitee.io/images/pictures/cartoons/016.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-12-31</div><div class="title">「计网」02-物理层</div></div></a></div><div><a href="/2020/12/31/BUAA/Operating System/「系统」00-概述/" title="「系统」00-概述"><img class="cover" src="http://jayyy1.gitee.io/images/pictures/cartoons/003.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-12-31</div><div class="title">「系统」00-概述</div></div></a></div><div><a href="/2020/12/31/BUAA/Computer Network/「计网」03-数据链路层/" title="「计网」03-数据链路层"><img class="cover" src="http://jayyy1.gitee.io/images/pictures/cartoons/011.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-12-31</div><div class="title">「计网」03-数据链路层</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Chapter4-%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86"><span class="toc-text">Chapter4 - 磁盘管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00-%E6%A6%82%E8%BF%B0"><span class="toc-text">0x00 概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-%E7%A3%81%E7%9B%98%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-text">0x01 磁盘工作原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%A3%81%E7%9B%98%E7%BB%93%E6%9E%84"><span class="toc-text">1. 磁盘结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%A3%81%E7%9B%98%E7%BC%BA%E9%99%B7"><span class="toc-text">2. 磁盘缺陷</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%A3%81%E7%9B%98%E7%9A%84%E7%BB%84%E7%BB%87"><span class="toc-text">3. 磁盘的组织</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%EF%BC%89%E4%B8%BB%E5%BC%95%E5%AF%BC%E6%89%87%E5%8C%BA-MBR"><span class="toc-text">1）主引导扇区(MBR)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%EF%BC%89%E7%A1%AC%E7%9B%98%E5%88%86%E5%8C%BA%E8%A1%A8-DPT"><span class="toc-text">2）硬盘分区表(DPT)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3%EF%BC%89%E5%88%86%E5%8C%BA%E5%BC%95%E5%AF%BC%E6%89%87%E5%8C%BA-DBR"><span class="toc-text">3）分区引导扇区(DBR)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4%EF%BC%89%E7%A3%81%E7%9B%98%E5%9C%B0%E5%9D%80%E4%B8%8E%E5%9D%97%E5%8F%B7%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="toc-text">4）磁盘地址与块号的转换</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%A3%81%E7%9B%98%E8%AE%BF%E9%97%AE%E6%97%B6%E9%97%B4"><span class="toc-text">4. 磁盘访问时间</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-%E7%A3%81%E7%9B%98%E8%B0%83%E5%BA%A6%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="toc-text">0x02 磁盘调度（重点）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%A3%81%E7%9B%98%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95"><span class="toc-text">1. 磁盘调度算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%EF%BC%89%E5%85%88%E6%9D%A5%E5%85%88%E6%9C%8D%E5%8A%A1%E7%AE%97%E6%B3%95%EF%BC%88FCFS%EF%BC%89"><span class="toc-text">1）先来先服务算法（FCFS）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%EF%BC%89%E6%9C%80%E7%9F%AD%E5%AF%BB%E9%81%93%E6%97%B6%E9%97%B4%E4%BC%98%E5%85%88%E7%AE%97%E6%B3%95%EF%BC%88SSTF%EF%BC%8CShortest-Seek-Time-First%EF%BC%89"><span class="toc-text">2）最短寻道时间优先算法（SSTF，Shortest Seek Time First）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3%EF%BC%89%E6%89%AB%E6%8F%8F%E7%AE%97%E6%B3%95%EF%BC%88SCAN%EF%BC%89"><span class="toc-text">3）扫描算法（SCAN）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4%EF%BC%89%E5%BE%AA%E7%8E%AF%E6%89%AB%E6%8F%8F%E7%AE%97%E6%B3%95%EF%BC%88CSCAN%EF%BC%89"><span class="toc-text">4）循环扫描算法（CSCAN）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5%EF%BC%89LOOK-%E5%92%8C-C-LOOK"><span class="toc-text">5）LOOK 和 C-LOOK</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%AE%97%E6%B3%95%E6%AF%94%E8%BE%83"><span class="toc-text">2. 算法比较</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4%E7%AE%A1%E7%90%86"><span class="toc-text">0x03 磁盘空间管理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%EF%BC%89%E4%BD%8D%E5%9B%BE%E6%B3%95"><span class="toc-text">1）位图法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%EF%BC%89%E7%A9%BA%E9%97%B2%E8%A1%A8%E6%B3%95"><span class="toc-text">2）空闲表法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3%EF%BC%89%E7%A9%BA%E9%97%B2%E9%93%BE%E8%A1%A8%E6%B3%95"><span class="toc-text">3）空闲链表法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4%EF%BC%89%E6%88%90%E7%BB%84%E9%93%BE%E6%8E%A5%E6%B3%95"><span class="toc-text">4）成组链接法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x04-%E5%BB%89%E4%BB%B7%E5%86%97%E4%BD%99%E7%A3%81%E7%9B%98%E9%98%B5%E5%88%97%EF%BC%88RAID%EF%BC%89"><span class="toc-text">0x04 廉价冗余磁盘阵列（RAID）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#RAID0%EF%BC%9A%E6%97%A0%E5%B7%AE%E9%94%99%E6%8E%A7%E5%88%B6%E7%9A%84%E5%B8%A6%E5%8C%BA%E7%BB%84"><span class="toc-text">RAID0：无差错控制的带区组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RAID1%EF%BC%9A%E9%95%9C%E5%83%8F%E7%BB%93%E6%9E%84"><span class="toc-text">RAID1：镜像结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RAID2%EF%BC%9A%E5%B8%A6%E6%B5%B7%E6%98%8E%E7%A0%81%E6%A0%A1%E9%AA%8C"><span class="toc-text">RAID2：带海明码校验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RAID3%EF%BC%9A%E5%B8%A6%E5%A5%87%E5%81%B6%E6%A0%A1%E9%AA%8C%E7%9A%84%E5%B9%B6%E8%A1%8C%E4%BC%A0%E9%80%81"><span class="toc-text">RAID3：带奇偶校验的并行传送</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RAID4%EF%BC%9A%E5%B8%A6%E5%A5%87%E5%81%B6%E6%A0%A1%E9%AA%8C%E7%A0%81%E7%9A%84%E7%8B%AC%E7%AB%8B%E7%A3%81%E7%9B%98%E7%BB%93%E6%9E%84"><span class="toc-text">RAID4：带奇偶校验码的独立磁盘结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RAID5%EF%BC%9A%E5%88%86%E5%B8%83%E5%BC%8F%E5%A5%87%E5%81%B6%E6%A0%A1%E9%AA%8C%E7%9A%84%E7%8B%AC%E7%AB%8B%E7%A3%81%E7%9B%98%E7%BB%93%E6%9E%84"><span class="toc-text">RAID5：分布式奇偶校验的独立磁盘结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RAID6%EF%BC%9A%E5%B8%A6%E6%9C%89%E4%B8%A4%E7%A7%8D%E5%88%86%E5%B8%83%E5%AD%98%E5%82%A8%E7%9A%84%E5%A5%87%E5%81%B6%E6%A0%A1%E9%AA%8C%E7%A0%81%E7%9A%84%E7%8B%AC%E7%AB%8B%E7%A3%81%E7%9B%98%E7%BB%93%E6%9E%84"><span class="toc-text">RAID6：带有两种分布存储的奇偶校验码的独立磁盘结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RAID-level-%E6%AF%94%E8%BE%83"><span class="toc-text">RAID level 比较</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RAID-%E5%B0%8F%E7%BB%93"><span class="toc-text">RAID 小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x05-%E6%8F%90%E9%AB%98%E7%A3%81%E7%9B%98I-O%E9%80%9F%E5%BA%A6"><span class="toc-text">0x05 提高磁盘I&#x2F;O速度</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%A3%81%E7%9B%98%E9%AB%98%E9%80%9F%E7%BC%93%E5%AD%98"><span class="toc-text">1. 磁盘高速缓存</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%EF%BC%89%E7%A3%81%E7%9B%98%E9%AB%98%E9%80%9F%E7%BC%93%E5%AD%98%E7%9A%84%E5%BD%A2%E5%BC%8F"><span class="toc-text">1）磁盘高速缓存的形式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%EF%BC%89%E6%95%B0%E6%8D%AE%E4%BA%A4%E4%BB%98"><span class="toc-text">2）数据交付</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3%EF%BC%89%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95"><span class="toc-text">3）置换算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4%EF%BC%89%E5%91%A8%E6%9C%9F%E6%80%A7%E5%86%99%E5%9B%9E"><span class="toc-text">4）周期性写回</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%8F%90%E9%AB%98%E7%A3%81%E7%9B%98I-O%E9%80%9F%E5%BA%A6%E7%9A%84%E5%85%B6%E4%BB%96%E6%96%B9%E6%B3%95"><span class="toc-text">2. 提高磁盘I&#x2F;O速度的其他方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%EF%BC%89%E9%A2%84%E8%AF%BB%EF%BC%88Read-Ahead%EF%BC%89"><span class="toc-text">1）预读（Read-Ahead）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%EF%BC%89%E5%BB%B6%E8%BF%9F%E5%86%99"><span class="toc-text">2）延迟写</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3%EF%BC%89%E8%99%9A%E6%8B%9F%E7%9B%98%EF%BC%88virtual-disk%EF%BC%89"><span class="toc-text">3）虚拟盘（virtual disk）</span></a></li></ol></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url(http://jayyy1.gitee.io/images/pictures/cartoons/012.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Jay</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><div class="search-dialog__title" id="algolia-search-title">Algolia</div><div id="algolia-input-panel"><div id="algolia-search-input"></div></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>
