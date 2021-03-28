@@ -1,0 +1,418 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>「Shell」Linux Commander | J1z's Blog</title><meta name="keywords" content="Shell"><meta name="author" content="Jay"><meta name="copyright" content="Jay"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="vim1. 简介vim 是 Linux 操作系统中最通用的全屏幕文本编辑器，是 vi 的增强版（vi iMproved），与 vi 完全兼容，且扩充了很多功能。 vim 编辑器支持编辑模式和命令模式，编辑模式下可以完成文本的编辑功能，命令模式下可以完成对文件的操作命令，要正确使用 vim 编辑器就必须熟练掌握这两种模式的切换。  默认情况下，打开 vim 后自动进入命令模式。  从编辑模式切换到命">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「Shell」Linux Commander">
+<meta property="og:url" content="http://jay1zhang.github.io/2021/01/20/Computer%20Science/Linux/%E3%80%8CShell%E3%80%8DLinux%20Commander/index.html">
+<meta property="og:site_name" content="J1z&#39;s Blog">
+<meta property="og:description" content="vim1. 简介vim 是 Linux 操作系统中最通用的全屏幕文本编辑器，是 vi 的增强版（vi iMproved），与 vi 完全兼容，且扩充了很多功能。 vim 编辑器支持编辑模式和命令模式，编辑模式下可以完成文本的编辑功能，命令模式下可以完成对文件的操作命令，要正确使用 vim 编辑器就必须熟练掌握这两种模式的切换。  默认情况下，打开 vim 后自动进入命令模式。  从编辑模式切换到命">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://jayyy1.gitee.io/images/pictures/cartoons/031.jpg">
+<meta property="article:published_time" content="2021-01-20T08:29:37.000Z">
+<meta property="article:modified_time" content="2021-03-27T04:28:43.051Z">
+<meta property="article:author" content="Jay">
+<meta property="article:tag" content="Shell">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://jayyy1.gitee.io/images/pictures/cartoons/031.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://jay1zhang.github.io/2021/01/20/Computer%20Science/Linux/%E3%80%8CShell%E3%80%8DLinux%20Commander/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.5/dist/instantsearch.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.5/dist/instantsearch.min.js" defer></script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"WKEK6XV2V5","apiKey":"e093fbb9f29fdf5c7ddd56ec43e9ae05","indexName":"Jay","hits":{"per_page":10},"languages":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}.","hits_stats":"${hits} results found in ${time} ms"}},
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"Traditional Chinese Activated Manually","cht_to_chs":"Simplified Chinese Activated Manually","day_to_night":"Dark Mode Activated Manually","night_to_day":"Light Mode Activated Manually","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-03-27 12:28:43'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">40</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">13</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">10</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-heart"></i><span> Link</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(http://jayyy1.gitee.io/images/pictures/cartoons/031.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">J1z's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-heart"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">「Shell」Linux Commander</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-01-20T08:29:37.000Z" title="Created 2021-01-20 16:29:37">2021-01-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-03-27T04:28:43.051Z" title="Updated 2021-03-27 12:28:43">2021-03-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Computer-Science/">Computer Science</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Computer-Science/Linux/">Linux</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">4.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>15min</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="vim"><a href="#vim" class="headerlink" title="vim"></a>vim</h2><h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>vim 是 Linux 操作系统中最通用的全屏幕文本编辑器，是 vi 的增强版（vi iMproved），与 vi 完全兼容，且扩充了很多功能。</p>
+<p>vim 编辑器支持<strong>编辑模式和命令模式</strong>，编辑模式下可以完成文本的编辑功能，命令模式下可以完成对文件的操作命令，要正确使用 vim 编辑器就必须熟练掌握这两种模式的切换。</p>
+<ul>
+<li><p>默认情况下，打开 vim 后自动进入命令模式。</p>
+</li>
+<li><p>从编辑模式切换到命令模式使用 ESC 键，从命令模式切换到编辑模式使用 A、a、O、o、I、i 键。</p>
+</li>
+</ul>
+<h3 id="2-命令格式"><a href="#2-命令格式" class="headerlink" title="2. 命令格式"></a>2. 命令格式</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim [OPTIONS] [FILE...]</span><br><span class="line">vim [OPTIONS] -</span><br><span class="line">vim [OPTIONS] -t TAG</span><br><span class="line">vim [OPTIONS] -q [ERRORFILE]</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>字段说明：</p>
+<p><code>[FILE...]</code>表示一系列使用 vim 编辑的文件，使用<code>:next</code>命令可以向前切换所编辑的文件，使用<code>--</code>可以向后切换。这是 vim 常用启动格式；</p>
+<p><code>-</code>：表示待编辑的文件从标准输入读取；</p>
+<p><code>-t TAG</code>：要编辑的文件和光标的初始位置取决于一个标签，一种 goto 标签。标签在标签文件中查找，与标签关联的文件成为当前文件并执行关联的命令。主要用于 C 程序，在这种情况下 TAG 可以是函数名，其结果是包含该函数的文件成为当前文件，并且光标位于函数的开头。参见：<code>:help tag-commands</code>；</p>
+<p><code>-q [ERRORFILE]</code>：使用 quickFix 模式启动 vim，文件 ERRORFILE 将被读取并显示第一个错误。如果 ERRORFILE 省略，则默认为 AztecC.Err（Amiga 系统）或 errors.err（其它系统）。关于 quickFix 模式说明，可以使用<code>:help quickfix</code>查看。</p>
+</li>
+<li><p>[OPTIONS] 选项说明：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">+NUM</span><br><span class="line"> 打开文件时光标跳转到由 NUM 指定的行首</span><br><span class="line">+/PAT</span><br><span class="line"> 打开文件时光标跳转到匹配的模式字符串 PAT</span><br><span class="line">+, -c CMD</span><br><span class="line"> 在完成对第一个文件的读取后，执行给出的指令</span><br><span class="line">-b</span><br><span class="line"> 以二进制模式打开文件，用于编辑二进制文件和可执行文件</span><br><span class="line">-C</span><br><span class="line"> 以兼容模式运行 vim，使 vim 的表现更像 vi，即使存在 .vimrc 文件</span><br><span class="line">-d</span><br><span class="line"> 以 diff 模式打开文件，当多个文件编辑时，显示文件差异部分</span><br><span class="line">-e</span><br><span class="line"> 进入 Ex 模式，即进入冒号开头的末行模式。ex是Unix编辑器</span><br><span class="line">-E</span><br><span class="line"> 进入增强 Ex 模式，就像执行命令 exim</span><br><span class="line">-l</span><br><span class="line"> 使用 lisp 模式，打开 lisp 和 showmatch</span><br><span class="line">-m</span><br><span class="line"> 取消写文件功能，重设 write 选项。你仍然可以修改缓冲内容，但是不可以写入文件</span><br><span class="line">-M</span><br><span class="line"> 关闭修改功能</span><br><span class="line">-N</span><br><span class="line"> 非兼容模式运行 vim，这会使 vim 表现的更好，但是可能会存在与 vi 不兼容的情况，即使存在 .vimrc 文件</span><br><span class="line">-n</span><br><span class="line"> 不使用 swap file，这可能会导致在 vim 意外崩溃的情况下无法恢复未保存的内容</span><br><span class="line">-o [N]</span><br><span class="line"> 以上下排列方式同时打开 N 个 vim 窗口，如果未指定 N ，则为每一个文件单独打开一个窗口</span><br><span class="line">-O [N]</span><br><span class="line"> 以左右下排列方式同时打开 N 个 vim 窗口，如果未指定 N ，则为每一个文件单独打开一个窗口</span><br><span class="line">-R</span><br><span class="line"> 以只读方式打开文件</span><br><span class="line">-r</span><br><span class="line"> 列出 swap file</span><br><span class="line">-r FILE</span><br><span class="line"> 以指定的交换文件来恢复崩溃的编辑会话。交换文件名后缀为.swp</span><br><span class="line">-s</span><br><span class="line"> 安静模式，与 -e 选项结合使用</span><br><span class="line">-u VIMRC</span><br><span class="line"> 使用指定的 vimrc 文件中的命令来初始化 vim，所有其它的初始化操作将被跳过。可以给定“NONE”来跳过所有的初始化</span><br><span class="line">-U GVIMRC</span><br><span class="line"> 使用指定的 gvimrc 文件中的命令来初始化 GUI，所有其它的 GUI 初始化操作将被跳过。可以给定 “NONE” 来跳过所有的 GUI 初始化</span><br><span class="line">-V [N]</span><br><span class="line"> 以冗余模式执行 vim，打印 vim 读取了哪些配置文件 vimrc。可选的数字 N 表示冗余级别，数值越大级别越高，取值范围是 0~10，默认是 10</span><br><span class="line">-x</span><br><span class="line"> 写文件时进行加密，会提示输入加密密钥</span><br><span class="line">-h, --help</span><br><span class="line"> 显示帮助信息并退出</span><br><span class="line">--version</span><br><span class="line"> 显示版本信息并退出</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<h3 id="3-内置命令说明"><a href="#3-内置命令说明" class="headerlink" title="3. 内置命令说明"></a>3. 内置命令说明</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">Ctrl+u：向下滚动半屏</span><br><span class="line">Ctrl+d：向上滚动半屏</span><br><span class="line">Ctrl+f：向下滚动一屏</span><br><span class="line">Ctrl+b：向上滚动一屏</span><br><span class="line">Ctrl+e：向下滚动一行</span><br><span class="line">Ctrl+y：向上滚动一行</span><br><span class="line">Enter：回车向下滚动一行</span><br><span class="line">Esc：从编辑模式切换到命令模式</span><br><span class="line">ZZ：命令模式下保存当前文件所做的修改后退出 vim</span><br><span class="line">:[行号]：光标跳转到指定行的行首</span><br><span class="line">:$：光标跳转到最后一行的行首</span><br><span class="line">gg:跳转到首行;</span><br><span class="line">G:跳转到尾行</span><br><span class="line">Ctrl+g:显示总行数</span><br><span class="line">x, X：删除一个字符或选中的内容。当删除一个字符时，x 删除光标后的，X 删除光标前的。删除即剪切</span><br><span class="line">d：删除选中的文本，删除即剪切</span><br><span class="line">D：删除从当前光标到光标所在行尾的全部字符。删除即剪切</span><br><span class="line">dd：删除光标所在行的整行内容。删除即剪切</span><br><span class="line">ndd：删除当前行及其后n-1行，n为一个数字。删除即剪切</span><br><span class="line">y:复制选中的文本</span><br><span class="line">y0：复制光标前一个字符到行首的内容</span><br><span class="line"><span class="meta">y$</span><span class="bash">：复制光标后一个字符到行尾的内容</span></span><br><span class="line">yh：复制光标前的1个字符</span><br><span class="line">yl：复制光标后的1个字符</span><br><span class="line">nyh：复制光标前的n个字符，比如4yh复制光标前的4个字符</span><br><span class="line">nyl：复制光标后的n个字符，比如4yl复制光标后的4个字符</span><br><span class="line">yy：复制光标所在的当前行</span><br><span class="line">nyy：复制当前行以及其后n-1行，n为一个数字；</span><br><span class="line">p：小写p，粘贴文本操作，用于将缓存区的内容粘贴到当前光标所在位置的下方</span><br><span class="line">P：大写P，粘贴文本操作，用于将缓存区的内容粘贴到当前光标所在位置的上方；</span><br><span class="line">/[字符串]：向后搜索，支持正则表达式。用于从当前光标所在位置开始向文件尾部查找指定字符串的内容，查找的字符串会被加亮显示。键入字符 n 跳转到下一个，N 跳转到前一个</span><br><span class="line">?[字符串]：向前搜索，支持正则表达式。用于从当前光标所在位置开始向文件头部查找指定字符串的内容，查找的字符串会被加亮显示。键入字符 n 跳转到下一个，N 跳转到前一个</span><br><span class="line">:a,bs/F/T：替换文本操作，将a到b行之间第一个F换成T字符串。其中，&quot;:s/&quot;表示进行替换操作。不指定a和b，则默认为当前行；如果b为$,表示替换到末行；如果是a,b为%，即:%s/F/T,表示从第一行替换至末行</span><br><span class="line">:a,bs/F/T/g:替换文本操作，替换第a行到b行，每一行所有F为T。a,b的取值规则同上一条;</span><br><span class="line">a：在当前字符后添加文本</span><br><span class="line">A：在当前行末添加文本</span><br><span class="line">i：在当前字符前插入文本</span><br><span class="line">I：在当前行首插入文本</span><br><span class="line">no：在当前行后面插入n个空行，n为具体的数值</span><br><span class="line">nO：在当前行前面插入n个空行，n为具体的数值</span><br><span class="line">:wq：执行存盘退出操作</span><br><span class="line">:w：执行存盘操作</span><br><span class="line">:w!：执行强制存盘操作</span><br><span class="line">:q：执行退出操作</span><br><span class="line">:q!：执行强制退出操作</span><br><span class="line">:e [文件名]：打开并编辑指定名称的文件</span><br><span class="line">:n：如果同时打开多个文件，则继续编辑下一个文件</span><br><span class="line">:f：显示当前的文件名、文件总行数、光标所在行号占总行数的比例</span><br><span class="line">:set number：在最左端显示行号</span><br><span class="line">:set nonumber：在最左端不显示行号</span><br><span class="line">jkhl或方向键：光标移动快捷键，分别为上下左右</span><br><span class="line">u：撤销</span><br><span class="line">ctrl+r:反向撤销</span><br><span class="line">v+移动光标：使用v进行选择模式，移动光标可选择文本</span><br><span class="line">w：word，右移一个单词，光标停留在单词首部</span><br><span class="line">e：end，右移一个单词，光标停留单词的尾部</span><br><span class="line">b：back，左移一个单词，光标停留在单词首部</span><br><span class="line">^ 或 (:移至行头</span><br><span class="line"><span class="meta">$</span><span class="bash"> 或 ):移至行尾</span></span><br><span class="line">gd：高亮显示光标所在的单词</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="4-vim-需知"><a href="#4-vim-需知" class="headerlink" title="4. vim 需知"></a>4. vim 需知</h3><h4 id="4-1-vim-的四大模式"><a href="#4-1-vim-的四大模式" class="headerlink" title="4.1 vim 的四大模式"></a>4.1 vim 的四大模式</h4><p>众所周知，vim 里面最具特色的东西就是它可以切换模式，用户可以通过按 ESC 在各个模式之间进行切换。</p>
+<p>关于 vim 的模式说明，可以打开 vim 后键入 <code>:help mode</code> 来查看。</p>
+<ul>
+<li><p><strong>正常模式 （normal mode）</strong></p>
+<p>不管用户处于何种模式，只要按一下 ESC 键，即可进入正常模式。启动 vim 命令默认情况下进入正常模式。</p>
+<p>在正常模式下，用户可以输入各种合法的 vim 内置命令，用于管理自己的文档。需注意的是，所输入的命令并不在屏幕上显示出来。</p>
+</li>
+<li><p><strong>可视模式（visual mode）</strong></p>
+<p>可视模式简单来说就是选中一块编辑区域，然后在上面执行一些操作，比如删除，替换，改变大小写等。</p>
+<p>在正常模式按下 v（逐个字符选择文本）、 V（逐行选择文本）、Ctrl+v（按照块的方式选择文本），可以进入可视模式。</p>
+<p>可视模式中的操作有点像拿鼠标进行操作，选择文本的时候有一种鼠标选择的即视感，有时候会很方便。</p>
+</li>
+<li><p><strong>插入模式 （insert mode）</strong></p>
+<p>在正常模式下输入插入命令 i（insert）、附加命令 a （append）、打开命令 o（open）、修改命令 c（change）、取代命令 r（replace）或替换命令 s（substitute）都可以进入插入模式。</p>
+<p>在该模式下，用户输入的任何字符都被 Vim 当做文件内容保存起来，并将其显示在屏幕上。</p>
+</li>
+<li><p><strong>命令行模式 （command-line mode）</strong></p>
+<p>命令行模式又称为 ex 模式。ex 是 EXtended 的简称，是 Unix 系统上的纯文本编辑器。ex 命令可启动 vim，执行 ex 命令，并键入 visual 就可以进入 vim 的正常模式。</p>
+<p>在正常模式下，<strong>用户按冒号即可进入命令行模式</strong>，此时 vim 会在显示窗口的最后一行显示一个冒号作为命令行模式的提示符，等待用户输入命令。命令执行完后，vim 自动回到正常模式。</p>
+</li>
+</ul>
+<h4 id="4-2-vim-相关编码选项"><a href="#4-2-vim-相关编码选项" class="headerlink" title="4.2 vim 相关编码选项"></a>4.2 vim 相关编码选项</h4><p>文件的编码和显示是一个令人头痛的东西，vim编码配置涉及4个选项，分别是encoding 、fileencoding、fileencodings 和 termencoding，四者对应的简写分别为enc、fenc、fencs和tenc。</p>
+<ol>
+<li><p>encoding<br>encoding 是vim内部使用编码。vim运行时，其菜单、标签、以及各个缓冲区统一使用encoding作为字符编码。</p>
+</li>
+<li><p>fileencoding<br>fileencoding 为文件采用的编码方式。使用vim打开文件后，可以使用末行命令<code>:set fenc=utf-8</code>将文件编码方式更改为UTF-8，注意，前提是vim打开文件时已经正确识别出文件编码，即未出现乱码。</p>
+</li>
+<li><p>fileencodings<br>fileencodings 用于vim在打开文件的时候进行解码的猜测列表。文件编码没有百分百正确的判断方法，所以vim只能猜测文件编码。~/.vimrc里面 fileencodings 的设置一般为</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set fileencodings=utf-8,gb18030,latin1</span><br></pre></td></tr></table></figure></li>
+<li><p>termencoding<br>终端所使用的文本编码。这个选项的值用于告诉VIM终端使用了哪种文本编码用于文本输入和显示。如果该值为空，那么它被设置为encoding的值。</p>
+</li>
+</ol>
+<h4 id="4-3-vim-读写文件时编码转换过程"><a href="#4-3-vim-读写文件时编码转换过程" class="headerlink" title="4.3 vim 读写文件时编码转换过程"></a>4.3 vim 读写文件时编码转换过程</h4><p><strong>（1）读文件</strong><br>vim打开文件时，需要将磁盘文件内容载入缓存，并将缓存中的字符转为换终端编码，通过网络传输的方式，传输到终端进行显示。两个转换环节，有一个出错都会出现乱码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fileencoding -&gt; encoding -&gt; termencoding</span><br></pre></td></tr></table></figure>
+<p><strong>（2）写文件</strong><br>通过终端编辑文件时，字符编码转换过程是vim读文件的逆过程。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">termencoding -&gt; encoding  -&gt; fileencoding </span><br></pre></td></tr></table></figure>
+<p>注意：使用vim读写文件时为避免出现乱码，至关重要的一点就是终端，比如SecureCRT或XShell的编码设置要与vim的termencoding设置相同，如果不同还是还是会出现乱码，尽管vim已经采用正确的编码格式解析了文件。比如将XShell设置为UTF-8。</p>
+<img src="https://mmbiz.qpic.cn/mmbiz_png/9aPYe0E1fb3xNuAhPT7RdcP5ibAxMHQJGTVv3nkBou6cSRtEWCJBexAoPw6Bx2wJquGlNln006h0AsWcUlw2xwg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:85%;" />
+
+
+
+<h3 id="5-vim-常见用法"><a href="#5-vim-常见用法" class="headerlink" title="5.vim 常见用法"></a>5.vim 常见用法</h3><p><strong>（1）vim 查看文件编码</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">:set fileencoding</span><br><span class="line">或者简写</span><br><span class="line">:set fenc</span><br></pre></td></tr></table></figure>
+<p>即可显示文件编码格式。</p>
+<blockquote>
+<p>这个命令有致命的缺点，原因是<strong>只有正常显示文件内容时，该命令显示的文件编码格式才是文件本身的编码格式。</strong>因为该命令显示的编码格式并不是文件本身的编码格式，而是当前打开该文件所使用的编码格式。因此，这个命令在网上的说明大都是不准确的，特此说明。</p>
+</blockquote>
+<p><strong>（2）修改编码类型</strong></p>
+<ul>
+<li><p>使用vim修改：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">:set fileencoding=gbk</span><br><span class="line"><span class="meta">#</span><span class="bash">或者</span></span><br><span class="line">:set fenc=gbk</span><br></pre></td></tr></table></figure></li>
+<li><p>使用iconv来修改文件编码：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">iconv -f encoding -t encoding inputfile</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">比如将一个GBK编码的文件转换成UTF-8编码</span></span><br><span class="line">iconv -f GBK -t UTF-8 file1 -o file2UTF-8</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>iconv的参数说明：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-f, --from-code=名称，原始文本编码</span><br><span class="line">-t, --to-code=名称，输出编码</span><br><span class="line">-l, --list 列举所有已知的字符集</span><br><span class="line">-c 从输出中忽略无效的字符</span><br><span class="line">-o, --output=FILE，输出文件</span><br><span class="line">-s, --silent，关闭警告</span><br><span class="line">--verbose，打印进度信息</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<p><strong>（3）vim 指定编码类型浏览文件</strong><br>如果知道了文件的编码类型，可显示指定编码类型来解析文件，而不用vim去猜测文件的编码类型，事实上猜测的往往是错误。</p>
+<p>命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim file_name -c &quot;e ++enc&#x3D;utf-8&quot;</span><br></pre></td></tr></table></figure>
+<p>或者在使用 vim 打开文件之后，在末行模式使用如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:e ++enc&#x3D;utf-8</span><br></pre></td></tr></table></figure>
+<p><strong>（4）vim 新增空白行</strong><br>新增一行空白，在命令行模式下输入 o。如果想添加三行的话，键入 3o ，如果想添加 n 行则键入 n 个 o。如果键入 3o 后立即退出插入模式的话，就可以添加三个空白行。如果输入一些内容再退出，可以添加三行相同的内容。</p>
+<p>如果想在每一行执行相同的命令，在 vim 里可以用 :g 实现。一般的语法是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:g&#x2F;pattern&#x2F;cmd</span><br></pre></td></tr></table></figure>
+<p>它表示在匹配 /pattern/ 这个正则表达式的行上执行 cmd 命令（也称冒号命令）。而 /^/ 这个表达式，用于匹配行首。因为任何一行都有行首，你的要求就很容易实现了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:g&#x2F;^&#x2F;norm 3o</span><br></pre></td></tr></table></figure>
+<p>norm这个命令的意思是，把后面的参数看成是在普通模式下的按键，即命令模式下的按键。</p>
+<p><strong>（5）vim 高亮显示选中的单词</strong><br>将光标移到需要高亮显示的单词上，在命令模式下输入gd，那么就可以将当前的单词在当前文本中全部高亮显示，如下图所示，高亮显示dwBeInvitedUinLen。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/9aPYe0E1fb3xNuAhPT7RdcP5ibAxMHQJGAS1gjZxQKA8zypwI565Ltiakeh7o18PRpuZPNHncZC1yHgNpgKe10Iw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p><strong>（6）vim 输入特殊字符</strong><br>有三种方法，第一种是使用字符编码，第二种是使用二合字母（digraph），三是使用快捷键（Ctrl+字母）。</p>
+<ul>
+<li><p><strong>使用字符编码：</strong><br>vim可以用字符编码插入任意字符，使用此功能可以方便地输入键盘上找不到的字符。使用步骤如下：<br>（1）编辑模式下按下Ctrl+v；<br>（2）如果是ASCII字符，则输入三位十进制ASCII码值，不足三位，前补0。比如输入大写字母A，则输入065；如果是Unicode字符，则输入“u+四位十六进制码值”。比如输入大写字母A，则输入u0041。</p>
+<p>更多详情内容可参见vim的帮助文档，末行模式输入：<code>h i_ctrl-v_digit</code>。</p>
+</li>
+<li><p><strong>使用二合字母（digraph）：</strong><br>二合字母顾名思义，使用两个字母的组合来标识特殊字符。使用步骤如下：<br>（1）编辑模式下按下Ctrl+k；<br>（2）输入特殊字符对应的二合字母。可以使用<code>:dig</code>或<code>:h digraph-table</code>查看对应二合字母。比如回车符（Carriage Return） 的二合字母是CR。</p>
+</li>
+<li><p><strong>Ctrl+字母：</strong><br>在vim中，使用<code>:set list</code>显示所有字符时，经常会看到有<code>^I、^M</code>等符号，代表的字符可以使用<code>:h digraph-table</code>查看，特殊字符列表如下：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/9aPYe0E1fb3xNuAhPT7RdcP5ibAxMHQJGrGJBfmMjsclKialoaH2FGfP4Oz4zu13sYrzpYaoib2bps0TqAQZicQghw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p>在vim的编辑模式下，可使用“Ctrl+字母”进行输入，例如使用”Ctrl+i”或”Ctrl+I”可以输入字符<code>^I</code>（Tab），使用”Ctrl+m”或”Ctrl+M”可以输入字符<code>^M</code>（回车）。</p>
+</li>
+</ul>
+<p><strong>（7）vim其它常见操作</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">显示行号</span></span><br><span class="line">:set number</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">取消行号</span></span><br><span class="line">:set nonu</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">取消高亮显示查找后的字符串</span></span><br><span class="line">:nohl</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">显示换行符</span></span><br><span class="line">:set list</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">不显示换行符</span> </span><br><span class="line">:set nolist </span><br></pre></td></tr></table></figure>
+
+
+<h2 id="rename"><a href="#rename" class="headerlink" title="rename"></a>rename</h2><h3 id="1-简介-1"><a href="#1-简介-1" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>功能类似于 <code>mv</code> ，可实现文件或者目录的重命名，但 <code>mv</code> 不能批量处理，而 <code>rename</code> 可以。</p>
+<h3 id="2-命令格式-1"><a href="#2-命令格式-1" class="headerlink" title="2. 命令格式"></a>2. 命令格式</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rename [OPTIONS] EXPRESSION REPLACEMENT FILE...</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>字段说明：</p>
+<ul>
+<li>EXPRESSION：原字符串，即文件名需要替换的字符串；</li>
+<li>REPLACEMENT：目标字符串，将文件名中含有的元字符替换成目标字符串；</li>
+<li>FILE…：指定要改变文件名的文件列表</li>
+</ul>
+</li>
+<li><p><code>rename</code> 支持的通配符：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?    可替代单个字符</span><br><span class="line">*    可替代多个字符</span><br><span class="line">[charset] 可替代charset集中的任意单个字符</span><br></pre></td></tr></table></figure></li>
+<li><p>选项说明：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-s, --symlink</span><br><span class="line"> 不要重命名符号链接，而是重命名它的目标</span><br><span class="line">-v, --verbose</span><br><span class="line"> 以冗余模式运行，显示哪些文件已被重命名</span><br><span class="line">-o, --no-overwrite</span><br><span class="line"> 不要覆盖现有文件</span><br><span class="line">-i, --interactive</span><br><span class="line"> 更名前询问是否确定</span><br><span class="line">-h, --help</span><br><span class="line"> 显示帮助信息并退出</span><br><span class="line">-V, --version</span><br><span class="line"> 显示版本信息</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<h3 id="3-示例"><a href="#3-示例" class="headerlink" title="3. 示例"></a>3. 示例</h3><p>（1）重命名文件 lvlv 为 lala。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rename v a lv??</span><br></pre></td></tr></table></figure>
+<p>（2）将当前目录下的所有文件的后缀名由 .html 改为 .php。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rename .html .php *</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="tee"><a href="#tee" class="headerlink" title="tee"></a>tee</h2><h3 id="1-简介-2"><a href="#1-简介-2" class="headerlink" title="1. 简介"></a>1. 简介</h3><p>tee 命令从标准输入读取数据后，将数据重定向到给定的文件和标准输出。给定的文件可以有多个。</p>
+<p>因为 tee 意为字母 T，数据从左边（标准输入）流入，从右边（标准输出）和下面（文件）分流输出，字母 T 的形状很形象地说明了数据的流向，故将该命令命名为 tee。</p>
+<h4 id="2-命令格式-2"><a href="#2-命令格式-2" class="headerlink" title="2. 命令格式"></a>2. 命令格式</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tee [OPTION]... [FILE]...</span><br></pre></td></tr></table></figure>
+<ul>
+<li>选项说明</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-a, --append</span><br><span class="line"> 向文件中重定向时使用追加模式</span><br><span class="line">-i, --ignore-interrupts</span><br><span class="line"> 忽略中断（interrupt）信号</span><br><span class="line">--help</span><br><span class="line"> 显示帮助信息并退出</span><br><span class="line">--version</span><br><span class="line"> 显示版本信息并退出</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="3-示例-1"><a href="#3-示例-1" class="headerlink" title="3. 示例"></a>3. 示例</h3><p>（1）标准错误输出和标准输出同时输出到屏幕和指定文件 file1 与 file2。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make 2&gt;&amp;1 | tee file1 file2</span><br></pre></td></tr></table></figure>
+<ul>
+<li>2&gt;&amp;1 表示将标准错误输出重定向到标准输出；</li>
+<li>tee 表示将命令结果同时输出到屏幕和文件。</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Jay</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://jay1zhang.github.io/2021/01/20/Computer%20Science/Linux/%E3%80%8CShell%E3%80%8DLinux%20Commander/">http://jay1zhang.github.io/2021/01/20/Computer%20Science/Linux/%E3%80%8CShell%E3%80%8DLinux%20Commander/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Shell/">Shell</a></div><div class="post_share"><div class="social-share" data-image="http://jayyy1.gitee.io/images/pictures/cartoons/031.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/01/22/Computer%20Science/Algorithm/%E3%80%8CLeetCode%E9%A2%98%E8%A7%A3%E3%80%8D%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%93%E9%A2%98/"><img class="prev-cover" src="http://jayyy1.gitee.io/images/pictures/cartoons/008.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">「LeetCode题解」算法设计专题</div></div></a></div><div class="next-post pull-right"><a href="/2021/01/19/Tricks/%E3%80%8CConda%E3%80%8DLinux%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BD%BF%E7%94%A8conda%E5%AE%89%E8%A3%85pytorch/"><img class="next-cover" src="http://jayyy1.gitee.io/images/pictures/cartoons/012.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">「Conda」Linux服务器使用conda安装pytorch</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2021/01/16/Computer Science/Linux/「Shell」一键build：zip2jar/" title="「Shell」一键build：*.zip -> *.jar"><img class="cover" src="http://jayyy1.gitee.io/images/pictures/cartoons/035.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-16</div><div class="title">「Shell」一键build：*.zip -> *.jar</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#vim"><span class="toc-text">vim</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%AE%80%E4%BB%8B"><span class="toc-text">1. 简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%91%BD%E4%BB%A4%E6%A0%BC%E5%BC%8F"><span class="toc-text">2. 命令格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%86%85%E7%BD%AE%E5%91%BD%E4%BB%A4%E8%AF%B4%E6%98%8E"><span class="toc-text">3. 内置命令说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-vim-%E9%9C%80%E7%9F%A5"><span class="toc-text">4. vim 需知</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-vim-%E7%9A%84%E5%9B%9B%E5%A4%A7%E6%A8%A1%E5%BC%8F"><span class="toc-text">4.1 vim 的四大模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-vim-%E7%9B%B8%E5%85%B3%E7%BC%96%E7%A0%81%E9%80%89%E9%A1%B9"><span class="toc-text">4.2 vim 相关编码选项</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-vim-%E8%AF%BB%E5%86%99%E6%96%87%E4%BB%B6%E6%97%B6%E7%BC%96%E7%A0%81%E8%BD%AC%E6%8D%A2%E8%BF%87%E7%A8%8B"><span class="toc-text">4.3 vim 读写文件时编码转换过程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-vim-%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95"><span class="toc-text">5.vim 常见用法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rename"><span class="toc-text">rename</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%AE%80%E4%BB%8B-1"><span class="toc-text">1. 简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%91%BD%E4%BB%A4%E6%A0%BC%E5%BC%8F-1"><span class="toc-text">2. 命令格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%A4%BA%E4%BE%8B"><span class="toc-text">3. 示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tee"><span class="toc-text">tee</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%AE%80%E4%BB%8B-2"><span class="toc-text">1. 简介</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%91%BD%E4%BB%A4%E6%A0%BC%E5%BC%8F-2"><span class="toc-text">2. 命令格式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%A4%BA%E4%BE%8B-1"><span class="toc-text">3. 示例</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url(http://jayyy1.gitee.io/images/pictures/cartoons/012.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Jay</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><div class="search-dialog__title" id="algolia-search-title">Algolia</div><div id="algolia-input-panel"><div id="algolia-search-input"></div></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: '',
+      appKey: '',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'en',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>
