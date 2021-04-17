@@ -1,0 +1,564 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>「深度学习」Attention? Attention! | J1z's Blog</title><meta name="keywords" content="Deep Learning"><meta name="author" content="Jay"><meta name="copyright" content="Jay"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="最近两年，注意力模型（Attention Model）被广泛使用在自然语言处理、图像识别及语音识别等各种不同类型的深度学习任务中，是深度学习技术中最值得关注与深入了解的核心技术之一。因此，了解注意力机制的工作原理对于希望在深度学习领域深耕的技术人员来说有很大的的必要。 0x00 Intro to AttentionAttention机制最早是针对序列模型提出的，出处是Bengio大神在2015年的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「深度学习」Attention? Attention!">
+<meta property="og:url" content="http://jay1zhang.github.io/2021/03/31/Computer%20Science/Deep%20Learning/%E3%80%8C%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%8DAttention%EF%BC%9FAttention%EF%BC%81/index.html">
+<meta property="og:site_name" content="J1z&#39;s Blog">
+<meta property="og:description" content="最近两年，注意力模型（Attention Model）被广泛使用在自然语言处理、图像识别及语音识别等各种不同类型的深度学习任务中，是深度学习技术中最值得关注与深入了解的核心技术之一。因此，了解注意力机制的工作原理对于希望在深度学习领域深耕的技术人员来说有很大的的必要。 0x00 Intro to AttentionAttention机制最早是针对序列模型提出的，出处是Bengio大神在2015年的">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://jayyy1.gitee.io/images/pictures/cartoons/024.jpg">
+<meta property="article:published_time" content="2021-03-31T03:10:18.000Z">
+<meta property="article:modified_time" content="2021-04-17T09:01:16.913Z">
+<meta property="article:author" content="Jay">
+<meta property="article:tag" content="Deep Learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://jayyy1.gitee.io/images/pictures/cartoons/024.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://jay1zhang.github.io/2021/03/31/Computer%20Science/Deep%20Learning/%E3%80%8C%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%8DAttention%EF%BC%9FAttention%EF%BC%81/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.5/dist/instantsearch.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.5/dist/instantsearch.min.js" defer></script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"WKEK6XV2V5","apiKey":"e093fbb9f29fdf5c7ddd56ec43e9ae05","indexName":"Jay","hits":{"per_page":10},"languages":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}.","hits_stats":"${hits} results found in ${time} ms"}},
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"Traditional Chinese Activated Manually","cht_to_chs":"Simplified Chinese Activated Manually","day_to_night":"Dark Mode Activated Manually","night_to_day":"Light Mode Activated Manually","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-04-17 17:01:16'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">45</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">16</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">11</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-heart"></i><span> Link</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(http://jayyy1.gitee.io/images/pictures/cartoons/024.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">J1z's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-heart"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">「深度学习」Attention? Attention!</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-03-31T03:10:18.000Z" title="Created 2021-03-31 11:10:18">2021-03-31</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-04-17T09:01:16.913Z" title="Updated 2021-04-17 17:01:16">2021-04-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Computer-Science/">Computer Science</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Computer-Science/Deep-Learning/">Deep Learning</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">5.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>19min</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>最近两年，注意力模型（Attention Model）被广泛使用在自然语言处理、图像识别及语音识别等各种不同类型的深度学习任务中，是深度学习技术中最值得关注与深入了解的核心技术之一。因此，了解注意力机制的工作原理对于希望在深度学习领域深耕的技术人员来说有很大的的必要。</p>
+<h2 id="0x00-Intro-to-Attention"><a href="#0x00-Intro-to-Attention" class="headerlink" title="0x00 Intro to Attention"></a>0x00 Intro to Attention</h2><p>Attention机制最早是针对序列模型提出的，出处是Bengio大神在2015年的这篇论文：</p>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1409.0473.pdf">《Neural Machine Translation by jointly learning to align and translate, Bengio et. al. ICLR 2015》</a></p>
+<p>从注意力模型的命名方式看，很明显其借鉴了人类的注意力机制。因此，我们首先简单介绍「<strong>人类视觉的选择性注意力机制</strong>」。</p>
+<p>视觉注意力机制是人类视觉所特有的大脑信号处理机制。人类视觉通过<strong>快速扫描全局图像</strong>，获得需要重点关注的目标区域，也就是一般所说的<strong>注意力焦点</strong>，而后对这一区域<strong>投入更多注意力资源</strong>，以获取更多所需要关注目标的细节信息，而抑制其他无用信息。</p>
+<p>这是人类利用有限的注意力资源从大量信息中快速筛选出高价值信息的手段，是人类在长期进化中形成的一种生存机制，人类视觉注意力机制极大地提高了视觉信息处理的效率与准确性。</p>
+<img src="https://img-blog.csdn.net/20171210213743273" alt="img" style="zoom:90%;" />
+
+<center><i>图 1 - 人类视觉的注意力机制</i></center>
+
+<p>图1形象化展示了人类在看到一副图像时是如何高效分配有限的注意力资源的，其中红色区域表明视觉系统更关注的目标。很明显，对于图1所示的场景，人们会把注意力更多投入到人的脸部，文本的标题以及文章首句等位置。</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210416192309630.png" alt="image-20210416192309630" style="zoom:75%;" />
+
+<center><i>图 2 - 自然语言中的注意力机制</i></center>
+
+<p>同样地，在自然语言处理中，我们也可以用注意力机制解释一句话或者上下文中词与词之间的关系。如图2，当看到“eating”这个词时，我们会期望在后面不远的位置看到“食物“描述的词。下图中有色词表示食物，但并不是每个词都与”eating“直接强相关。</p>
+<p>深度学习中的注意力机制从本质上讲和人类的选择性视觉注意力机制类似，核心目标也是从众多信息中选择出对当前任务目标更关键的信息。简而言之，在预测或推断一个元素时，如图片中的像素点或句中的一个词，我们使用「<strong>注意力向量</strong>」来判断它与其他元素有多强的关联性，然后对加权后的向量求和以逼近最后的目标值（target）。</p>
+<h2 id="0x01-Encoder-Decoder-Framework"><a href="#0x01-Encoder-Decoder-Framework" class="headerlink" title="0x01 Encoder-Decoder Framework"></a>0x01 Encoder-Decoder Framework</h2><p>在继续介绍深度学习中的注意力机制之前，我们不得不先谈谈seq2seq模型与Encoder-Decoder框架。</p>
+<p><strong>Seq2Seq模型</strong>诞生于语言模型领域（Sutskever, et al. 2014）—— 广泛的讲，它是将一个输入序列（source）转化为另一个序列（target），两个序列都可以是不定长的。转化任务的场景包括多语言机器翻译（文本或语音）、问答对话对话生成系统、甚至是句子解析为语法树。</p>
+<p>Seq2Seq模型一般都会包含 Encoder-Decoder 结构，包括：</p>
+<ul>
+<li><strong>Encoder</strong>——处理输入序列并将信息压缩到一个<strong>固定长度的上下文向量</strong>中（sentence embedding 或者 context vector）。上下文向量被当做是输入序列的语义概要。</li>
+<li><strong>Decoder</strong>——由上下文向量初始化，并每次产生一个转码输出。</li>
+</ul>
+<p>其中，编码器和解码器都是循环神经网络结构，如LSTM或者GRU单元。</p>
+<p>图2是Encoder-Decoder框架的一种抽象表示：</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210416163349832.png" alt="image-20210416163349832" style="zoom:70%;" />
+
+<center><i>图 3 - Encoder-Decoder框架</i></center>
+
+
+
+<p>在自然语言处理领域中，我们的目标是给定输入句子 $X$ ，经过 Encoder-Decoder 后生成目标句子 $Y$ 。 $X$ 和 $Y$ 分别由各自的单词序列组成，长度分别为 $m$ 和 $n$ ：</p>
+<p>$$X = &lt;x_1, x_2, …, x_m&gt;$$</p>
+<p>$$Y = &lt;y_1, y_2, …, y_n&gt;$$</p>
+<p>首先由 Encoder 对输入句子 $X$ 进行编码，将输入句子通过非线性变换转化为中间语义表 $C$ ：</p>
+<p>$$C = F(x_1, x_2, …, x_m)$$</p>
+<p>Decoder的任务则是根据句子 $X$ 的中间语义表示 $C$ 和之前已经生成的历史信息 $y_1, y_2, …, y_{i-1}$ 来生成 $i$ 时刻要生成的单词 $y_i$ 。</p>
+<p>$$y_i = G(C, y_1, y_2, …, y_{i-1})$$</p>
+<p>依次产生每个 $y_i$ 即可得到最后的输出句子 $Y$ 。其中，$X$ 和 $Y$ 可以是同一种语言，也可以是不同的语言。</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210416193748143.png" alt="image-20210416193748143" style="zoom:75%;" />
+
+<center><i>图 4 - seq2seq模型</i></center>
+
+
+
+<p>实际上，Encoder-Decoder框架不仅仅在文本领域广泛使用，在语音识别、图像处理等领域也经常使用。</p>
+<ul>
+<li>比如对于语音识别来说，图2所示的框架完全适用，区别无非是Encoder部分的输入是语音流，输出是对应的文本信息；</li>
+<li>而对于“图像描述”任务来说，Encoder部分的输入是一副图片，Decoder的输出是能够描述图片语义内容的一句描述语。</li>
+</ul>
+<p>一般而言，文本处理和语音识别的Encoder部分通常采用RNN模型，图像处理的Encoder一般采用CNN模型。</p>
+<h2 id="0x02-Why-Attention"><a href="#0x02-Why-Attention" class="headerlink" title="0x02 Why Attention?"></a>0x02 Why Attention?</h2><p>上一节提到的 Encoder-Decoder 框架可以看作是一种「<strong>注意力不集中的分心模型</strong>」。</p>
+<p>为什么说它注意力不集中呢？</p>
+<p>$$y_1 = F(C)$$</p>
+<p>$$y_2 = F(C, y_1)$$</p>
+<p>$$y_3 = F(C, y_1, y_2)$$</p>
+<p>由于上下文向量 $C$ 是由输入句子 Source 的每个单词经过 Encoder 编码产生的，这就意味着不论是生成哪个单词 $y_1, y_2$ 还是 $y_3$ ，Source中任意单词 $x_i$ 对生成某个目标单词 $y_i$ 来说影响力都是相同的。这就类似于人类看到眼前的画面，但是眼中却没有注意焦点一样。</p>
+<p>如果拿机器翻译来解释这个分心模型可能更好理解一些。比如输入句子 Source 为 “Tom chases Jerry.” ，通过 Encoder-Decoder 框架逐步生成中文单词 [“汤姆”、“追逐”、“杰瑞”] 。 </p>
+<p>在翻译“杰瑞”这个中文单词的时候，分心模型里面的每个英文单词对于翻译目标单词“杰瑞”贡献是相同的，很明显这里不太合理，因为显然 “Jerry” 对于翻译成 “杰瑞” 更重要，但是分心模型是无法体现这一点的，这就是为何说它没有体现注意力的原因。</p>
+<p>除此之外，固定长度的上下文向量具有一个明显的致命缺点——<strong>无法记忆长句子</strong>。因为 Decoder 在生成每个输出单词 $y_i$ 时都需要之前输出的单词 $y_1, y_2, …, y_{i-1}$ 作为输入，当句子比较长时，前面的信息将会随着RNN的传导慢慢丢失。</p>
+<p>这也是为什么要引入注意力机制的重要原因。</p>
+<h2 id="0x02-Attention-Mechanism"><a href="#0x02-Attention-Mechanism" class="headerlink" title="0x02 Attention Mechanism"></a>0x02 Attention Mechanism</h2><p>在本节我们将首先从概念上对 Attention 有一个直观地认识，然后将从理论的角度出发来定义注意力机制，紧接着我们尝试跳出 Encoder-Decoder 框架再来看 Attention 的本质思想，最后简要介绍一下 Attention 家族中的不同类别。</p>
+<h3 id="1-初识-Attention"><a href="#1-初识-Attention" class="headerlink" title="1. 初识 Attention"></a>1. 初识 Attention</h3><p>在刚刚提到的例子中，如果引入Attention模型的话，应该在翻译“汤姆”的时候，体现出每个英文单词对于翻译当前中文单词不同的影响程度。比如给出一个类似下面的概率分布：</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">x1: Tom</th>
+<th align="center">x2: chases</th>
+<th align="center">x3: Jerry</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">C1: “汤姆”</td>
+<td align="center">0.5</td>
+<td align="center">0.2</td>
+<td align="center">0.3</td>
+</tr>
+</tbody></table>
+<p>每个概率代表了翻译当前中文单词“汤姆”时，注意力模型分配给不同英文单词的注意力大小。</p>
+<p>同理，<strong>目标句子中的每个单词都应该学会其对应的输入句子中单词的注意力分配信息</strong>，这就意味着在生成每个单词 $y_i$ 的时候，原来固定的上下文向量 $C$ 被替换成会根据当前生成单词而不断变化的 $C_i$ 。</p>
+<p>如果把 $C_1, C_2, C_3$ 拼接在一起，就得到了一个注意力分配矩阵：</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">x1: Tom</th>
+<th align="center">x2: chases</th>
+<th align="center">x3: Jerry</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">C1: “汤姆”</td>
+<td align="center">0.7</td>
+<td align="center">0.1</td>
+<td align="center">0.2</td>
+</tr>
+<tr>
+<td align="center">C2: “追逐”</td>
+<td align="center">0.3</td>
+<td align="center">0.6</td>
+<td align="center">0.2</td>
+</tr>
+<tr>
+<td align="center">C3: “杰瑞”</td>
+<td align="center">0.2</td>
+<td align="center">0.1</td>
+<td align="center">0.7</td>
+</tr>
+</tbody></table>
+<p>理解Attention机制的关键就在这里，在得到这样一个<strong>注意力分布矩阵</strong>后，生成输出单词的过程本质上就是做一个<strong>加权求和</strong>的操作。</p>
+<p>引入了注意力机制的 Encoder-Decoder 框架可以抽象成图4：</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210416205039149.png" alt="image-20210416205039149" style="zoom:60%;" />
+
+<center><i>图 5 - 引入注意力机制的 Encoder-Decoder 框架</i></center>
+
+
+
+<p>下面这张动图能很好地说明注意力机制的工作过程：</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer Science/Deep Learning/Encoder-Decoder-with-Attention.gif" style="zoom:95%;" />
+
+<center><i>图 6 - 注意力机制的工作过程</i></center>
+
+
+
+<p>现在，我们已经对深度学习中的注意力机制有了一个很直观的认识了。但还有一个问题，怎么得到上面的「注意力分布矩阵」呢？请接着往后阅读。</p>
+<h3 id="2-从数学的角度看-Attention"><a href="#2-从数学的角度看-Attention" class="headerlink" title="2. 从数学的角度看 Attention"></a>2. 从数学的角度看 Attention</h3><p>在这一节，我们将从理论的角度出发来定义注意力机制。</p>
+<p>我们用 $X$ 表示长度为 $n$ 的源输入序列，用 $Y$ 表示长度为 $m$ 的目标输出序列：</p>
+<p>$$X = [x_1, x_2, \dots, x_n]$$</p>
+<p>$$Y = [y_1, y_2, \dots, x_m]$$</p>
+<p>Encoder是一个双向RNN结构 —— 包括前向和后向隐藏层状态，对其进行简单的维度拼接即可表示输入序列的隐藏状态，且同时考虑了上下文信息 ：</p>
+<p>$$\boldsymbol{h}_i = [\overrightarrow{\boldsymbol{h}}_i \ ; \overleftarrow{\boldsymbol{h}}_i], i=1, \dots, n$$ </p>
+<p>Decoder在 $t$ 时刻有隐藏状态 $s_t$ ，并接受上一时刻的隐藏状态 $s_{t-1}$ ，上一个输出 $y_{t-1}$ 和上下文向量 $\mathbf{c}_t$ 作为输入：</p>
+<p>$$s_t = f(s_{t-1}, y_{t-1}, \mathbf{c}_t), \ t = 1, 2, \dots, m$$ </p>
+<p>其中，上下文向量 $\mathbf{c}_t$ 是<strong>输入序列的隐藏状态 $h_i$ 之和</strong>，并由对齐模块进行加权 ：</p>
+<p>$$c_t = \sum_{i=1}^n \alpha_{t,i} h_i$$ </p>
+<p>$$\alpha_{t,i} = \text{align}(y_t, x_i) = \frac{\exp(\text{score}(s_{t-1}, h_i))}{\sum_{i’=1}^n \exp(\text{score}(s_{t-1}, h_{i’}))}$$</p>
+<blockquote>
+<p>$$\begin{aligned} \mathbf{c}<em>t &amp;= \sum</em>{i=1}^n \alpha_{t,i} \boldsymbol{h}<em>i &amp; \small{\text{; Context vector for output }y_t}\ \alpha_{t,i} &amp;= \text{align}(y_t, x_i) &amp; \small{\text{; How well two words }y_t\text{ and }x_i\text{ are aligned.}}\ &amp;= \frac{\exp(\text{score}(\boldsymbol{s}</em>{t-1}, \boldsymbol{h}<em>i))}{\sum</em>{i’=1}^n \exp(\text{score}(\boldsymbol{s}<em>{t-1}, \boldsymbol{h}</em>{i’}))} &amp; \small{\text{; Softmax of some predefined alignment score.}}. \end{aligned}$$</p>
+</blockquote>
+<p>由定义可以看出，对齐模块会针对第 $i$ 个输入序列和第 $t$ 个输出序列计算一个相关性权重 $\alpha_{t,i}$ ，以评判 $(y_t, x_i)$ 的对齐效果，整个 $\alpha_{t,i}$ 集合衡量了与每个输出对应的输入隐藏状态的重要性有多大，或相关性有多强。</p>
+<p>关于对齐得分向量 $score$ ，在Bahdanau的文章中，它是由单个隐藏层的前向网络（feed-forward network）来生成的，并和整个网络的其他部分进行联合训练。$score$ 的计算方式如下：</p>
+<p>$$score(s_t,h_i)=V^\top_atanh(W_a[s_t \ ; h_i])$$</p>
+<p>这一步得到的「对齐得分矩阵」是一个很好的副产物，它能够可视化的表示每个输入序列和输出序列的关联程度。</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210417110253418.png" alt="image-20210417110253418" style="zoom:80%;" />
+
+<center><i>图 7 - 对齐得分矩阵</i></center>
+
+
+
+<h3 id="3-Attention-的本质思想"><a href="#3-Attention-的本质思想" class="headerlink" title="3. Attention 的本质思想"></a>3. Attention 的本质思想</h3><h4 id="剥离-Encoder-Decoder-框架来看看-Attention"><a href="#剥离-Encoder-Decoder-框架来看看-Attention" class="headerlink" title="剥离 Encoder-Decoder 框架来看看 Attention"></a>剥离 Encoder-Decoder 框架来看看 Attention</h4><p>如果把Attention机制从Encoder-Decoder框架中剥离，并进一步做抽象，可能更容易掌握 Attention机制的本质思想。</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210417144232237.png" alt="image-20210417144232237" style="zoom:67%;" />
+
+<center><i>图 8 - Attention 的本质思想</i></center>
+
+<p>如果把 Source 看成是由一系列的 $&lt;Key, Value&gt;$ 数据对构成，那么给定 Target 中某个元素 Query，通过计算 Query 和各个 Key 之间的相关性，便可得到每个 Key 对应 Value 的权重系数，然后对 Value 进行加权求和，就得到了 Query 对应的 Attention 值。</p>
+<p>简而言之，本质上 Attention 机制就是对Source中元素的Value值进行加权求和，而Query和Key用来计算对应Value的权重系数。因而可以将注意力抽象成如下公式：</p>
+<p>$$Attention(Query, Source) = \sum^{L_x}_{i=1} Similarity(Query, Key_i) * Value_i$$</p>
+<p>从图8可以引出对 Attention 的另外一种理解 —— 软寻址（Soft Addressing）：</p>
+<ul>
+<li><p>Source 可以看成是存储器，由地址Key和对应的值Value组成；</p>
+</li>
+<li><p>当有个查询请求Query时，需要对Query和地址Key进行相似性计算来寻址；</p>
+<p>之所以说是软寻址，是因为它不像一般寻址那样只从存储器的对应地址中找出一个Value，而是从每个地址Key都会取出Value，取出Value的重要性根据Query和Key的相似性来决定，然后对取出的Value进行加权求和，这样就可以得到最终的 Attention 。</p>
+</li>
+</ul>
+<h4 id="关于-Attention-的具体计算过程"><a href="#关于-Attention-的具体计算过程" class="headerlink" title="关于 Attention 的具体计算过程"></a>关于 Attention 的具体计算过程</h4><p>关于 Attention 机制的具体计算过程，可以大致将其归纳为两个过程、三个阶段：</p>
+<ol>
+<li><p>根据 Query 和 Key 计算权重系数；</p>
+<p>1）根据 Query 和 Key 计算两者的相似性或相关性；</p>
+<p>2）对原始分支进行归一化处理；</p>
+</li>
+<li><p>根据权重系数对 Value 进行加权求和。</p>
+</li>
+</ol>
+<p>整个过程如图9所示：</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210417150152730.png" alt="image-20210417150152730" style="zoom:75%;" />
+
+<center><i>图 9 - Attention 的计算过程</i></center>
+
+<p>在阶段1，可以使用不同的计算机制来衡量 $Query$ 和某个 $Key_i$ 之间的相似性或者相关性。其中，最常见的方法包括：</p>
+<ol>
+<li>求向量点积：$Similarity(Query, Key_i) = Query \cdot Key_i$ </li>
+<li>求Cosine相似性：$Similarity(Query, Key_i) = \frac{Query \cdot Key_i}{||Query|| \cdot ||Key_i||}$</li>
+<li>引入 Feed-Forward Network：$Similarity(Query, Key_i) = MLP(Query, Key_i)$</li>
+</ol>
+<p>由于在阶段1产生的分值范围会根据不同计算机制而不同，因此在阶段2使用softmax来进行归一化，不仅能将原始计算分值归约成所有元素权重之和为1的概率分布，也能够通过softmax的内在机制更加突出重要元素的权重：</p>
+<p>$$\alpha_i = softmax(s_i) = \frac{e^{s_i}}{\sum^{L_x}_{j=1}e^{s_j}}$$</p>
+<p>最后在阶段3对Value进行加权求和即可得到最终的 Attention 数值：</p>
+<p>$$Attention(Query, Source) = \sum^{L_x}_{i=1} \alpha_i \cdot Value_i$$</p>
+<p>通过如上三个阶段的计算，即可求出针对Query的Attention数值，目前绝大多数注意力机制都符合上面的抽象计算过程。</p>
+<h3 id="4-Attention-家族"><a href="#4-Attention-家族" class="headerlink" title="4. Attention 家族"></a>4. Attention 家族</h3><p>本节主要介绍一些更广泛意义上的 Attention 类型。</p>
+<h4 id="3-1-概要"><a href="#3-1-概要" class="headerlink" title="3.1 概要"></a>3.1 概要</h4><table>
+<thead>
+<tr>
+<th align="center">Name</th>
+<th align="center">Alignment score function</th>
+<th align="center">Citation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Content-base attention</td>
+<td align="center">$score(s_t,h_i) = cosine[s_t, h_i]$</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1410.5401">Graves2014</a></td>
+</tr>
+<tr>
+<td align="center">*<em>Additive(</em>)**</td>
+<td align="center">$score(s_t,h_i)=V^\top_atanh(\boldsymbol{W}_a[\boldsymbol{s}_t \ ; \boldsymbol{h}_i])$</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1409.0473.pdf">Bahdanau2015</a></td>
+</tr>
+<tr>
+<td align="center">Location-Base</td>
+<td align="center">$\alpha_{t,i} = softmax(\boldsymbol{W}_a \boldsymbol{s}_t)$ <br />Note: This simplifies the softmax alignment to only depend on the target position.</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1508.04025.pdf">Luong2015</a></td>
+</tr>
+<tr>
+<td align="center">General</td>
+<td align="center">$score(s_t,h_i) = \boldsymbol{s}^\top_t\boldsymbol{W}_a\boldsymbol{h}_i$ <br />where $\boldsymbol{W}_a$ is a trainable weight matrix in the attention layer.</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1508.04025.pdf">Luong2015</a></td>
+</tr>
+<tr>
+<td align="center">Dot-Product</td>
+<td align="center">$score(s_t,h_i) = \boldsymbol{s}^\top_t\boldsymbol{h}_i$</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1508.4025.pdf">Luong2015</a></td>
+</tr>
+<tr>
+<td align="center"><strong>Scaled Dot-Product(^)</strong></td>
+<td align="center">$score(s_t,h_i) = \frac{\boldsymbol{s}^\top_t\boldsymbol{h}_i}{\sqrt{n}}$ <br />Note: very similar to the dot-product attention except for a scaling factor; where n is the dimension of the source hidden state.</td>
+<td align="center"><a target="_blank" rel="noopener" href="http://papers.nips.cc/paper/7181-attention-is-all-you-need.pdf">Vaswani2017</a></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>(*) Referred to as “concat” in Luong, et al., 2015 and as “additive attention” in Vaswani, et al., 2017.<br>(^) It adds a scaling factor $\frac{1}{\sqrt{n}}$ , motivated by the concern when the input is large, the softmax function may have an extremely small gradient, hard for efficient learning.</p>
+</blockquote>
+<p>下面总结了一些更加广泛的注意力机制的类别：</p>
+<table>
+<thead>
+<tr>
+<th align="center">Name</th>
+<th align="center">Definition</th>
+<th align="center">Citation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>Self-Attention(&amp;)</strong></td>
+<td align="center"><strong>Relating different positions of the same input sequence</strong>. Theoretically the self-attention can adopt any score functions above, but just replace the target sequence with the same input sequence.</td>
+<td align="center"><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1601.06733.pdf">Cheng2016</a></td>
+</tr>
+<tr>
+<td align="center">Global/Soft</td>
+<td align="center">Attending to the entire input state space.</td>
+<td align="center"><a target="_blank" rel="noopener" href="http://proceedings.mlr.press/v37/xuc15.pdf">Xu2015</a></td>
+</tr>
+<tr>
+<td align="center">Local/Hard</td>
+<td align="center">Attending to the part of input state space; i.e. a patch of the input image.</td>
+<td align="center"><a target="_blank" rel="noopener" href="http://proceedings.mlr.press/v37/xuc15.pdf">Xu2015</a>; <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1508.04025.pdf">Luong2015</a></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>(&amp;) Also, referred to as “intra-attention” in Cheng et al., 2016 and some other papers.</p>
+</blockquote>
+<h4 id="3-2-Self-Attention"><a href="#3-2-Self-Attention" class="headerlink" title="3.2 Self-Attention"></a>3.2 Self-Attention</h4><p><strong>Self-attention</strong>，又称 <strong>intra-attention</strong>，是一种提取单个序列表征的注意力机制，能够计算同一序列的不同位置之间关联程度。自注意力机制已经被证明在机器阅读理解，抽象概要和图片描述生成等任务中非常有效。</p>
+<p>在下面的样例中，自注意力机制能够学习到当前词和句子中前面的词的关联性。红色为当前词，蓝色阴影的大小表明了它们之间的关联程度（Image source: <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1601.06733.pdf">Cheng et al., 2016</a>）。</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210417113124847.png" alt="image-20210417113124847" style="zoom:80%;" />
+
+<center><i>图 8 - 机器阅读中的自注意力</i></center>
+
+
+
+<h4 id="3-3-Soft-vs-Hard-Attention"><a href="#3-3-Soft-vs-Hard-Attention" class="headerlink" title="3.3 Soft vs Hard Attention"></a>3.3 Soft vs Hard Attention</h4><p>在  <a target="_blank" rel="noopener" href="http://proceedings.mlr.press/v37/xuc15.pdf">show, attend and tell</a> 这篇论文中，自注意力机制被应用在图片描述生成任务中。图片首先在 encoder 中被CNN编码，然后 LSTM decoder 会通过自注意力机制学习权重，并使用这些卷积特征逐个生成描述词。</p>
+<p>下面注意力权重的可视化清晰地展示了模型每关注图像的一个区域都会输出一个对应的词，<em>“A woman is throwing a frisbee in a park.”</em> （Image source: <a target="_blank" rel="noopener" href="http://proceedings.mlr.press/v37/xuc15.pdf">Xu et al. 2015</a>）。</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210417114130817.png" alt="image-20210417114130817" style="zoom:80%;" />
+
+<center><i>图 9 - 图像描述中的自注意力</i></center>
+
+
+
+<p>这篇论文首次提出了 ”柔性“ 与 ”刚性“ 注意力的区别 —— 基于注意力是否需要处理整张图片还是仅仅局部一小块：</p>
+<ul>
+<li>柔性注意力：对齐权重通过源图片所有的”patch“进行学习映射，本质上和 <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1409.0473">Bahdanau et al., 2015</a> 的想法一致。<ul>
+<li>Pro: 模型是平滑且可导的</li>
+<li>Con: 当输入图片很大时，训练代价很高</li>
+</ul>
+</li>
+<li>刚性注意力：每次仅选取图片中的一个”patch“<ul>
+<li>Pro: 在inference阶段计算量更小</li>
+<li>Con: 模型是不可导的，需要更复杂的技术手段——如降低方差(variance reduction)或者强化学习去训练（<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1508.04025">Luong, et al., 2015</a>）</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-4-Global-vs-Local-Attention"><a href="#3-4-Global-vs-Local-Attention" class="headerlink" title="3.4 Global vs Local Attention"></a>3.4 Global vs Local Attention</h4><p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1508.04025.pdf">Luong, et al., 2015</a> 提出了”全局“和”局部“注意力的概念。</p>
+<ul>
+<li><p>全局注意力和柔性注意力很相似；</p>
+</li>
+<li><p>局部注意力是”柔性“和”刚性“的糅合——相对于刚性，它通过改进使模型可导：</p>
+<p>模型首先为当前目标词预测一个粗略的对齐位置，然后以源输入位置为中心，在这个中心窗口内计算上下文向量。</p>
+</li>
+</ul>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210417115849944.png" alt="image-20210417115849944" style="zoom:80%;" />
+
+<center><i>图 10 - 全局 vs. 局部注意力</i></center>
+
+
+
+<h2 id="0x03-Self-Attention-in-Transformer"><a href="#0x03-Self-Attention-in-Transformer" class="headerlink" title="0x03 Self-Attention in Transformer"></a>0x03 Self-Attention in Transformer</h2><p><a target="_blank" rel="noopener" href="http://papers.nips.cc/paper/7181-attention-is-all-you-need.pdf">“Attention is All you Need”</a> (Vaswani, et al., 2017) ，毫无疑问是2017年最有影响力和最有趣的论文之一，它对柔性注意力机制作出了许多改进，并使得无RNN单元的 seq2seq 建模成为可能，其提出的 transformer 模型完全建立在自注意力机制上。</p>
+<p>Transformer 的主要部件是 <strong>multi-head self-attention mechanism</strong> 。</p>
+<ul>
+<li>在Encoder中，它将输入序列的编码表示看作 Key-Value 对，均为n维（n为输入序列长度）；</li>
+<li>在Decoder中，先前时刻的输出被压缩到一个 Query 中（m维），然后通过把这个 Query 映射到 Key-Value 的集合来产生当前时间步的输出。</li>
+</ul>
+<p>Transformer采用了 <a target="_blank" rel="noopener" href="https://lilianweng.github.io/lil-log/2018/06/24/attention-attention.html#summary">scaled dot-product attention</a> ：输出为 Value 的加权求和，其中分配给每一项的权重由 Query 和Key 点积求得。因此，可以将其抽象为如下公式：</p>
+<p>$$Attention(Q, K, V) = softmax(\frac{Q \cdot K^\top}{\sqrt{n}}) \cdot V$$</p>
+<p>此外，Transformer 还采用了多头注意力机制，即不是只计算一次注意力，而是并行地多次运行 scaled 点积注意力，并将计算结果 concat 起来通过一个 Linear 层转化成期望的维度。</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210417153512086.png" alt="image-20210417153512086" style="zoom:80%;" />
+
+<center><i>图 11 - 多头注意力机制</i></center>
+
+<p>因此，可进一步将其抽象为如下公式：</p>
+<p>$$MultiHead(Q, K, V) = [head_1; \dots ; head_h] W^O$$</p>
+<p>其中 $head_i = Attention(Q \cdot W^Q_i, K \cdot W^K_i, V \cdot W^V_i)$ ，$W^Q_i, W^K_i, W^V_i$ 以及 $W^O$ 均为可学习参数矩阵。</p>
+<p>Transformer的简单介绍到此为止，如需更进一步了解，请移步<a href="">「深度学习」Transformer 模型详解</a> 。</p>
+<h2 id="0x04-Implement-Self-Attention-using-Pytorch"><a href="#0x04-Implement-Self-Attention-using-Pytorch" class="headerlink" title="0x04 Implement Self-Attention using Pytorch"></a>0x04 Implement Self-Attention using Pytorch</h2><p>在本节，我们将使用 pytorch 实现一个简单的自注意力模型，其中：</p>
+<ul>
+<li><code>dim_in</code> 表示embedding 维的<strong>特征长度E</strong> ；</li>
+<li>Q 和 K 的维度相等且等于<strong>输入序列长度S</strong>，用 <code>dim_k</code> 表示，并使用 scaled-dot 函数衡量 Q 和 K 之间的相似性；</li>
+<li><code>dim_v</code> 等于<strong>输出序列长度T</strong> ；</li>
+<li>输入特征矩阵 <code>x</code> 的维度为 (N, S, E) ；</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span> sqrt</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SelfAttention</span>(<span class="params">nn.Module</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, dim_in, dim_k, dim_v</span>):</span></span><br><span class="line">        <span class="built_in">super</span>(SelfAttention, self).__init__()</span><br><span class="line">        self.dim_in = dim_in</span><br><span class="line">        self.dim_k = dim_k</span><br><span class="line">        self.dim_v = dim_v</span><br><span class="line">        self.linear_q = nn.Linear(dim_in, dim_k, bias=<span class="literal">False</span>)</span><br><span class="line">        self.linear_k = nn.Linear(dim_in, dim_k, bias=<span class="literal">False</span>)</span><br><span class="line">        self.linear_v = nn.Linear(dim_in, dim_v, bias=<span class="literal">False</span>)</span><br><span class="line">        self._norm_fact = <span class="number">1</span> / sqrt(dim_k)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span>(<span class="params">self, x</span>):</span></span><br><span class="line">        <span class="comment"># N: batch size, S: sequence length, E: feature dimension</span></span><br><span class="line">        N, S, E = x.shape</span><br><span class="line">        <span class="keyword">assert</span> E == self.dim_in</span><br><span class="line"></span><br><span class="line">        q = self.linear_q(x)  <span class="comment"># N, S, dim_k</span></span><br><span class="line">        k = self.linear_k(x)  <span class="comment"># N, S, dim_k</span></span><br><span class="line">        v = self.linear_v(x)  <span class="comment"># N, S, dim_v</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># torch.bmm is a batched matrix multiplication. </span></span><br><span class="line">        <span class="comment"># It applies matrix multiplication over batches of matrices.</span></span><br><span class="line">        dist = torch.bmm(q, k.transpose(<span class="number">1</span>, <span class="number">2</span>)) * self._norm_fact  <span class="comment"># batch, S, S</span></span><br><span class="line">        <span class="comment"># Note that: dim=-1, row-wise</span></span><br><span class="line">        weights = torch.softmax(dist, dim=-<span class="number">1</span>)  <span class="comment"># N, S, S</span></span><br><span class="line"></span><br><span class="line">        attn = torch.bmm(weights, v)	<span class="comment"># N, S, dim_v</span></span><br><span class="line">        <span class="keyword">return</span> attn</span><br></pre></td></tr></table></figure>
+
+
+<p>这里为简单起见没有实现mask，若要实现，则在softmax前把需要mask的位置加上<code>-np.Inf</code>就可以了，这样两个<code>Tensor</code>进行矩阵乘法后，在需要mask掉的位置的分数就是负无穷，softmax后的注意力分布就是0。</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>[1] <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/PasIyT2DJ6Og2EZ2nP_U4g">10个重要问题概览Transformer全部内容</a></p>
+<p>[2] <a target="_blank" rel="noopener" href="https://blog.csdn.net/malefactor/article/details/78767781">深度学习中的注意力机制(2017版)</a></p>
+<p>[3] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/146130215">计算机视觉中的注意力机制</a></p>
+<p>[4] <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/9b922fb83d77">详解深度学习中“注意力机制”</a></p>
+<p>[5] <a target="_blank" rel="noopener" href="https://lilianweng.github.io/lil-log/2018/06/24/attention-attention.html#definition">Attention? Attention!</a></p>
+<p>[6] <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_39438086/article/details/109480953">自注意力机制的PyTorch实现</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Jay</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://jay1zhang.github.io/2021/03/31/Computer%20Science/Deep%20Learning/%E3%80%8C%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%8DAttention%EF%BC%9FAttention%EF%BC%81/">http://jay1zhang.github.io/2021/03/31/Computer%20Science/Deep%20Learning/%E3%80%8C%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%8DAttention%EF%BC%9FAttention%EF%BC%81/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Deep-Learning/">Deep Learning</a></div><div class="post_share"><div class="social-share" data-image="http://jayyy1.gitee.io/images/pictures/cartoons/024.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/04/06/Tricks/%E3%80%8CGit%E3%80%8D%E5%A6%82%E4%BD%95%E4%BF%AE%E6%94%B9%E5%88%86%E6%94%AF%E5%90%8D%E7%A7%B0/"><img class="prev-cover" src="http://jayyy1.gitee.io/images/pictures/cartoons/028.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">「Git」如何修改分支名称？</div></div></a></div><div class="next-post pull-right"><a href="/2021/03/27/Computer%20Science/Mechine%20Learning/%E3%80%8C%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8D%E6%9C%80%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98%E4%B9%8B%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E5%AF%B9%E5%81%B6%E6%80%A7/"><img class="next-cover" src="http://jayyy1.gitee.io/images/pictures/cartoons/005.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">「机器学习」最优化问题之拉格朗日对偶性</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2021/04/09/Computer Science/Deep Learning/「深度学习」Transformer 模型详解/" title="「深度学习」Transformer 模型详解"><img class="cover" src="http://jayyy1.gitee.io/images/pictures/cartoons/029.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-09</div><div class="title">「深度学习」Transformer 模型详解</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00-Intro-to-Attention"><span class="toc-text">0x00 Intro to Attention</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-Encoder-Decoder-Framework"><span class="toc-text">0x01 Encoder-Decoder Framework</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-Why-Attention"><span class="toc-text">0x02 Why Attention?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-Attention-Mechanism"><span class="toc-text">0x02 Attention Mechanism</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%88%9D%E8%AF%86-Attention"><span class="toc-text">1. 初识 Attention</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BB%8E%E6%95%B0%E5%AD%A6%E7%9A%84%E8%A7%92%E5%BA%A6%E7%9C%8B-Attention"><span class="toc-text">2. 从数学的角度看 Attention</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Attention-%E7%9A%84%E6%9C%AC%E8%B4%A8%E6%80%9D%E6%83%B3"><span class="toc-text">3. Attention 的本质思想</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%89%A5%E7%A6%BB-Encoder-Decoder-%E6%A1%86%E6%9E%B6%E6%9D%A5%E7%9C%8B%E7%9C%8B-Attention"><span class="toc-text">剥离 Encoder-Decoder 框架来看看 Attention</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E-Attention-%E7%9A%84%E5%85%B7%E4%BD%93%E8%AE%A1%E7%AE%97%E8%BF%87%E7%A8%8B"><span class="toc-text">关于 Attention 的具体计算过程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Attention-%E5%AE%B6%E6%97%8F"><span class="toc-text">4. Attention 家族</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-%E6%A6%82%E8%A6%81"><span class="toc-text">3.1 概要</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-Self-Attention"><span class="toc-text">3.2 Self-Attention</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-Soft-vs-Hard-Attention"><span class="toc-text">3.3 Soft vs Hard Attention</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-Global-vs-Local-Attention"><span class="toc-text">3.4 Global vs Local Attention</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-Self-Attention-in-Transformer"><span class="toc-text">0x03 Self-Attention in Transformer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x04-Implement-Self-Attention-using-Pytorch"><span class="toc-text">0x04 Implement Self-Attention using Pytorch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url(http://jayyy1.gitee.io/images/pictures/cartoons/012.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Jay</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><div class="search-dialog__title" id="algolia-search-title">Algolia</div><div id="algolia-input-panel"><div id="algolia-search-input"></div></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>
