@@ -1,0 +1,410 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>「深度学习」神经网络中的优化算法 | J1z's Blog</title><meta name="keywords" content="Deep Learning"><meta name="author" content="Jay"><meta name="copyright" content="Jay"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="0x00 什么是优化算法？优化算法就是一种最小化或最大化目标函数（有时也称为损失函数）的一类算法，它可以根据定义好的损失函数优化神经网络中参数的取值，从而使神经网络模型在训练数据集上的损失函数达到一个较小值。 无论什么优化算法，最后都可以用一个简单的公式抽象： $$w &#x3D; w + \Delta w$$ 其中，$w$ 是参数，$\Delta w$ 是参数的增量，不同优化算法的区别仅在于 $\Delt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「深度学习」神经网络中的优化算法">
+<meta property="og:url" content="http://jay1zhang.github.io/2021/04/22/Computer%20Science/Deep%20Learning/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="J1z&#39;s Blog">
+<meta property="og:description" content="0x00 什么是优化算法？优化算法就是一种最小化或最大化目标函数（有时也称为损失函数）的一类算法，它可以根据定义好的损失函数优化神经网络中参数的取值，从而使神经网络模型在训练数据集上的损失函数达到一个较小值。 无论什么优化算法，最后都可以用一个简单的公式抽象： $$w &#x3D; w + \Delta w$$ 其中，$w$ 是参数，$\Delta w$ 是参数的增量，不同优化算法的区别仅在于 $\Delt">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://jayyy1.gitee.io/images/pictures/cartoons/007.jpg">
+<meta property="article:published_time" content="2021-04-22T06:53:25.000Z">
+<meta property="article:modified_time" content="2021-04-22T12:58:50.593Z">
+<meta property="article:author" content="Jay">
+<meta property="article:tag" content="Deep Learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://jayyy1.gitee.io/images/pictures/cartoons/007.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://jay1zhang.github.io/2021/04/22/Computer%20Science/Deep%20Learning/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.5/dist/instantsearch.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.5/dist/instantsearch.min.js" defer></script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"WKEK6XV2V5","apiKey":"e093fbb9f29fdf5c7ddd56ec43e9ae05","indexName":"Jay","hits":{"per_page":10},"languages":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}.","hits_stats":"${hits} results found in ${time} ms"}},
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"Traditional Chinese Activated Manually","cht_to_chs":"Simplified Chinese Activated Manually","day_to_night":"Dark Mode Activated Manually","night_to_day":"Light Mode Activated Manually","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-04-22 20:58:50'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">46</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">16</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">11</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-heart"></i><span> Link</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(http://jayyy1.gitee.io/images/pictures/cartoons/007.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">J1z's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-heart"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">「深度学习」神经网络中的优化算法</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-04-22T06:53:25.000Z" title="Created 2021-04-22 14:53:25">2021-04-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-04-22T12:58:50.593Z" title="Updated 2021-04-22 20:58:50">2021-04-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Computer-Science/">Computer Science</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Computer-Science/Deep-Learning/">Deep Learning</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">3.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>12min</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="0x00-什么是优化算法？"><a href="#0x00-什么是优化算法？" class="headerlink" title="0x00 什么是优化算法？"></a>0x00 什么是优化算法？</h2><p>优化算法就是一种最小化或最大化目标函数（有时也称为损失函数）的一类算法，它可以根据定义好的损失函数优化神经网络中参数的取值，从而使神经网络模型在训练数据集上的损失函数达到一个较小值。</p>
+<p>无论什么优化算法，最后都可以用一个简单的公式抽象：</p>
+<p>$$w = w + \Delta w$$</p>
+<p>其中，$w$ 是参数，$\Delta w$ 是参数的增量，不同优化算法的区别仅在于 $\Delta w$ 的计算方式不同。</p>
+<p>本文总结了下面三类优化算法的原理、特点、代码实现，并进行了对比分析，尽请享用。</p>
+<h2 id="0x01-梯度下降法"><a href="#0x01-梯度下降法" class="headerlink" title="0x01 梯度下降法"></a>0x01 梯度下降法</h2><p>梯度下降法是最基本的一类优化器，目前主要分为三种梯度下降法：<strong>标准梯度下降法</strong>（<strong>GD</strong>, Gradient Descent），<strong>批量梯度下降法</strong>（<strong>BGD</strong>, Batch Gradient Descent）以及<strong>随机梯度下降法</strong>（<strong>SGD</strong>, Stochastic Gradient Descent）。</p>
+<h3 id="1-标准梯度下降法（GD）"><a href="#1-标准梯度下降法（GD）" class="headerlink" title="1. 标准梯度下降法（GD）"></a>1. 标准梯度下降法（GD）</h3><p><strong>【原理】</strong></p>
+<p>梯度下降法是最重要的一种方法，也是很多其他优化算法的基础，其基本形式如下：</p>
+<p>$$\Delta w = - \eta ~ \nabla J(w)$$</p>
+<p>其中，$\eta$ 是学习率， $J(w)$ 是代价函数， $\nabla J(w)$ 是代价函数关于模型参数的偏导数，即梯度。</p>
+<p>从表达式来看，模型参数的更新调整，仅与代价函数关于模型参数的梯度有关，即<strong>沿着梯度的反方向不断优化模型参数</strong>，从而最小化代价函数。</p>
+<p><strong>【理解策略】</strong></p>
+<p>该方法的基本思想可以理解为「<strong>在有限视距内寻找最快路径下山</strong>」，因此每一步都会选择当前位置的最陡方向（即<strong>梯度</strong>）前进。</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210422170751362.png" alt="image-20210422170751362" style="zoom:80%;" />
+
+
+
+<p><strong>【特点】</strong></p>
+<p>标准梯度下降法有两个难以克服的缺点：</p>
+<ul>
+<li><strong>训练速度慢</strong>：由于是在整个数据集上进行计算，在大型数据集中，每输入一个样本都要更新一次参数，且每次迭代都要遍历所有的样本。这会使得训练过程及其缓慢，需要花费很长时间才能得到收敛解。</li>
+<li><strong>容易陷入局部最优解</strong>：由于是在有限视距内寻找下山的方向。当陷入平坦的洼地，会误以为到达了山地的最低点，从而不会继续往下走。所谓的局部最优解就是鞍点。落入鞍点，梯度为0，使得模型参数不在继续更新。</li>
+</ul>
+<h3 id="2-批量梯度下降法（BGD）"><a href="#2-批量梯度下降法（BGD）" class="headerlink" title="2. 批量梯度下降法（BGD）"></a>2. 批量梯度下降法（BGD）</h3><p><strong>【原理】</strong></p>
+<p>假设<strong>批量训练样本</strong>总数（batch size）为 $N$ ，每次输入和输出的样本分别为 $X^i, Y^i$ ，每输入一个样本 $i$ 代价函数关于 $w$ 的梯度为 $\nabla J_i(w, X^i, Y^i)$ ，则使用批量梯度下降法更新参数表达式为：</p>
+<p>$$g_t =  \frac{1}{N} (\sum_i^N \nabla J(w, X^i, Y^i))$$</p>
+<p>$$\Delta w = - \eta ~ g_t$$</p>
+<p>其中，$g_t$ 表示第 $t$ 轮代价函数的均值，下同。</p>
+<p>从表达式来看，模型参数的调整更新，与该批量输入样本的<strong>代价函数的均值</strong>有关。每次权值调整发生在批量样本输入之后，而不是每输入一个样本就更新一次模型参数，这样就会大大加快训练速度。</p>
+<p><strong>【理解策略】</strong></p>
+<p>该方法的基本思想可以理解为：「在下山之前掌握了附近的地势情况，并选择总体平均梯度最小的方向下山」。</p>
+<p><strong>【特点】</strong></p>
+<ul>
+<li>批量梯度下降法比标准梯度下降法训练时间短，且每次选择的方向都很正确。</li>
+</ul>
+<h3 id="3-随机梯度下降法（SGD）"><a href="#3-随机梯度下降法（SGD）" class="headerlink" title="3. 随机梯度下降法（SGD）"></a>3. 随机梯度下降法（SGD）</h3><p><strong>【原理】</strong></p>
+<p>相比BGD，随机梯度下降法（Stochastic Gradient Descent）每次从一批样本中随机选择一个样本 $k$ 来更新参数：</p>
+<p>$$\Delta w = - \eta ~ \nabla J(w, X^k, Y^k)$$</p>
+<p>其中，$k \in {1, 2, \dots, N}$ 表示随机选择的一个梯度方向。</p>
+<p><strong>【理解策略】</strong></p>
+<p>该方法的基本思想可以理解为：像是一个盲人下山，不用每走一步计算一次梯度，但是他总能下到山底，只不过过程会显得扭扭曲曲。</p>
+<p><strong>【特点】</strong></p>
+<ul>
+<li><p>优点：</p>
+<ul>
+<li><p>虽然SGD似乎需要走的步子更多了，但由于其每次只选择一个样本计算梯度，更新速度很快。</p>
+<p>在应用大型数据集时，训练速度很快。比如每次从百万数据样本中，取几百个数据点，算一个SGD梯度，更新一下模型参数。相比于标准梯度下降法的遍历全部样本要快得多。</p>
+</li>
+</ul>
+</li>
+<li><p>缺点：</p>
+<ul>
+<li>SGD在随机选择梯度的同时会引入噪声，使得权值更新的方向不一定正确，但大量的理论和实践工作证明，只要噪声不是特别大，SGD都能很好地收敛。</li>
+<li>此外，SGD同样无法克服局部最优解的问题。</li>
+</ul>
+</li>
+</ul>
+<p><strong>【代码实现】</strong></p>
+<p>$\nabla J(w)$ 和 $g_i$ 在下面及之后的优化算法实现中，都将直接作为输入参数，其具体计算由其他模块负责，感兴趣可以参考下面两篇文章：</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/67854272">Numpy实现神经网络框架(3)——线性层反向传播推导及实现</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/64248652">卷积核梯度计算的推导及实现</a></p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Momentum</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, lr=<span class="number">1e-3</span></span>):</span></span><br><span class="line">        self.lr = lr	<span class="comment"># 学习率</span></span><br><span class="line">	</span><br><span class="line">    <span class="comment"># Input: g = J&#x27;(w) 为本轮训练参数的梯度</span></span><br><span class="line">    <span class="comment"># Outpu: 参数的增量，下同</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update</span>(<span class="params">self, g: np.ndarray</span>):</span></span><br><span class="line">        <span class="keyword">return</span> - self.lr * g</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h2 id="0x02-动量优化法"><a href="#0x02-动量优化法" class="headerlink" title="0x02 动量优化法"></a>0x02 动量优化法</h2><p>动量优化方法是在梯度下降法的基础上进行的改进，能够加速梯度下降的过程。常用的方法有标准动量优化方法（Momentum）、牛顿加速梯度算法（NAG，Nesterov accelerated gradient）动量优化方法。</p>
+<h3 id="1-Momentum"><a href="#1-Momentum" class="headerlink" title="1. Momentum"></a>1. Momentum</h3><p><strong>【原理】</strong></p>
+<p>使用动量（Momentum）的随机梯度下降法（SGD），主要思想是引入一个积攒历史梯度信息动量来加速SGD，其基本形式如下：</p>
+<p>$$v_t = \alpha v_{t-1} + \eta ~ \nabla J(w, X^k, Y^k)$$</p>
+<p>$$\Delta w = - ~ v_t$$</p>
+<p>其中，$v_t$ 表示第 $t$ 轮积攒的历史梯度信息动量，$\alpha$ 表示动力的大小，一般取值为 0.9。</p>
+<p>这是基于<strong>指数衰减</strong>的实现方式。</p>
+<p><strong>【理解策略】</strong></p>
+<p>该方法的基本思想可以理解为：由于当前权值的改变会受到上一次权值改变的影响，类似于小球向下滚动的时候带上了惯性，这样可以加快小球向下滚动的速度。</p>
+<p><strong>【特点】</strong></p>
+<p>动量主要解决SGD的两个问题：</p>
+<ul>
+<li>一是随机梯度的方法（引入的噪声）；</li>
+<li>二是Hessian矩阵病态问题（可以理解为SGD在收敛过程中和正确梯度相比来回摆动比较大的问题）。</li>
+</ul>
+<h3 id="2-NAG"><a href="#2-NAG" class="headerlink" title="2. NAG"></a>2. NAG</h3><p><strong>【原理】</strong></p>
+<p>牛顿加速梯度（NAG, Nesterov accelerated gradient）算法，是Momentum动量算法的变种。与Momentum唯一区别就是，NAG 先用当前的速度 $v_{t-1}$ 更新一遍参数，得到一个临时参数这个临时参数计算本轮训练的梯度。其基本形式如下：</p>
+<p>$$v_t = \alpha v_{t-1} + \eta ~ \nabla J(w - \alpha t_{t-1})$$</p>
+<p>$$\Delta w = - ~ v_t$$</p>
+<p><strong>【理解策略】</strong></p>
+<p>该方法的基本思想可以理解为：</p>
+<ul>
+<li>在Momentum中，小球会盲目地跟从下坡的梯度，容易发生错误。所以需要一个更聪明的小球，能提前知道它要去哪里，还要知道走到坡底的时候速度慢下来而不是又冲上另一个坡。</li>
+<li>通过计算 $w - \alpha t_{t-1}$ 可以知道小球下一个位置大概在哪里，然后提前一个时刻用它来更新参数。</li>
+</ul>
+<p><strong>【特点】</strong></p>
+<ul>
+<li>在凸批量梯度的情况下，NAG将额外误差收敛率从 $O(1/k)$ （k步后）改进到 $O(1/k^2)$ 。</li>
+<li>然而，在随机梯度情况下，NAG动量对收敛率的作用却不是很大。</li>
+</ul>
+<h2 id="0x03-自适应学习率优化算法"><a href="#0x03-自适应学习率优化算法" class="headerlink" title="0x03 自适应学习率优化算法"></a>0x03 自适应学习率优化算法</h2><p>自适应（Adaptive）学习率优化算法，顾名思义，主要针对于学习率进行优化。学习率对模型的性能有着显著的影响，然而传统的优化算法要么将学习率设置为常数要么根据训练次数调节学习率，忽视了学习率其他变化的可能性。因此需要采取一些策略来想办法更新学习率，从而提高训练速度。</p>
+<p>目前的自适应学习率优化算法主要有：<strong>AdaGrad算法</strong>，<strong>RMSProp算法</strong>，<strong>AdaDelta算法</strong>以及<strong>Adam算法</strong>。</p>
+<h3 id="1-AdaGrad算法"><a href="#1-AdaGrad算法" class="headerlink" title="1. AdaGrad算法"></a>1. AdaGrad算法</h3><p><strong>【原理】</strong></p>
+<p>自适应性梯度算法（AdaGrad, Adaptive Sub-gradient），其主要特点在于不断累加每次训练中梯度的平方，公式如下：</p>
+<p>$$r_t = r_{t-1} + g_t^2$$</p>
+<p>$$\Delta w = - \frac{\eta}{\epsilon + \sqrt{r_t}} g_t$$</p>
+<p>其中，$\epsilon$ 是一个极小的正数，用来防止除0， $g_t^2 = g_t \odot g_t$ ，$\odot$ 是矩阵的哈达码积运算符。</p>
+<p>从公式中可以看出，随着算法不断迭代，$r_t$ 会越来越大，整体的学习率会越来越小。因此，一般来说AdaGrad算法一开始是激励收敛，到了后面就慢慢变成惩罚收敛，速度越来越慢。</p>
+<p><strong>【特点】</strong></p>
+<ul>
+<li>Adagrad 的主要优势在于不需要人为的调节学习率，它可以自动调节；缺点在于，随着迭代次数增多，学习率会越来越小，最终会趋近于0</li>
+<li>此外，AdaGrad算法虽然在<strong>凸函数</strong>(Convex Functions)上表现较好，但是当目标函数非凸时，算法梯度下降的轨迹所经历的结构会复杂的多，因为早期梯度对当前训练没有太多意义。</li>
+</ul>
+<h3 id="2-RMSProp算法"><a href="#2-RMSProp算法" class="headerlink" title="2. RMSProp算法"></a>2. RMSProp算法</h3><p><strong>【原理】</strong></p>
+<p>均方根传播（RMSProp）是AdaGrad的改进算法，把AdaGrad的梯度积累改为指数加权的移动平均，其基本形式如下：</p>
+<p>$$r_t = \beta r_{t-1} + (1 - \beta)g_t^2$$</p>
+<p>$$\Delta w = - \frac{\eta}{\sqrt{\epsilon + r_t}} g_t$$</p>
+<p>从公式可以看出，与AdaGrad不同，RMSProp只会累积近期的梯度信息，对于“遥远的历史”则会以指数衰减的形式慢慢放弃。</p>
+<p><strong>【特点】</strong></p>
+<ul>
+<li>RMSProp借鉴了Adagrad的思想，由于取了个加权平均，避免了学习率越来越低的的问题，而且能自适应地调节学习率。</li>
+<li>RMSProp算法在经验上已经被证明是一种有效且实用的深度神经网络优化算法。目前它是深度学习从业者经常采用的优化方法之一。</li>
+</ul>
+<h3 id="3-AdaDelta算法"><a href="#3-AdaDelta算法" class="headerlink" title="3. AdaDelta算法"></a>3. AdaDelta算法</h3><p><strong>【原理】</strong></p>
+<p>AdaDelta是与RMSProp相同时间对立发展出来的一个算法，在实现上可以看作是RMSProp的一个变种，先看公式：</p>
+<p>$$r_t = \beta r_{t-1} + (1 - \beta)g_t^2$$</p>
+<p>$$s_t = \beta s_{t-1} + (1 - \beta) \Delta w^2$$</p>
+<p>$$\Delta w = - \frac{\sqrt{\epsilon + s_t}}{\sqrt{\epsilon + r_t}} g_t$$</p>
+<p>可以看到该算法不需要设置学习率 $\eta$，这是该算法的一大优势。除了同样以 $r_t$ 来累积梯度的信息之外，该算法还使用一个 $s_t$ 以指数衰减的形式来累积 <img src="https://www.zhihu.com/equation?tex=%5CDelta+w" alt="[公式]"> 的信息。</p>
+<p><strong>【特点】</strong></p>
+<ul>
+<li>在模型训练的初期和中期，AdaDelta表现很好，加速效果不错，训练速度快。</li>
+<li>在模型训练的后期，模型会反复地在局部最小值附近抖动。</li>
+</ul>
+<h3 id="4-Adam算法"><a href="#4-Adam算法" class="headerlink" title="4. Adam算法"></a>4. Adam算法</h3><p><strong>【原理】</strong></p>
+<p>Adam的全称为 Adaptive Momentum，可以看作是Momentum与RMSProp的一个结合体。该算法通过计算梯度的一阶矩估计和二阶矩估计而为不同的参数设计独立的自适应性学习率，公式如下：</p>
+<p>$$s_t = \alpha s_{t-1} + (1 - \alpha g_t)$$</p>
+<p>$$r_t = \beta r_{t-1} + (1 - \beta g_t^2)$$</p>
+<p>$$\hat{s_t} = \frac{s_t}{1 - \alpha^t}$$</p>
+<p>$$\hat{r_t} = \frac{r_t}{1 - \beta^t}$$</p>
+<p>$$\Delta w = - \eta ~\frac{\hat{s_t}}{\sqrt{\epsilon + r_t}}$$</p>
+<p>其中，$s_t$ 和 $r_t$ 分别为一阶动量项和二阶动量项，$\hat{s_t}$ 和 $\hat{r_t}$ 分别为各自的修正值。</p>
+<p><strong>【特点】</strong></p>
+<p>Adam 算法同时获得了 AdaGrad 和 RMSProp 算法的优点。</p>
+<ul>
+<li>Adam 不仅如 RMSProp 算法那样基于一阶矩均值计算适应性参数学习率，它同时还充分利用了梯度的二阶矩均值（即有偏方差/uncentered variance）。具体来说，算法计算了梯度的<strong>指数移动均值</strong>（exponential moving average），超参数 $\alpha$ 和 $\beta$ 控制了这些移动均值的衰减率。</li>
+<li>移动均值的初始值和 $\alpha$ 、$\beta$ 值接近于 1（推荐值），因此矩估计的偏差接近于 0。该偏差通过首先计算带偏差的估计而后计算偏差修正后的估计而得到提升。</li>
+</ul>
+<h2 id="0x04-各种优化器对比分析"><a href="#0x04-各种优化器对比分析" class="headerlink" title="0x04 各种优化器对比分析"></a>0x04 各种优化器对比分析</h2><h3 id="1-可视化比较"><a href="#1-可视化比较" class="headerlink" title="1. 可视化比较"></a>1. 可视化比较</h3><h4 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h4><img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/optimizer-eg1.gif" alt="optimizer-eg1" style="zoom:80%;" />
+
+<p>上图描述了在一个曲面上，6种优化器的表现，从中可以大致看出：</p>
+<p><strong>① 下降速度：</strong></p>
+<ul>
+<li>三个自适应学习优化器Adagrad、RMSProp与AdaDelta的下降速度明显比SGD要快，其中，Adagrad和RMSProp齐头并进，要比AdaDelta要快。</li>
+<li>两个动量优化器Momentum和NAG由于刚开始走了岔路，初期下降的慢；随着慢慢调整，下降速度越来越快，其中NAG到后期甚至超过了领先的Adagrad和RMSProp。</li>
+</ul>
+<p><strong>② 下降轨迹：</strong></p>
+<ul>
+<li>SGD和三个自适应优化器轨迹大致相同。两个动量优化器初期走了“岔路”，后期也调整了过来。</li>
+</ul>
+<h4 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h4><img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/optimizer-eg2.gif" alt="optimizer-eg2" style="zoom:80%;" />
+
+<p>上图在一个存在鞍点的曲面，比较6中优化器的性能表现，从图中大致可以看出：</p>
+<ul>
+<li>三个自适应学习率优化器没有进入鞍点，其中，AdaDelta下降速度最快，Adagrad和RMSprop则齐头并进。</li>
+<li>两个动量优化器Momentum和NAG以及SGD都顺势进入了鞍点。但两个动量优化器在鞍点抖动了一会，就逃离了鞍点并迅速地下降，后来居上超过了Adagrad和RMSProp。</li>
+<li>很遗憾，SGD进入了鞍点，却始终停留在了鞍点，没有再继续下降。</li>
+</ul>
+<h4 id="示例3"><a href="#示例3" class="headerlink" title="示例3"></a>示例3</h4><img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/optimizer-eg3.gif" alt="optimizer-eg3" style="zoom:80%;" />
+
+
+
+<p>上图比较了6种优化器收敛到目标点（五角星）的运行过程，从图中可以大致看出：</p>
+<p><strong>① 下降速度</strong></p>
+<ul>
+<li>两个动量优化器Momentum和NAG的速度最快，其次是三个自适应学习率优化器AdaGrad、AdaDelta以及RMSProp，最慢的则是SGD。</li>
+</ul>
+<p><strong>② 下降轨迹</strong></p>
+<ul>
+<li>两个动量优化器虽然运行速度很快，但是初中期走了很长的”岔路”。</li>
+<li>三个自适应优化器中，Adagrad初期走了岔路，但后来迅速地调整了过来，但相比其他两个走的路最长；AdaDelta和RMSprop的运行轨迹差不多，但在快接近目标的时候，RMSProp会发生很明显的抖动。</li>
+<li>SGD相比于其他优化器，走的路径是最短的，路子也比较正。</li>
+</ul>
+<h2 id="0x05-参考文章"><a href="#0x05-参考文章" class="headerlink" title="0x05 参考文章"></a>0x05 参考文章</h2><p>[1] <a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_40170902/article/details/80092628">机器学习：各种优化器Optimizer的总结与比较</a></p>
+<p>[2] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/81020717">从SGD到NadaMax，十种优化算法原理及实现</a></p>
+<p>[3] <a target="_blank" rel="noopener" href="https://blog.csdn.net/autocyz/article/details/83114245">神经网络中的各种优化方法</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Jay</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://jay1zhang.github.io/2021/04/22/Computer%20Science/Deep%20Learning/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/">http://jay1zhang.github.io/2021/04/22/Computer%20Science/Deep%20Learning/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Deep-Learning/">Deep Learning</a></div><div class="post_share"><div class="social-share" data-image="http://jayyy1.gitee.io/images/pictures/cartoons/007.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2021/04/17/Computer%20Science/Deep%20Learning/%E3%80%8C%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%8DTransformer%20%E6%A8%A1%E5%9E%8B%E8%AF%A6%E8%A7%A3/"><img class="next-cover" src="http://jayyy1.gitee.io/images/pictures/cartoons/040.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">「深度学习」Transformer 模型详解</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2021/04/17/Computer Science/Deep Learning/「深度学习」Transformer 模型详解/" title="「深度学习」Transformer 模型详解"><img class="cover" src="http://jayyy1.gitee.io/images/pictures/cartoons/040.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-17</div><div class="title">「深度学习」Transformer 模型详解</div></div></a></div><div><a href="/2021/04/16/Computer Science/Deep Learning/「深度学习」Attention？Attention！/" title="「深度学习」Attention? Attention!"><img class="cover" src="http://jayyy1.gitee.io/images/pictures/cartoons/022.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-16</div><div class="title">「深度学习」Attention? Attention!</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00-%E4%BB%80%E4%B9%88%E6%98%AF%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95%EF%BC%9F"><span class="toc-text">0x00 什么是优化算法？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95"><span class="toc-text">0x01 梯度下降法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%A0%87%E5%87%86%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95%EF%BC%88GD%EF%BC%89"><span class="toc-text">1. 标准梯度下降法（GD）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%89%B9%E9%87%8F%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95%EF%BC%88BGD%EF%BC%89"><span class="toc-text">2. 批量梯度下降法（BGD）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E9%9A%8F%E6%9C%BA%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95%EF%BC%88SGD%EF%BC%89"><span class="toc-text">3. 随机梯度下降法（SGD）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-%E5%8A%A8%E9%87%8F%E4%BC%98%E5%8C%96%E6%B3%95"><span class="toc-text">0x02 动量优化法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Momentum"><span class="toc-text">1. Momentum</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-NAG"><span class="toc-text">2. NAG</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-%E8%87%AA%E9%80%82%E5%BA%94%E5%AD%A6%E4%B9%A0%E7%8E%87%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95"><span class="toc-text">0x03 自适应学习率优化算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-AdaGrad%E7%AE%97%E6%B3%95"><span class="toc-text">1. AdaGrad算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-RMSProp%E7%AE%97%E6%B3%95"><span class="toc-text">2. RMSProp算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-AdaDelta%E7%AE%97%E6%B3%95"><span class="toc-text">3. AdaDelta算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Adam%E7%AE%97%E6%B3%95"><span class="toc-text">4. Adam算法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x04-%E5%90%84%E7%A7%8D%E4%BC%98%E5%8C%96%E5%99%A8%E5%AF%B9%E6%AF%94%E5%88%86%E6%9E%90"><span class="toc-text">0x04 各种优化器对比分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%8F%AF%E8%A7%86%E5%8C%96%E6%AF%94%E8%BE%83"><span class="toc-text">1. 可视化比较</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B1"><span class="toc-text">示例1</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B2"><span class="toc-text">示例2</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B3"><span class="toc-text">示例3</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x05-%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="toc-text">0x05 参考文章</span></a></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url(http://jayyy1.gitee.io/images/pictures/cartoons/012.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Jay</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><div class="search-dialog__title" id="algolia-search-title">Algolia</div><div id="algolia-input-panel"><div id="algolia-search-input"></div></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>
