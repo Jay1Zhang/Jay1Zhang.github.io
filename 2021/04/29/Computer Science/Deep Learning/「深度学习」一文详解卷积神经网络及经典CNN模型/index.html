@@ -1,0 +1,757 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>「深度学习」一文详解卷积神经网络及经典CNN模型 | J1z's Blog</title><meta name="keywords" content="Deep Learning"><meta name="author" content="Jay"><meta name="copyright" content="Jay"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="本文介绍CNNs的基础概念，网络结构及经典CNN模型。 0x00 概述卷积神经网络（CNN），听起来像是计算机科学、生物学和数学的诡异组合，但它们已经成为计算机视觉领域中最具影响力的革新的一部分。 卷积神经网络是一种带有卷积结构的深度神经网络，由纽约大学的Yann Lecun于1998年提出，其本质仍是一个多层感知机（MLP）。 但卷积神经网络在 2012 年才开始崭露头角，Alex Krizhe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「深度学习」一文详解卷积神经网络及经典CNN模型">
+<meta property="og:url" content="http://jay1zhang.github.io/2021/04/29/Computer%20Science/Deep%20Learning/%E3%80%8C%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%8D%E4%B8%80%E6%96%87%E8%AF%A6%E8%A7%A3%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8F%8A%E7%BB%8F%E5%85%B8CNN%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:site_name" content="J1z&#39;s Blog">
+<meta property="og:description" content="本文介绍CNNs的基础概念，网络结构及经典CNN模型。 0x00 概述卷积神经网络（CNN），听起来像是计算机科学、生物学和数学的诡异组合，但它们已经成为计算机视觉领域中最具影响力的革新的一部分。 卷积神经网络是一种带有卷积结构的深度神经网络，由纽约大学的Yann Lecun于1998年提出，其本质仍是一个多层感知机（MLP）。 但卷积神经网络在 2012 年才开始崭露头角，Alex Krizhe">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://jayyy1.gitee.io/images/pictures/cartoons/001.jpg">
+<meta property="article:published_time" content="2021-04-29T02:10:08.000Z">
+<meta property="article:modified_time" content="2021-04-30T09:59:22.979Z">
+<meta property="article:author" content="Jay">
+<meta property="article:tag" content="Deep Learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://jayyy1.gitee.io/images/pictures/cartoons/001.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://jay1zhang.github.io/2021/04/29/Computer%20Science/Deep%20Learning/%E3%80%8C%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%8D%E4%B8%80%E6%96%87%E8%AF%A6%E8%A7%A3%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8F%8A%E7%BB%8F%E5%85%B8CNN%E6%A8%A1%E5%9E%8B/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.5/dist/instantsearch.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.5/dist/instantsearch.min.js" defer></script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"WKEK6XV2V5","apiKey":"e093fbb9f29fdf5c7ddd56ec43e9ae05","indexName":"Jay","hits":{"per_page":10},"languages":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}.","hits_stats":"${hits} results found in ${time} ms"}},
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"Traditional Chinese Activated Manually","cht_to_chs":"Simplified Chinese Activated Manually","day_to_night":"Dark Mode Activated Manually","night_to_day":"Light Mode Activated Manually","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-04-30 17:59:22'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">49</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">16</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">11</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-heart"></i><span> Link</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(http://jayyy1.gitee.io/images/pictures/cartoons/001.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">J1z's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-heart"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">「深度学习」一文详解卷积神经网络及经典CNN模型</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-04-29T02:10:08.000Z" title="Created 2021-04-29 10:10:08">2021-04-29</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-04-30T09:59:22.979Z" title="Updated 2021-04-30 17:59:22">2021-04-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Computer-Science/">Computer Science</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Computer-Science/Deep-Learning/">Deep Learning</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">10.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>33min</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>本文介绍CNNs的基础概念，网络结构及经典CNN模型。</p>
+<h2 id="0x00-概述"><a href="#0x00-概述" class="headerlink" title="0x00 概述"></a>0x00 概述</h2><p>卷积神经网络（CNN），听起来像是计算机科学、生物学和数学的诡异组合，但它们已经成为计算机视觉领域中最具影响力的革新的一部分。</p>
+<p>卷积神经网络是一种带有卷积结构的深度神经网络，由纽约大学的Yann Lecun于1998年提出，其本质仍是一个多层感知机（MLP）。</p>
+<p>但卷积神经网络在 2012 年才开始崭露头角，Alex Krizhevsky 凭借它们赢得了那一年的 ImageNet 挑战赛（大体上相当于计算机视觉的年度奥林匹克），他把分类误差记录从 26% 降到了 15%，在当时震惊了世界。自那之后，大量公司开始将深度学习用作服务的核心。Facebook 将神经网络用于自动标注算法、谷歌将它用于图片搜索、亚马逊将它用于商品推荐、Pinterest 将它用于个性化主页推送、Instagram 将它用于搜索架构。</p>
+<p>CNN 成功的原因在于其所采用的<strong>局部连接</strong>和<strong>权值共享</strong>的方式：</p>
+<ul>
+<li>一方面减少了参数的数量使得网络易于优化</li>
+<li>另一方面降低了模型的复杂度，也就是减小了过拟合的风险</li>
+</ul>
+<p>该优点在网络的输入是图像时表现的更为明显，使得图像可以<strong>直接作为网络的输入</strong>，从而避免了传统识别算法中复杂的特征提取和数据重建的过程，如网络能够<strong>自行抽取图像的特征</strong>包括颜色、纹理、形状及图像的拓扑结构。在处理二维图像的问题上，特别是识别位移、缩放及其他形式扭曲不变性的应用上具有良好的<strong>鲁棒性</strong>和运算效率等。</p>
+<h2 id="0x01-卷积网络基础"><a href="#0x01-卷积网络基础" class="headerlink" title="0x01 卷积网络基础"></a>0x01 卷积网络基础</h2><p>卷积结构是卷积神经网络的核心内容，卷积也可以称为线性滤波，是信号处理中的重要概念，可以处理数字信号，产生不同的效果。</p>
+<p>在深度学习中，一维卷积（Conv1d）常用于<strong>序列模型</strong>，但本文将重点介绍二维卷积（Conv2d）在图像处理中的运用。</p>
+<h3 id="1-卷积原理"><a href="#1-卷积原理" class="headerlink" title="1. 卷积原理"></a>1. 卷积原理</h3><h4 id="Convolution"><a href="#Convolution" class="headerlink" title="Convolution"></a>Convolution</h4><p>卷积运算，实际上就是对图像元素的矩阵变换，本质上是<strong>在输入图像上滑动窗口，计算对应元素的加权和</strong>。</p>
+<p>图1直观地展示了一次Convolution的操作：</p>
+<ul>
+<li>首先，我们有一个二维的卷积核（也称为滤波器 filter）和一个待处理的二维图像。</li>
+<li>然后，<strong>对于图像的每一个像素点，计算它的邻域像素和卷积核的对应元素的乘积，然后加起来，作为该像素位置的值</strong>。</li>
+</ul>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210429103835081.png" alt="image-20210429103835081" style="zoom:70%;" />
+
+<center><i>图 1(1) - Convolution</i></center>
+
+
+
+<blockquote>
+<p>习惯上，卷积核的大小为奇数，这样它才有一个中心，例如图1中的3x3，或者5x5，7x7。</p>
+</blockquote>
+<p>若将卷积核在这个二维图像上「滑动」，遍历所有的像素点，将得到一个二维的特征矩阵，如图2：</p>
+<img src="http://p99.pstatp.com/large/pgc-image/1540352487824318bbe29b4" alt="动图形象理解深度学习卷积" style="zoom:65%;" />
+
+<center><i>图 1(2) - Convolution</i></center>
+
+
+
+<p>这样就完成了一次Convolution过程，并从原始图像中提取出了局部特征信息。</p>
+<h4 id="Padding"><a href="#Padding" class="headerlink" title="Padding"></a>Padding</h4><p>从Convolution的过程可以看出，对于 nxn 矩阵，如果使用 fxf 的卷积核，那么输出矩阵将为 $(n-f+1) \times (n-f+1)$ 。</p>
+<p>这就有一些缺点：</p>
+<ol>
+<li>每次操作，你的矩阵都会变小，到最后可能会变为 1x1 矩阵，显然这并不是你所期望的。</li>
+<li>对于原始矩阵的角落的元素，只被一个输出所触碰或者说使用。显然，<strong>图像边缘的大部分信息都丢失了</strong>。</li>
+</ol>
+<p>Padding 做了一些非常机智的办法来解决这个问题：用额外的 “假” 像素填充在原始矩阵的周围。通常填充值为 0， 因此经常使用的术语「零填充」。</p>
+<p>这样，在滑动时的卷积核可以允许原始边缘像素位于其中心，同时 “假” 像素又不会干扰到原始特征。</p>
+<img src="http://p1.pstatp.com/large/pgc-image/1540352487743f3555ff815" alt="动图形象理解深度学习卷积" style="zoom:80%;" />
+
+<center><i>图 2 - Padding</i></center>
+
+
+
+<p>假设填充层数为 p ，那么输出矩阵就变为了 $(n+2p-f+1) \times (n+2p-f+1)$ ，乘以2是因为上下两层或者左右两层都进行了填充。</p>
+<p>由此就衍生出了两种卷积运算：</p>
+<ol>
+<li><p><strong>Valid Convolution</strong>：相当于no padding（p=0），输出  $(n-f+1) \times (n-f+1)$ ；</p>
+</li>
+<li><p><strong>Same Convolution</strong>：通过padding，保证输出矩阵与输入矩阵大小same，因此有</p>
+<p>$n = n+2p-f+1$ ，进而推出 $p = (f-1)/2$  。（f 通常是奇数）</p>
+</li>
+</ol>
+<h4 id="Stride"><a href="#Stride" class="headerlink" title="Stride"></a>Stride</h4><p>Stride 的想法是，<strong>通过改变卷积核的移动步长来跳过一些像素</strong>。</p>
+<p>当 Stride 是 1 表示卷积核滑过每一个相距是 1 的像素，是最基本的单步滑动，作为<strong>标准卷积模式</strong>；Stride 是 2 表示卷积核的移动步长是 2，跳过相邻像素，图像缩小为原来的 1/2；Stride 是 3 表示卷积核的移动步长是 3，跳过 2 个相邻像素，图像缩小为原来的 1/3。</p>
+<img src="http://p1.pstatp.com/large/pgc-image/154035248774021f344f354" alt="动图形象理解深度学习卷积" style="zoom:80%;" />
+
+<center><i>图 3 - Stride</i></center>
+
+<p>假设卷积核每次移动的步数为 s ，那么输出矩阵为 $(\lfloor\frac{n+2p-f}{s} + 1\rfloor) \times (\lfloor\frac{n+2p-f}{s} + 1\rfloor)$ 。</p>
+<h4 id="Multiple-Channels"><a href="#Multiple-Channels" class="headerlink" title="Multiple Channels"></a>Multiple Channels</h4><p>前面仅涉及具有单个输入通道的图像。实际上，大多数输入图像多通道的，如RGB图像就是3通道的，这就需要多个卷积核来处理。</p>
+<blockquote>
+<p>关于滤波器与卷积核：</p>
+<ul>
+<li>在 1 通道的情况下，滤波器和卷积核这两个术语等价；</li>
+<li>在一般情况下，每个过滤器实际上是卷积核的集合，即由 $n_c$（number of channels）个卷积核组成，大小为 $f \times f \times n_c$ 。</li>
+</ul>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210429132915888.png" alt="image-20210429132915888" style="zoom:40%;" />
+
+<center><i>图 4 - 卷积核与滤波器</i></center>
+</blockquote>
+<p>三维立体上的卷积，其计算过程和二维矩阵相同，只不过<strong>必须保证原矩阵与滤波器的通道数相同</strong>。</p>
+<p>如在 $n \times n \times 3$ 的 RGB 图像上，滤波器大小应为为 $f \times f \times 3$ ，那么输出矩阵将为 $(n-f+1) \times (n-f+1) \times 1$ 。</p>
+<p>具体计算过程如下：</p>
+<ol>
+<li>滤波器的每个卷积核在输入图像的对应通道上「<strong>滑动</strong>」，各自产生一个对应通道的输出：</li>
+</ol>
+<p><img src="http://p9.pstatp.com/large/pgc-image/1540353191597a9a101dbd3" alt="动图形象理解深度学习卷积"></p>
+<center><i>图 5(1) - Multiple Channels</i></center>
+
+
+
+<ol start="2">
+<li>然后将每个通道处理的结果「<strong>相加</strong>」在一起，产生一个总的输出通道：</li>
+</ol>
+<p><img src="http://p99.pstatp.com/large/pgc-image/154035248788599038174f5" alt="动图形象理解深度学习卷积"></p>
+<center><i>图 5(2) - Multiple Channels</i></center>
+
+
+
+<h4 id="Bias"><a href="#Bias" class="headerlink" title="Bias"></a>Bias</h4><p>偏置在这里的作用是对每个输出滤波器增加偏置项以产生最终输出通道。</p>
+<img src="http://p3.pstatp.com/large/pgc-image/154035248791818f75510d4" alt="动图形象理解深度学习卷积" style="zoom:80%;" />
+
+<center><i>图 6 - Bias</i></center>
+
+
+
+<h4 id="Multiple-filters"><a href="#Multiple-filters" class="headerlink" title="Multiple filters"></a>Multiple filters</h4><p>在实际操作中，我们常用多个这样的滤波器来提取不同特征。每个滤波器产生一个输出通道，然后把不同滤波器的输出拼接（concat）在一起，得到最终的输出矩阵。</p>
+<p>假设滤波器的数量为 $n_f$（number of fitlers），对于 $n \times n \times n_c$ 的输入矩阵，如果使用  $n_f$（number of fitlers）个大小为 $f \times f \times n_c$ 的滤波器处理，输出矩阵将为 $(n-f+1) \times (n-f+1) \times n_f $ 。</p>
+<p>比如图7，在6x6x3上用3x3x3的filter过滤，将会生成4x4x1的矩阵，如果使用两个这样的filter，就可以生成4x4x2的输出矩阵。</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210429140553075.png" alt="image-20210429140553075" style="zoom:60%;" />
+
+
+
+<center><i>图 7 - Multiple filters</i></center>
+
+
+
+
+
+<p>由前面的讨论可知，多通道上的卷积过程一定满足下面两个等式：</p>
+<ol>
+<li><strong>输入矩阵的通道数 = 滤波器的通道数</strong></li>
+<li><strong>输出矩阵的通道数 = 滤波器的数量</strong></li>
+</ol>
+<h3 id="2-卷积有何作用？"><a href="#2-卷积有何作用？" class="headerlink" title="2. 卷积有何作用？"></a>2. 卷积有何作用？</h3><p>前面详细介绍了卷积的概念与原理，那么卷积到底有什么用呢？下面我们一起来领略一些简单又不简单的卷积的魔力。</p>
+<h4 id="1）啥也不做-Do-Nothing"><a href="#1）啥也不做-Do-Nothing" class="headerlink" title="1）啥也不做 Do Nothing"></a>1）啥也不做 Do Nothing</h4><p>图8中的滤波器只有中心点的权值是1，邻域点都是0，因此对滤波后的取值没有任何影响。使用 Same Padding 方式，得到的输出图像和原图是一样的。</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210429143606064.png" alt="image-20210429143606064" style="zoom:80%;" />
+
+<center><i>图 8 - Do Nothing</i></center>
+
+<p>那这有什么用呢？我们前面提到，在多通道下的卷积，有这么一个等式：</p>
+<p><strong>输出图像的通道数 = 滤波器的数量</strong></p>
+<p>因此，我们可以通过这种方式来<strong>压缩图像的通道数，减少冗余信息</strong>。</p>
+<h4 id="2）边缘检测-Edge-Detection"><a href="#2）边缘检测-Edge-Detection" class="headerlink" title="2）边缘检测 Edge Detection"></a>2）边缘检测 Edge Detection</h4><p>图9(1)中的滤波器可以检测图像的水平边缘：</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210429144649289.png" alt="image-20210429144649289" style="zoom:80%;" />
+
+<center><i>图 9(1) - 水平边缘检测</i></center>
+
+<blockquote>
+<p>需要注意的是，这里矩阵的元素和是0，所以滤波后的图像会很暗，只有边缘的地方是有亮度的。</p>
+</blockquote>
+<p>为什么这个滤波器可以寻找到水平边缘呢？因为用这个滤波器卷积相当于求导的离散版本：</p>
+<ul>
+<li>将当前的像素值减去前一个像素值，就可以得到这个函数在这两个位置的差别或者斜率。</li>
+</ul>
+<p>那么图9(2)中的滤波器便可以检测垂直边缘：</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210429145140024.png" alt="image-20210429145140024" style="zoom:80%;" />
+
+<center><i>图 9(2) - 垂直边缘检测</i></center>
+
+
+
+<p>图9(3)则可以检测45度的边缘：</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210429145221161.png" alt="image-20210429145221161" style="zoom:80%;" />
+
+<center><i>图 9(3) - 45度边缘检测</i></center>
+
+<p>图9(4)中的滤波器可以检测所有方向的边缘：</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210429145312856.png" alt="image-20210429145312856" style="zoom:80%;" />
+
+<center><i>图 9(4) - 所有方向上的边缘检测</i></center>
+
+
+
+<h4 id="3）图像锐化-Sharpness-Filter"><a href="#3）图像锐化-Sharpness-Filter" class="headerlink" title="3）图像锐化 Sharpness Filter"></a>3）图像锐化 Sharpness Filter</h4><p>图像的锐化和边缘检测很像，我们首先找到图像的边缘，然后把边缘信息叠加到原始图像上面，也就是说，也就是说，在边缘检测滤波器的基础上，在中心的位置加1。这样就能保证滤波后的图像与原始的图像具有同样的亮度，同时也强化了图像的边缘，使图像看起来更加锐利了。</p>
+<p>$$\left[ \begin{matrix} -1 &amp; -1 &amp; -1\ -1 &amp; 8 &amp; -1\ -1 &amp; -1 &amp; -1 \end{matrix} \right] + \left[ \begin{matrix} 0 &amp; 0 &amp; 0\ 0 &amp; 1 &amp; 0\ 0 &amp; 0 &amp; 0 \end{matrix} \right] = \left[ \begin{matrix} -1 &amp; -1 &amp; -1\ -1 &amp; 9 &amp; -1\ -1 &amp; -1 &amp; -1 \end{matrix} \right]$$</p>
+<p>如图10(1)所示：</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210429145517904.png" alt="image-20210429145517904" style="zoom:80%;" />
+
+<center><i>图 10(1) - 图像锐化</i></center>
+
+
+
+<p>图10(2)中的滤波器会更加强调边缘：</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210429150408883.png" alt="image-20210429150408883" style="zoom:80%;" />
+
+<center><i>图 10(2) - 图像锐化</i></center>
+
+
+
+<h4 id="4）浮雕-Embossing-Filter"><a href="#4）浮雕-Embossing-Filter" class="headerlink" title="4）浮雕 Embossing Filter"></a>4）浮雕 Embossing Filter</h4><p>浮雕滤波器可以给图像一种3D阴影的效，只要将中心一边的像素减去另一边的像素就可以了。</p>
+<p>这时候，像素值有可能是负数，我们将负数当成阴影，将正数当成光，然后我们对结果图像加上128的偏移，图像大部分就变成灰色了。</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210429150615090.png" alt="image-20210429150615090" style="zoom:80%;" />
+
+<center><i>图 11 - 浮雕</i></center>
+
+<p> 这种效果非常的漂亮，就像是将一副图像雕刻在一块石头上面一样，然后从一个方向照亮它。它和前面的滤波器不同，是非对称的。另外，它会产生负数值，所以我们需要将结果偏移，以得到图像灰度的范围。</p>
+<h4 id="5）更多例子"><a href="#5）更多例子" class="headerlink" title="5）更多例子"></a>5）更多例子</h4><p>图12 是应用了前面介绍的四种滤波器的效果：</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210429150837472.png" alt="image-20210429150837472" style="zoom:67%;" />
+
+<center><i>图 12 <br>
+    (A) 原图像   (B) 锐化   (C) 边缘检测   (D)浮雕</i></center>
+
+<p>实际上，除了上面四种滤波器歪，还有<strong>均值模糊滤波器 Box Filter</strong> (Averaging) 、<strong>高斯模糊滤波器 Gauss Filter</strong> 等，这里不再一一介绍。</p>
+<h2 id="0x02-卷积网络结构"><a href="#0x02-卷积网络结构" class="headerlink" title="0x02 卷积网络结构"></a>0x02 卷积网络结构</h2><p>基础的<strong>CNN</strong>由 <strong>卷积</strong>(convolution)，<strong>激活</strong>(activation)，和<strong>池化</strong>(pooling) 三种结构组成，CNN输出的结果是每幅图像的特定特征空间。</p>
+<p>当处理图像分类任务时，我们会把CNN输出的特征空间作为<strong>全连接层或全连接神经网络</strong>(fully connected neural network, FCN) 的输入，用全连接层来完成从输入图像到标签集的映射，即分类。当然，整个过程最重要的工作就是如何通过训练数据迭代调整网络权重，也就是<strong>反向传播算法</strong>。目前主流的卷积神经网络(CNNs)，比如VGGNet，ResNet等都是由简单的CNN调整、组合而来。</p>
+<p>下面我们就来一窥CNN的真面目。</p>
+<h3 id="1-CNN-整体结构"><a href="#1-CNN-整体结构" class="headerlink" title="1. CNN 整体结构"></a>1. CNN 整体结构</h3><p>图1显示的是CNN的基础结构及工作原理。现在大型深层的卷积神经网络通常由多个这样的结构前后连接、层内调整组成，根据功能不同，我们称这些前后连接的结构处于不同<strong>阶段</strong>(stage)。</p>
+<blockquote>
+<p>虽然在主流CNNs中，不同stage里CNN会有不同的单元和结构，比如卷积核 (kernel)大小可能不同，激活函数(activition function) 可能不同，pooling操作可能不存在，但是图1的CNN结构应当能够包含所有的情况。</p>
+</blockquote>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210429162210418.png" alt="image-20210429162210418" style="zoom:80%;" />
+
+<center><i>图 13 - 某个stage内CNN工作原理</i></center>
+
+
+
+<p>我们跟随图1来解释，一个stage中的一个CNN，通常会由三种映射空间组成（Maps Volume）：</p>
+<ul>
+<li>输入映射空间（input maps volume）</li>
+<li>特征映射空间（feature maps volume）</li>
+<li>池化映射空间（pooled maps volume）</li>
+</ul>
+<p>例如图1中，输入的是彩色RGB图像，那么 input maps volume 就由红，黄，蓝三通道/三种map构成。</p>
+<blockquote>
+<p>我们之所以用volume这个词来形容，是因为对于多通道图像输入图像实际上是由高度，宽度，深度三种信息构成，可以被形象理解为一种”体积”。这里的“深度”，在RGB中就是3，红，黄，蓝三种颜色构成的图像，在灰度图像中，就是1。</p>
+</blockquote>
+<h3 id="2-卷积层"><a href="#2-卷积层" class="headerlink" title="2. 卷积层"></a>2. 卷积层</h3><p>CNN中最基础的操作是卷积（convolution），再精确一点，基础CNN所用的卷积是一种二维卷积（Conv2d）。也就是说，kernal 只能在 x, y 上进行滑动，而不能进行深度 (跨通道) 位移。</p>
+<p>卷积的基本原理与具体过程前面花了整整一章来解释，相信不用再过多介绍了。</p>
+<h3 id="3-激活函数"><a href="#3-激活函数" class="headerlink" title="3. 激活函数"></a>3. 激活函数</h3><p>卷积之后，通常会加入偏置(bias)，并引入非线性激活函数(activation function)，这里定义bias为 $b$，activation function 为 $h$ ，那么就有</p>
+<p>$$feature_maps_volumes = h(\sum w_i v_i + b)$$</p>
+<p>其中，主流的activation function 有</p>
+<ul>
+<li>线性整流单元(ReLU)：$h(x) = max(0, x)$</li>
+<li>Sigmoid函数：$h(x) = 1 / (1 + e^{-z})$</li>
+<li>tanh函数：$h(x) = tanh(x)$</li>
+</ul>
+<h3 id="4-池化层"><a href="#4-池化层" class="headerlink" title="4. 池化层"></a>4. 池化层</h3><p>池化(pooling），是一种降采样操作(subsampling)，主要目标是压缩feature maps的特征空间，或者可以认为是降低feature maps的分辨率。因为feature map参数太多，而过多的图像细节不利于高层特征的抽取。</p>
+<p>池化层也叫下采样层，其具体操作与卷积层的操作基本相同，图14展现了最大池化的过程：它采用一个过滤器（通常是 2x2 的）和一个同样长度的步幅，然后把它应用到 feature map 上，计算的每个子区域中的最大数字。</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210429170031377.png" alt="image-20210429170031377" style="zoom:80%;" />
+
+<center><i>图 14 - Max Pooling</i></center>
+
+<p>池化层还有其他选择，比如<strong>平均池化（average pooling）</strong>和 <strong>L2-norm 池化</strong> 。</p>
+<p>可想而知，池化层层大幅减小了 feature map 的空间维度（长度和宽度改变了，但<strong>深度没变</strong>）。这达到了两个主要目的：</p>
+<ol>
+<li><p><strong>特征不变性</strong>，也就是我们在图像处理中经常提到的特征的尺度不变性。</p>
+<blockquote>
+<p>池化操作就是图像的resize，平时一张狗的图像被缩小了一倍我们还能认出这是一张狗的照片，这说明这张图像中仍保留着狗最重要的特征，我们一看就能判断图像中画的是一只狗，图像压缩时去掉的信息只是一些无关紧要的信息，而留下的信息则是具有尺度不变性的特征，是最能表达图像的特征。</p>
+</blockquote>
+</li>
+<li><p><strong>特征降维</strong>。</p>
+<p>我们知道一幅图像含有的信息是很大的，特征也很多，但是有些信息对于我们做图像任务时没有太多用途或者有冗余，池化层能够在保留主要特征的同时减少参数（降维，效果类似PCA）和计算量，防止过拟合，提高模型泛化能力。</p>
+</li>
+</ol>
+<p>池化层背后的直观推理是：一旦我们知道了原始输入（这里会有一个高激活值）中一个特定的特征，它与其它特征的相对位置就比它的绝对位置更重要。</p>
+<blockquote>
+<p>这里举一个直观的例子(数字识别)，假设有一个16x16的图片，里面有个数字1，我们需要识别出来，这个数字1可能写的偏左一点(图1)，这个数字1可能偏右一点(图2)，图1到图2相当于向右平移了一个单位，但是图1和图2经过max pooling之后它们都变成了相同的8x8特征矩阵，主要的特征我们捕获到了，同时又将问题的规模从16x16降到了8x8，而且具有平移不变性的特点。</p>
+</blockquote>
+<p>以上就是一个CNN stage的基本结构。需要强调的是，这个结构是可变的，目前大部分网络都是根据这个基本结构堆叠调整参数，或跳远连接而成。</p>
+<h3 id="5-卷积网络的特征"><a href="#5-卷积网络的特征" class="headerlink" title="5. 卷积网络的特征"></a>5. 卷积网络的特征</h3><p>和只用全连接层相比，卷积层的两个主要优势在于：</p>
+<ul>
+<li><p><strong>局部感受野</strong>（稀疏连接）：由于图像的空间联系是局部的，每个神经元不需要对全部的图像做感受，只需要感受局部特征即可，然后在更高层将这些感受得到的不同的局部神经元综合起来就可以得到全局的信息了，这样可以减少连接的数目。</p>
+</li>
+<li><p><strong>参数共享</strong>：不同神经元之间的参数共享可以减少需要求解的参数，使用多种滤波器去卷积图像就会得到多种特征映射。权值共享其实就是对图像用同样的卷积核进行卷积操作，也就意味着第一个隐藏层的所有神经元所能检测到处于图像不同位置的完全相同的特征。其主要的能力就能检测到不同位置的同一类型特征，也就是卷积网络能很好的适应图像的小范围的平移性，即有较好的平移不变性（比如将输入图像的猫的位置移动之后，同样能够检测到猫的图像）</p>
+</li>
+</ul>
+<h2 id="0x03-经典CNN模型"><a href="#0x03-经典CNN模型" class="headerlink" title="0x03 经典CNN模型"></a>0x03 经典CNN模型</h2><p>本章介绍了6种极为经典的CNN模型。对于LeNet5，AlexNet，VGGNet这三个网络简要了解即可，重点中的重点还是后面的 Inception Net 以及 ResNet ，同时注意各网络模型间的区别与联系。</p>
+<h3 id="1-LeNet5"><a href="#1-LeNet5" class="headerlink" title="1. LeNet5"></a>1. LeNet5</h3><p>LeNet5 诞生于 1994 年，是最早的卷积神经网络之一，并且推动了深度学习领域的发展。自从 1988 年开始，在许多次成功的迭代后，这项由 Yann LeCun 完成的开拓性成果被命名为 LeNet5（参见：Gradient-Based Learning Applied to Document Recognition）。</p>
+<h4 id="LeNet5-模型架构"><a href="#LeNet5-模型架构" class="headerlink" title="LeNet5 模型架构"></a>LeNet5 模型架构</h4><p>图15展示 LeNet5 模型的框架，这个网络虽然很小，但是它包含了卷积网络的基本结构：卷积层，池化层，激活层，全连接层。</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210429174842364.png" alt="image-20210429174842364" style="zoom:80%;" />
+
+<center><i>图 15 - LetNet5</i></center>
+
+
+
+<p>关于 LeNet5 的详细介绍，可以参看这篇文章：<a target="_blank" rel="noopener" href="https://cuijiahua.com/blog/2018/01/dl_3.html">网络解析（一）：LeNet-5详解</a> 。</p>
+<h4 id="LeNet5-创新点"><a href="#LeNet5-创新点" class="headerlink" title="LeNet5 创新点"></a>LeNet5 创新点</h4><ol>
+<li>使用卷积，池化，非线性激活三个层作为CNN的基本结构</li>
+<li>使用卷积提取空间特征</li>
+<li>使用平均池化进行下采样</li>
+<li>使用双曲线（tanh）或S型（sigmoid）的非线性激活函数</li>
+<li>多层神经网络（MLP）作为最后的分类器</li>
+</ol>
+<p>总体看来，LeNet 网络是最近大量神经网络架构的起点，并且也给这个领域带来了许多灵感。</p>
+<h3 id="2-AlexNet"><a href="#2-AlexNet" class="headerlink" title="2. AlexNet"></a>2. AlexNet</h3><p>第一个典型的CNN是LeNet5网络结构，但是第一个引起大家注意的网络却是AlexNet，也就是文章《ImageNet Classification with Deep Convolutional Neural Networks》介绍的网络结构。</p>
+<p>2012年，AlexNet以压倒性的优势赢得了竞争激烈的 ILSVRC 2012比赛，将top-5的错误率降低至了16.4%，相比第二名26.2%的错误率有了巨大的提升。AlexNet可以说是神经网络在低谷期后的第一次发声，确立了深度学习（深度卷积网络）在计算机视觉领域的统治地位，同时也推动了深度学习在语音识别、自然语言处理、强化学习等领域的拓展。</p>
+<h4 id="AlexNet-模型架构"><a href="#AlexNet-模型架构" class="headerlink" title="AlexNet 模型架构"></a>AlexNet 模型架构</h4><p>AlexNet 可以算是LeNet5的一种更深更宽的版本，其模型架构如图16所示：</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210429180429000.png" alt="image-20210429180429000" style="zoom:70%;" />
+
+<center><i>图 16 - AlexNet</i></center>
+
+<p>这个网络结构看起来很复杂呀，需要怎么理解好呢？</p>
+<p>首先这幅图分为上下两个部分的网络，论文中提到这两部分网络是分别对应两个GPU，只有到了特定的网络层后才需要两块GPU进行交互，这种设置完全是利用两块GPU来提高运算的效率，但其实在网络结构上差异不是很大。</p>
+<p>为了更方便的理解，我们假设现在只有一块GPU或者使用CPU进行运算，简化后的网络总共有8个需要训练参数的层，其中<strong>5层卷积，3层全连接层</strong>。</p>
+<ol>
+<li>输入图片是224x224像素的三通道图片；</li>
+<li>第一层使用11x11的卷积核，滑动步长为4个像素，输出为96个特征图并进行最大值池化；</li>
+<li>第二层使用5x5卷积核，卷积产生256个特征图，并进行最大池化；</li>
+<li>第三层，第四层均使用3x3卷积核，输出384个特征图；</li>
+<li>第五层使用3x3卷积层，输出256个特征图，并进行池化；</li>
+<li>第六层，第七层为全连接层，分别包含4096个隐层，也就是说，到全连接层时只剩4096个特征值；</li>
+<li>最终，第八层是有1000类输出的Softmax层，得到最终的分类结果。</li>
+</ol>
+<p>更多关于 AlexNet 模型的细节参考这篇文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/luoluonuoyasuolong/article/details/81750190">深入理解AlexNet网络</a> 。</p>
+<h4 id="AlexNet-创新点"><a href="#AlexNet-创新点" class="headerlink" title="AlexNet 创新点"></a>AlexNet 创新点</h4><ol>
+<li><p><strong>（重点）</strong>使用 <strong>ReLU</strong> 作为CNN的激活函数，并验证其效果在较深的网络超过了Sigmoid，成功解决了Sigmoid在网络较深时的梯度弥散问题。</p>
+</li>
+<li><p><strong>（重点）</strong>训练时使用 <strong>Dropout</strong> 随机忽略一部分神经元，以避免模型过拟合。</p>
+</li>
+<li><p>在CNN中使用重叠的<strong>最大池化</strong>。此前CNN中普遍使用平均池化，AlexNet全部使用最大池化，避免平均池化的模糊化效果。</p>
+</li>
+<li><p>提出了 <strong>LRN</strong> 层（Local Response Normalization，局部响应归一化），对局部神经元的活动创建竞争机制，使得其中响应比较大的值变得相对更大，并抑制其他反馈较小的神经元，增强了模型的泛化能力。</p>
+<blockquote>
+<p>但后续研究表明LRN层似乎并无卵用，慢慢就被弃用了。</p>
+</blockquote>
+</li>
+<li><p>使用<strong>CUDA加速</strong>深度卷积网络的训练，利用GPU强大的并行计算能力，处理神经网络训练时大量的矩阵运算。</p>
+</li>
+<li><p><strong>数据增强</strong>，随机地从256´256的原始图像中截取224´224大小的区域（以及水平翻转的镜像），相当于增加了(256-224)2´2=2048倍的数据量。如果没有数据增强，仅靠原始的数据量，参数众多的CNN会陷入过拟合中，使用了数据增强后可以大大减轻过拟合，提升泛化能力。</p>
+</li>
+</ol>
+<h3 id="3-VGGNet"><a href="#3-VGGNet" class="headerlink" title="3. VGGNet"></a>3. VGGNet</h3><p>VGGNet 是由牛津大学VGG(Visual Geometry Group)组提出的一种简洁的卷积神经网络模型，它探索了卷积神经网络的深度和其性能之间的关系，通过反复的堆叠3x3的小型卷积核和2x2的最大池化层，成功的构建了16~19层深的卷积神经网络。</p>
+<p>VGGNet 获得了ILSVRC 2014年比赛的亚军和定位项目的冠军，在top5上的错误率为7.5%。目前为止，VGGNet 依然被用于上游任务提取图像的特征。</p>
+<h4 id="VGGNet-模型架构"><a href="#VGGNet-模型架构" class="headerlink" title="VGGNet 模型架构"></a>VGGNet 模型架构</h4><p>在网络设计思路上，VGGNet以AlexNet为基础，尝试建立了一个层次更多，深度更深的网络。其网络结构一样可以由8个层次所构成，也是5组卷积层，3层全连接层。最主要的区别在于，<strong>VGGNet的每组卷积层并不是只做一次卷积操作，而是连续卷积2~4次</strong>。</p>
+<p>VGGNet 包含很多级别的网络，深度从11层到19层不等，比较常用的是VGGNet-16和VGGNet-19，其各级别网络结构参数如图17 所示：</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210430091044167.png" alt="image-20210430091044167" style="zoom:75%;" />
+
+<center><i>图 17 - VGGNet</i></center>
+
+
+
+<p>可以看到，VGGNet 的结构十分规整：</p>
+<ul>
+<li>VGGNet 的核心就是<strong>五组卷积操作</strong>，每组内有2~4个卷积层串联在一起，<strong>均采用同样数量的3x3大小的卷积核</strong>；</li>
+<li>在每组卷积的尾部会连接一个最大池化层用来<strong>缩小图片尺寸</strong>，每次压缩1/2；</li>
+<li>每组内各Conv层的卷积核数量一致，但五组中越靠后的组卷积核数量越多。因此组内不改变特征图的通道数，组间通道数依次翻倍：64 – 128 – 256 – 512 – 512。</li>
+</ul>
+<h4 id="VGGNet-创新点"><a href="#VGGNet-创新点" class="headerlink" title="VGGNet 创新点"></a>VGGNet 创新点</h4><p>作者在对比各级网络时总结出了以下几个观点：</p>
+<ol>
+<li><p>LRN层作用不大。</p>
+</li>
+<li><p>越深的网络效果越好。</p>
+<blockquote>
+<p>VGGNet 全部使用3x3的卷积核和2x2的池化核，通过不断加深网络结构来提升性能。网络层数的增长并不会带来参数量上的爆炸，因为参数量主要集中在最后三个全连接层中。</p>
+<p>这是因为，两个3x3卷积层的串联相当于1个5x5的卷积层，3个3x3的卷积层串联相当于1个7x7的卷积层，即3个3x3卷积层的感受野大小相当于1个7x7的卷积层。但是3个3x3的卷积层拥有比1个7x7的卷积层<strong>更少的参数量</strong>，只有后者的一半左右。更重要的是，3个3x3的卷积层拥有比1个7´7的卷积层<strong>更多的非线性变换</strong>（前者可以使用三次ReLU激活函数，而后者只有一次），使得CNN对特征的学习能力更强。</p>
+</blockquote>
+</li>
+<li><p>1x1的卷积层也是很有效的，可以用来<strong>增加非线性变换</strong>次数，而输出的通道数量上并不会发生改变。</p>
+<blockquote>
+<p>这里提一下1x1卷积层的其他用法：</p>
+<p>1x1的卷积层常被用来提炼特征，即多通道的特征组合在一起，凝练成较大通道或者较小通道的输出，而每张图片的大小不变。有时1x1的卷积神经网络还可以用来替代全连接层。</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="4-Google-Inception-Net"><a href="#4-Google-Inception-Net" class="headerlink" title="4. Google Inception Net"></a>4. Google Inception Net</h3><p>GoogleNet也出现在2014年，并在这年的ILSVRC获得了冠军。在VGGNets中我们了解到，如果网络的层数更多，深度更深，就会得到更好的结果。但是随着模型越来越复杂，参数越来越多，也会面临很多问题。</p>
+<ul>
+<li>一方面，是更深的网络需要更多的数据才能有更好的效果，否则就比较容易过拟合。</li>
+<li>另一方面，复杂的网络意味着更大的计算量，这对于应用来说非常不利。在一些对实时性要求非常高的应用中，比如自动驾驶，要求参数足够少，计算速度足够快。所以，减少参数也是一个重要的课题。</li>
+</ul>
+<p>因此，为了能更有效地扩展网络地复杂度，Google的大神们启动了Inception项目，GoogleNet就是它的第一个版本（目前共有4个版本）。</p>
+<h4 id="Inception-原理"><a href="#Inception-原理" class="headerlink" title="Inception 原理"></a>Inception 原理</h4><p>正如前面在对比 AlexNet 和 VGGNet 的结构时提到的，对于卷积核大小的选择是需要经验和大量实验才可以确定的，到底是选3x3呢，还是5x5或者7x7？这个问题并没有一种明确的思路。Inception 的做法是跳出直线加深网络层数的思路，通过<strong>增加“宽度”</strong>的方式增加网络复杂度，避免陷入卷积核选择的困境，而是<strong>让模型自己学习选择哪些卷积核</strong>。</p>
+<p>具体来说：</p>
+<ol>
+<li><p>Inception在每一个卷积层，并行使用1x1卷积核，3x3卷积核，5x5卷积核和池化，同时提取不同尺度的特征，然后通过1x1的卷积核对每一个分支进行降维后，最后将结果合并拼接在一起，如下图所示。</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210430102431132.png" alt="image-20210430102431132" style="zoom:60%;" />
+
+<blockquote>
+<p>令输入图像经过这些卷积核和池化层（same），并把所有的输出拼接在一起。即不再由人工决定是否需要或多需要，而是<strong>由网络自己学习需要什么参数，或什么样的filter组合</strong>。</p>
+</blockquote>
+</li>
+<li><p>但这样做的问题就是网络结构十分复杂，<strong>计算代价高昂</strong>。下图仅仅是对于5x5的卷积核来说，确定输出矩阵的一个元素就要1.2亿次乘法运算：</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210430103224508.png" alt="image-20210430103224508" style="zoom:60%;" />
+</li>
+<li><p>一个解决方案是使用 1x1 的卷积核来压缩通道数，这个卷积层也称为<strong>瓶颈层</strong>。如下图，确定输出矩阵的一个元素只需要1200万次乘法运算：</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210430103345133.png" alt="image-20210430103345133" style="zoom:60%;" />
+
+<blockquote>
+<p>事实证明，只要合理构建瓶颈层，你既可以显著缩小表示层规模，又不会降低网络性能，从而节省了大量计算。</p>
+</blockquote>
+</li>
+</ol>
+<ol start="4">
+<li><p>下图为引入了瓶颈层后的 Inception 模块：</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210430103622604.png" alt="image-20210430103622604" style="zoom:60%;" />
+
+<blockquote>
+<p>这里池化层后边接了一个 1x1 CONV 的原因是为了压缩通道数。</p>
+</blockquote>
+</li>
+</ol>
+<p>直观地看起来，Inception 的网络结构好像复杂了很多，本来只要一两个卷积就可以完成地计算，现在却要使用四五种不同地操作。但是通过引入瓶颈层，不仅减少了参数地数量，而且由于增加了网络的“宽度”，网络对多种尺度地适应性就更好了。</p>
+<p>这里再补充两个<strong>注意点</strong>：</p>
+<ol>
+<li>对于不同的卷积核，要取不同的滑动步长，以<strong>使得他们输出的特征图大小相同</strong>，便于后一步的操作；</li>
+<li>在CNN中，1x1的卷积核最主要的作用在于<strong>改变通道数</strong>，比如，原图像 3x64x64的rgb，通过5个1X1卷积核就变成了5x64x64.用5个卷积核代替了原来RGB三通道的表示方法。因此，该卷积核既可以升维又可以降维；</li>
+</ol>
+<h4 id="Inception-模型框架"><a href="#Inception-模型框架" class="headerlink" title="Inception 模型框架"></a>Inception 模型框架</h4><p>GoogleNet共22层网络，它是一个既“深”又“宽”的模型，主要由Inception模块堆积而成的，如图18 (1)。</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210430104027562.png" alt="image-20210430104027562" style="zoom:80%;" />
+
+<center><i>图 18(1) - Inception Net</i></center>
+
+
+
+<p>实际上，在原文中 Inception Net 还增加了一些分支，如图18 (2)：</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210430104132019.png" alt="image-20210430104132019" style="zoom:80%;" />
+
+<center><i>图 18(2) - Full Inception Net</i></center>
+
+
+
+<p>这些分支都是一些FC+softmax，以确保网络的中间层也参与了特征计算，并能进行预测结果，因而能对整个网络起到一种调整效果。</p>
+<h4 id="Inception-创新点"><a href="#Inception-创新点" class="headerlink" title="Inception 创新点"></a>Inception 创新点</h4><ol>
+<li>Inception 的核心创新点前面已经反复提到过，即不再由人工决定是否需要或多需要，而是<strong>由网络自己学习需要什么参数，或什么样的filter组合</strong>。</li>
+<li>Inception-v1，这是一个4个分支结合的结构。所有的分支都用到了<strong>1x1的卷积</strong>，这是因为1x1性价比很高，可以用很少的参数达到非线性和特征变换。</li>
+<li>Inception-v2是在第一代的GoogleNet基础上加入了<strong>批标准化（Batch Normalization）技术</strong>。其具体做法是，对mini-batch中所有的信号量进行统一的归一化，使得一个批次中所有的信号量符合均值为0，方差为1的高斯分布。需要注意的是，在tensorflow中，<strong>使用批标准化技术要在激活函数之前</strong>，否则作用会打一定的折扣；</li>
+<li>Inception-v3在之前的版本上又有提高。其最核心的思想是<strong>将卷积核操作继续分解成更小的卷积核</strong>。首先，比如，借鉴VGGNets的思路，5x5的卷积可以由连续2层3x3卷积所替代，这样不仅减少了参数数量，进一步加快了计算速度，而且网络的深度也加深了，增加了非线性表达能力。</li>
+</ol>
+<h3 id="5-ResNet"><a href="#5-ResNet" class="headerlink" title="5. ResNet"></a>5. ResNet</h3><p>千辛万苦，终于讲到 ResNet 了！</p>
+<p>ResNet（Residual Neural Network）由微软研究院的Kaiming He等四名华人提出，通过使用ResNet Unit成功训练出了152层的神经网络，并在ILSVRC2015比赛中取得冠军，在top5上的错误率为3.57%，同时参数量比VGGNet低，效果非常突出。</p>
+<p>ResNet的结构可以极快的加速神经网络的训练，模型的准确率也有比较大的提升。同时ResNet的推广性非常好，甚至可以直接用到InceptionNet网络中。</p>
+<h4 id="ResNet-概述"><a href="#ResNet-概述" class="headerlink" title="ResNet 概述"></a>ResNet 概述</h4><p>在VGGNet中，卷积网络达到了19层，在GoogLeNet中，网络史无前例的达到了22层。那么，网络的精度会随着网络的层数增多而提高吗？在深度学习中，网络层数的增多一般会伴随着下面几个问题：</p>
+<ol>
+<li>计算资源的消耗</li>
+<li>模型容易过拟合</li>
+<li>梯度消失/梯度爆炸问题的产生</li>
+</ol>
+<p>其中，问题1可以通过GPU集群来解决，这对一个企业来说并不是很大的问题；问题2的过拟合可以通过采集海量数据，并配合Dropout、正则化等方法有效避免；问题3通过Batch Normalization也可以避免。</p>
+<p>似乎，只要我们无脑增加网络的深度，我们一定能从中获益。事实真的如此吗？</p>
+<p>实验数据给了我们当头一棒。</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210430153956764.png" alt="image-20210430153956764" style="zoom:80%;" />
+
+<center><i>图 19 - 深层网络的退化问题</i></i></center>
+
+<p>如图19所示，作者发现，随着网络层数的增加，网络发生了<strong>退化（degradation）现象</strong>：</p>
+<ul>
+<li><p>随着网络层数的增多，训练集loss逐渐下降，然后趋于饱和，如果继续增加网络深度的话，训练集loss反而会增大。</p>
+<blockquote>
+<p>注意<strong>这并不是过拟合</strong>，因为在过拟合中训练loss是一直减小的。</p>
+</blockquote>
+</li>
+</ul>
+<p>当网络退化时，浅层网络能够达到比深层网络更好的训练效果，这时如果我们把低层的特征传到高层，那么效果应该至少不比浅层的网络效果差。或者说，如果一个VGG-100网络在第98层使用的是和VGG-16第14层一模一样的特征，那么VGG-100的效果至少应该会和VGG-16的效果相同。所以，我们可以在VGG-100的98层和14层之间添加一条<strong>直接映射（Identity Mapping）</strong>来达到此效果。</p>
+<p>从信息论的角度讲，由于DPI（数据处理不等式）的存在，在前向传输的过程中，随着层数的加深，Feature Map 包含的图像信息会逐层减少，而<strong>直接映射的加入，保证了 $l+1$ 层的网络一定比 $l$ 层包含更多的图像信息</strong>。</p>
+<p>基于这种思想，残差网络应运而生。</p>
+<h4 id="Residual-Block"><a href="#Residual-Block" class="headerlink" title="Residual Block"></a>Residual Block</h4><p>残差网络是由一系列残差块（Residual Block）组成的，残差块的结构如图20(1) 所示：</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210430162231574.png" alt="image-20210430162231574" style="zoom:67%;" />
+
+<center><i>图 20(1) - 残差块</i></center>
+
+<blockquote>
+<p> <code>Weight</code> 在卷积网络中是指卷积操作，<code>addition</code> 是指矩阵相加操作。另外从图中也可以看出，<strong>残差是在激活函数 ReLU 之前的</strong>！</p>
+</blockquote>
+<p>可以看到，残差块主要分成两部分：直接映射部分和残差部分，因此可以表示为：</p>
+<p>$$x_{l+1} = x_l + F(x_l, W_l)$$</p>
+<p>其中，$x_l$ 相当于<strong>直接映射（Identity Mapping）</strong>，反映在图20(1) 中是左边的部分；$F(x_l, W_l)$ 是残差部分，一般由两个或者三个卷积操作构成，即图20(1) 中右侧包含卷积的部分。</p>
+<p>但还有个问题：在卷积网络（SAME）中，$x_{l+1}$ 和 $x_l$ 的Feature Map的通道数可能不同，这时候就需要引入<strong>瓶颈模块（Bottleneck）</strong>，即使用 $1 \times 1$ 的卷积核进行升维或者降维，如图20(2) 所示：</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210430162755302.png" alt="image-20210430162755302" style="zoom:67%;" />
+
+<center><i>图 20(2) - 1x1 残差块</i></center>
+
+
+
+<p>这时，残差块表示为：</p>
+<p>$$x_{l+1} = h(x_l) + F(x_l, W_l)$$</p>
+<p>其中，$h(x_l) = W’_lx$ ，$W’_l$ 是 $1 \times 1$ 卷积操作，但实验结果表明，$1 \times 1$ 卷积对模型性能的提升有限，所以一般是在升维或者降维时才会使用。</p>
+<p>我们还可以对残差块的结构做进一步抽象，如图21所示：</p>
+<ul>
+<li>网络中的一层通常可以看作从输入 $x$ 得到预测值 $y = H(x)$ ；</li>
+<li>那么残差网络的一个残差块就可以表示为 $H(x) = F(x) + x$ ，那么 $F(x) = H(x) - x$ 就对应着残差。</li>
+</ul>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210430170605067.png" alt="image-20210430170605067" style="zoom:67%;" />
+
+<center><i>图 21 - 残差块的进一步抽象</i></center>
+
+
+
+<p>通过上面的介绍，我们知道残差块的核心思想就在于它通过引入直接映射（Identity Mapping）在输入、输出之间建立了一条直接的关联通道，从而使得强大的有参层集中精力学习输入、输出之间的残差。</p>
+<h4 id="ResNet-模型框架"><a href="#ResNet-模型框架" class="headerlink" title="ResNet 模型框架"></a>ResNet 模型框架</h4><p>残差网络本质上解决的是<strong>深层网络的退化问题</strong>。为了验证残差网络的有效性，作者共使用了三种网络进行实验。</p>
+<ol>
+<li>其一为VGG19网络（这是VGG paper中最深的亦是最有效的一种网络结构）;</li>
+<li>另外则是顺着VGG网络思维继续加深其层次而形成的一种VGG朴素网络，它共有34个含参层。</li>
+<li>最后则是与上述34层朴素网络相对应的Resnet网络，它主要由上节中所介绍的<strong>残差单元</strong>来构成。</li>
+</ol>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210430173305067.jpg" style="zoom:80%;" />
+
+<center><i>图 22 - 残差网络与朴素网络结构之间的对比</i></center>
+
+
+
+<p>从下面的实验结果中，我们可看出残差网络能够在深度增加的情况下维持强劲的准确率增长，有效地避免了VGG网络中层数增加到一定程度，模型准确度不升反降的问题。</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210430173740930.png" alt="image-20210430173740930" style="zoom:60%;" />
+
+<center><i>图 23 - 不同深度的朴素网络与残差网络在Imagenet上的性能表现</i></center>
+
+
+
+<h4 id="残差网络背后的数学原理"><a href="#残差网络背后的数学原理" class="headerlink" title="残差网络背后的数学原理"></a>残差网络背后的数学原理</h4><p>残差块一个更通用的表示方式是：</p>
+<p>$$y_l = h(x_l)  + F(x_l, W_l)$$</p>
+<p>$$x_{l+1} = f(y_l)$$</p>
+<p>现在我们先不考虑升维或者降维的情况，那么在[1]中， $h(\cdot)$ 是直接映射， $f(\cdot)$ 是激活函数，一般使用ReLU。我们首先给出两个假设：</p>
+<ol>
+<li>假设1：$h(\cdot)$ 是直接映射；</li>
+<li>假设2：$ f(\cdot)$ 是直接映射。</li>
+</ol>
+<h5 id="对于前向传播过程："><a href="#对于前向传播过程：" class="headerlink" title="对于前向传播过程："></a>对于前向传播过程：</h5><p>这时候残差块可以表示为：</p>
+<p>$$x_{l+1} = x_l  + F(x_l, W_l)$$</p>
+<p>对于一个更深层的 $L$ ，它与 $l$ 层的关系为可以表示为：</p>
+<p>$$x_L = x_l + \sum_{i=l}^{L-1} F(x_i, W_i)$$</p>
+<p>上面这个公式表明了，$L$ <strong>层可以表示为任意一个比它浅的l层和他们之间的残差部分之和</strong>。</p>
+<h5 id="对于反向传播过程："><a href="#对于反向传播过程：" class="headerlink" title="对于反向传播过程："></a>对于反向传播过程：</h5><p>根据BP中使用的导数的链式法则，损失函数 $\epsilon$ 关于 $x_l$ 的梯度就可以表示为：</p>
+<p>$$\frac{\partial{\epsilon}}{\partial{x_l}} = \frac{\partial{\epsilon}}{\partial{x_L}}\frac{\partial{x_L}}{\partial{x_l}} = \frac{\partial{\epsilon}}{\partial{x_L}}(1 + \frac{\partial{}}{\partial{x_l}}\sum_{i=l}^{L-1} F(x_i, W_i))$$</p>
+<p>从上面的公式可以看到，在计算反向传播的链式法则时每一项都多加了一个1，这样每次乘的都不会是一个小于1的值，这就解决了梯度消失的问题。因此<strong>，$L$ 层的梯度可以直接传递到任何一个比它浅的 $l$ 层。</strong></p>
+<p>通过分析残差网络的正向和反向两个过程，我们发现，当残差块满足上面两个假设时，<strong>信息可以非常畅通的在高层和低层之间相互传导</strong>，说明这两个假设是让残差网络可以训练深度模型的充分条件。那么这两个假设是必要条件吗？或者说，这两个假设一定成立吗？我们给出的结论是“yes”，但具体证明这里不再过多讨论，感兴趣可参看<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/42706477">这篇文章</a>。</p>
+<h3 id="6-DenseNet"><a href="#6-DenseNet" class="headerlink" title="6. DenseNet"></a>6. DenseNet</h3><p>作为CVPR2017年的Best Paper —— 《Densely Connected Convolutional Networks》，文章提出的 DenseNet 脱离了加深网络层数（ResNet）和加宽网络结构（Inception）来提升网络性能的定式思维。而是从特征的角度考虑，通过<strong>特征重用</strong>和<strong>旁路（Bypass）</strong>设置，既大幅度减少了网络的参数量，又在一定程度上缓解了gradient vanishing问题的产生。</p>
+<h4 id="Dense-Block"><a href="#Dense-Block" class="headerlink" title="Dense Block"></a>Dense Block</h4><p>DenseNet 顾名思义，它的连接更为密集，最明显的标志即 Dense Block。</p>
+<p>在传统的CNN中，如果你有L层，那么就会有L个连接，但是在Dense Block中，会有L(L+1)/2个连接。<strong>简单讲，就是每一层的输入来自前面所有层的输出</strong>，即第 $i$ 层的输入不仅与 $i-1$ 层的输出相关，还有所有之前层的输出有关，表示为:</p>
+<p>$$X_l = H_l(X_0, X_1, \dots, X_{l-1})$$</p>
+<p>如图24 所示：x0是input，H1的输入是x0（input），H2的输入是x0和x1（x1是H1的输出）……</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210430175053158.png" alt="image-20210430175053158" style="zoom:67%;" />
+
+<center><i>图 24 - Dense Block</i></center>
+
+
+
+<p>在Dence Block中，每一层都与其他所有层”沟通“，这种密集的联系，使得信息流最大化，也实现了特征的重复利用。同时网络的每一层可以被设计得特别”窄“，即只使用了比较少的特征图，可以达到降低冗余的目的，这使得DenseNet的计算量也比较小。</p>
+<h4 id="DenseNet-模型框架"><a href="#DenseNet-模型框架" class="headerlink" title="DenseNet 模型框架"></a>DenseNet 模型框架</h4><p>整个DenseNet是由若干个Dense Block串联而成的，在每个Dense Block之间有一个Convolution+Pooling的操作，这个被称为是transition layer。</p>
+<img src="https://gitee.com/Jayyy1/images/raw/master/posts/Computer%20Science/Deep%20Learning/image-20210430175338941.png" alt="image-20210430175338941" style="zoom:80%;" />
+
+<center><i>图 25 - DenseNet</i></center>
+
+<p>由于在DenseNet中需要对不同层的feature map进行cat操作，所以需要不同层的feature map保持相同的feature size。因此在不同Denseblock之间设置transition layers实现Down sampling，论文中transition layer由BN + Conv(1×1) ＋2×2 average-pooling组成。</p>
+<h2 id="0x04-参考文章"><a href="#0x04-参考文章" class="headerlink" title="0x04 参考文章"></a>0x04 参考文章</h2><p>[1] <a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s/eosTWBbLpwVroYPEb9Q0wA">计算机视觉和 CNN 发展十一座里程碑</a></p>
+<p>[2] <a target="_blank" rel="noopener" href="https://blog.csdn.net/jiaoyangwm/article/details/80011656/">卷积神经网络超详细介绍</a></p>
+<p>[3] <a target="_blank" rel="noopener" href="https://www.zhihu.com/topic/20043586/intro">卷积神经网络（CNN）</a></p>
+<p>[4] <a target="_blank" rel="noopener" href="https://mooc.study.163.com/course/2001281004?tid=2001392030&_trace_c_p_k2_=cee920da6f1a4be0a66a468dd83629d7#/info">吴恩达卷积神经网络</a></p>
+<p>[5] <a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_41481113/article/details/83386599?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_baidulandingword-0&spm=1001.2101.3001.4242">动图形象理解深度学习卷积</a></p>
+<p>[6] <a target="_blank" rel="noopener" href="https://www.zhihu.com/question/52668301">CNN（卷积神经网络）是什么？有何入门简介或文章吗？</a></p>
+<p>[7] <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_26591517/article/details/79805884">CNN经典模型汇总</a></p>
+<p>[8] <a target="_blank" rel="noopener" href="https://blog.csdn.net/u013181595/article/details/80990486">Google InceptionNet介绍</a></p>
+<p>[9] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/42706477">详解残差网络</a></p>
+<p>[10] <a target="_blank" rel="noopener" href="https://blog.csdn.net/u013181595/article/details/80990930">ResNet介绍</a></p>
+<p>[11] <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/93990a641066">经典分类CNN模型系列其四：Resnet</a></p>
+<p>[12] <a target="_blank" rel="noopener" href="https://blog.csdn.net/lairongxuan/article/details/91040698?utm_medium=distribute.pc_relevant_t0.none-task-blog-2~default~BlogCommendFromMachineLearnPai2~default-1.baidujs&dist_request_id=1332041.24444.16193396006439307&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2~default~BlogCommendFromMachineLearnPai2~default-1.baidujs">ResNet（残差网络）几个关键问题的理解</a></p>
+<p>[13] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/31852747">你必须要知道CNN模型：ResNet</a></p>
+<p>[14] <a target="_blank" rel="noopener" href="https://blog.csdn.net/u014380165/article/details/75142664">DenseNet算法详解</a></p>
+<p>[15] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/43057737">DenseNet详解</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Jay</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://jay1zhang.github.io/2021/04/29/Computer%20Science/Deep%20Learning/%E3%80%8C%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%8D%E4%B8%80%E6%96%87%E8%AF%A6%E8%A7%A3%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8F%8A%E7%BB%8F%E5%85%B8CNN%E6%A8%A1%E5%9E%8B/">http://jay1zhang.github.io/2021/04/29/Computer%20Science/Deep%20Learning/%E3%80%8C%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%8D%E4%B8%80%E6%96%87%E8%AF%A6%E8%A7%A3%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8F%8A%E7%BB%8F%E5%85%B8CNN%E6%A8%A1%E5%9E%8B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Deep-Learning/">Deep Learning</a></div><div class="post_share"><div class="social-share" data-image="http://jayyy1.gitee.io/images/pictures/cartoons/001.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2021/04/28/Review/%E3%80%8C%E5%BD%B1%E5%89%A7%E8%B5%8F%E6%9E%90%E3%80%8D%E4%BD%A0%E5%91%80%EF%BC%8C%E4%BB%80%E4%B9%88%E9%83%BD%E4%B8%8D%E8%A6%81%E6%8B%85%E5%BF%83/"><img class="next-cover" src="https://gitee.com/Jayyy1/images/raw/master/posts/Review/image-20210428163944464.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">「影剧赏析」你呀，什么都不要担心 —— 《请回答1988》</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2021/04/17/Computer Science/Deep Learning/「深度学习」Transformer 模型详解/" title="「深度学习」Transformer 模型详解"><img class="cover" src="http://jayyy1.gitee.io/images/pictures/cartoons/040.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-17</div><div class="title">「深度学习」Transformer 模型详解</div></div></a></div><div><a href="/2021/04/16/Computer Science/Deep Learning/「深度学习」Attention？Attention！/" title="「深度学习」Attention? Attention!"><img class="cover" src="http://jayyy1.gitee.io/images/pictures/cartoons/022.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-16</div><div class="title">「深度学习」Attention? Attention!</div></div></a></div><div><a href="/2021/04/22/Computer Science/Deep Learning/「深度学习」神经网络中的优化算法/" title="「深度学习」神经网络中的优化算法"><img class="cover" src="http://jayyy1.gitee.io/images/pictures/cartoons/032.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-22</div><div class="title">「深度学习」神经网络中的优化算法</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00-%E6%A6%82%E8%BF%B0"><span class="toc-text">0x00 概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-%E5%8D%B7%E7%A7%AF%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80"><span class="toc-text">0x01 卷积网络基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%8D%B7%E7%A7%AF%E5%8E%9F%E7%90%86"><span class="toc-text">1. 卷积原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Convolution"><span class="toc-text">Convolution</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Padding"><span class="toc-text">Padding</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Stride"><span class="toc-text">Stride</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Multiple-Channels"><span class="toc-text">Multiple Channels</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Bias"><span class="toc-text">Bias</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Multiple-filters"><span class="toc-text">Multiple filters</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%8D%B7%E7%A7%AF%E6%9C%89%E4%BD%95%E4%BD%9C%E7%94%A8%EF%BC%9F"><span class="toc-text">2. 卷积有何作用？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%EF%BC%89%E5%95%A5%E4%B9%9F%E4%B8%8D%E5%81%9A-Do-Nothing"><span class="toc-text">1）啥也不做 Do Nothing</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%EF%BC%89%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B-Edge-Detection"><span class="toc-text">2）边缘检测 Edge Detection</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3%EF%BC%89%E5%9B%BE%E5%83%8F%E9%94%90%E5%8C%96-Sharpness-Filter"><span class="toc-text">3）图像锐化 Sharpness Filter</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4%EF%BC%89%E6%B5%AE%E9%9B%95-Embossing-Filter"><span class="toc-text">4）浮雕 Embossing Filter</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5%EF%BC%89%E6%9B%B4%E5%A4%9A%E4%BE%8B%E5%AD%90"><span class="toc-text">5）更多例子</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-%E5%8D%B7%E7%A7%AF%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84"><span class="toc-text">0x02 卷积网络结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-CNN-%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84"><span class="toc-text">1. CNN 整体结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%8D%B7%E7%A7%AF%E5%B1%82"><span class="toc-text">2. 卷积层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0"><span class="toc-text">3. 激活函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%B1%A0%E5%8C%96%E5%B1%82"><span class="toc-text">4. 池化层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%8D%B7%E7%A7%AF%E7%BD%91%E7%BB%9C%E7%9A%84%E7%89%B9%E5%BE%81"><span class="toc-text">5. 卷积网络的特征</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-%E7%BB%8F%E5%85%B8CNN%E6%A8%A1%E5%9E%8B"><span class="toc-text">0x03 经典CNN模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-LeNet5"><span class="toc-text">1. LeNet5</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#LeNet5-%E6%A8%A1%E5%9E%8B%E6%9E%B6%E6%9E%84"><span class="toc-text">LeNet5 模型架构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#LeNet5-%E5%88%9B%E6%96%B0%E7%82%B9"><span class="toc-text">LeNet5 创新点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-AlexNet"><span class="toc-text">2. AlexNet</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#AlexNet-%E6%A8%A1%E5%9E%8B%E6%9E%B6%E6%9E%84"><span class="toc-text">AlexNet 模型架构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AlexNet-%E5%88%9B%E6%96%B0%E7%82%B9"><span class="toc-text">AlexNet 创新点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-VGGNet"><span class="toc-text">3. VGGNet</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#VGGNet-%E6%A8%A1%E5%9E%8B%E6%9E%B6%E6%9E%84"><span class="toc-text">VGGNet 模型架构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#VGGNet-%E5%88%9B%E6%96%B0%E7%82%B9"><span class="toc-text">VGGNet 创新点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Google-Inception-Net"><span class="toc-text">4. Google Inception Net</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Inception-%E5%8E%9F%E7%90%86"><span class="toc-text">Inception 原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Inception-%E6%A8%A1%E5%9E%8B%E6%A1%86%E6%9E%B6"><span class="toc-text">Inception 模型框架</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Inception-%E5%88%9B%E6%96%B0%E7%82%B9"><span class="toc-text">Inception 创新点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-ResNet"><span class="toc-text">5. ResNet</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ResNet-%E6%A6%82%E8%BF%B0"><span class="toc-text">ResNet 概述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Residual-Block"><span class="toc-text">Residual Block</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ResNet-%E6%A8%A1%E5%9E%8B%E6%A1%86%E6%9E%B6"><span class="toc-text">ResNet 模型框架</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AE%8B%E5%B7%AE%E7%BD%91%E7%BB%9C%E8%83%8C%E5%90%8E%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86"><span class="toc-text">残差网络背后的数学原理</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AF%B9%E4%BA%8E%E5%89%8D%E5%90%91%E4%BC%A0%E6%92%AD%E8%BF%87%E7%A8%8B%EF%BC%9A"><span class="toc-text">对于前向传播过程：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%AF%B9%E4%BA%8E%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E8%BF%87%E7%A8%8B%EF%BC%9A"><span class="toc-text">对于反向传播过程：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-DenseNet"><span class="toc-text">6. DenseNet</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Dense-Block"><span class="toc-text">Dense Block</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DenseNet-%E6%A8%A1%E5%9E%8B%E6%A1%86%E6%9E%B6"><span class="toc-text">DenseNet 模型框架</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x04-%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="toc-text">0x04 参考文章</span></a></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url(http://jayyy1.gitee.io/images/pictures/cartoons/012.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Jay</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><div class="search-dialog__title" id="algolia-search-title">Algolia</div><div id="algolia-input-panel"><div id="algolia-search-input"></div></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>
