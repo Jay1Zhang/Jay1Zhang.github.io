@@ -1,0 +1,399 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>「Shell」Shell 脚本进阶、经典用法及其案例 | J1z's Blog</title><meta name="keywords" content="Shell"><meta name="author" content="Jay"><meta name="copyright" content="Jay"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="来源：https:&#x2F;&#x2F;www.cnblogs.com&#x2F;along21&#x2F;p&#x2F;7519710.html  一、条件选择、判断1、条件选择if（1）用法格式 123456789if 判断条件 1 ; then  条件为真的分支代码elif 判断条件 2 ; then  条件为真的分支代码elif 判断条件 3 ; then  条件为真的分支代码else  以上条件都为假的分支代码fi 逐条件进行判断，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「Shell」Shell 脚本进阶、经典用法及其案例">
+<meta property="og:url" content="http://jay1zhang.github.io/2021/05/10/Computer%20Science/Linux/%E3%80%8CShell%E3%80%8DShell%20%E8%84%9A%E6%9C%AC%E8%BF%9B%E9%98%B6%E3%80%81%E7%BB%8F%E5%85%B8%E7%94%A8%E6%B3%95%E5%8F%8A%E5%85%B6%E6%A1%88%E4%BE%8B/index.html">
+<meta property="og:site_name" content="J1z&#39;s Blog">
+<meta property="og:description" content="来源：https:&#x2F;&#x2F;www.cnblogs.com&#x2F;along21&#x2F;p&#x2F;7519710.html  一、条件选择、判断1、条件选择if（1）用法格式 123456789if 判断条件 1 ; then  条件为真的分支代码elif 判断条件 2 ; then  条件为真的分支代码elif 判断条件 3 ; then  条件为真的分支代码else  以上条件都为假的分支代码fi 逐条件进行判断，">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://jayyy1.gitee.io/images/pictures/cartoons/003.jpg">
+<meta property="article:published_time" content="2021-05-10T04:00:02.000Z">
+<meta property="article:modified_time" content="2021-05-10T04:10:46.104Z">
+<meta property="article:author" content="Jay">
+<meta property="article:tag" content="Shell">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://jayyy1.gitee.io/images/pictures/cartoons/003.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://jay1zhang.github.io/2021/05/10/Computer%20Science/Linux/%E3%80%8CShell%E3%80%8DShell%20%E8%84%9A%E6%9C%AC%E8%BF%9B%E9%98%B6%E3%80%81%E7%BB%8F%E5%85%B8%E7%94%A8%E6%B3%95%E5%8F%8A%E5%85%B6%E6%A1%88%E4%BE%8B/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.5/dist/instantsearch.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.5/dist/instantsearch.min.js" defer></script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"WKEK6XV2V5","apiKey":"e093fbb9f29fdf5c7ddd56ec43e9ae05","indexName":"Jay","hits":{"per_page":10},"languages":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}.","hits_stats":"${hits} results found in ${time} ms"}},
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"Traditional Chinese Activated Manually","cht_to_chs":"Simplified Chinese Activated Manually","day_to_night":"Dark Mode Activated Manually","night_to_day":"Light Mode Activated Manually","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-05-10 12:10:46'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">57</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">16</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">11</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-heart"></i><span> Link</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(http://jayyy1.gitee.io/images/pictures/cartoons/003.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">J1z's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-heart"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">「Shell」Shell 脚本进阶、经典用法及其案例</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-05-10T04:00:02.000Z" title="Created 2021-05-10 12:00:02">2021-05-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-05-10T04:10:46.104Z" title="Updated 2021-05-10 12:10:46">2021-05-10</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Computer-Science/">Computer Science</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Computer-Science/Linux/">Linux</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">2.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>12min</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>来源：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/along21/p/7519710.html">https://www.cnblogs.com/along21/p/7519710.html</a></p>
+</blockquote>
+<h2 id="一、条件选择、判断"><a href="#一、条件选择、判断" class="headerlink" title="一、条件选择、判断"></a>一、条件选择、判断</h2><h3 id="1、条件选择if"><a href="#1、条件选择if" class="headerlink" title="1、条件选择if"></a>1、条件选择if</h3><p><strong>（1）用法格式</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">if 判断条件 1 ; then</span><br><span class="line">  条件为真的分支代码</span><br><span class="line">elif 判断条件 2 ; then</span><br><span class="line">  条件为真的分支代码</span><br><span class="line">elif 判断条件 3 ; then</span><br><span class="line">  条件为真的分支代码</span><br><span class="line">else</span><br><span class="line">  以上条件都为假的分支代码</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<p>逐条件进行判断，第一次遇为“真”条件时，执行其分支，而后结束整个if。</p>
+<p><strong>（2）经典案例：</strong></p>
+<ul>
+<li>请输入年纪，先判断输入的是否含有除数字以外的字符，有，就报错；没有，继续判断是否小于150，是否大于18。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#判断年纪</span><br><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line">read -p &quot;Please input your age: &quot; age</span><br><span class="line">if [[ $age &#x3D;~ [^0-9] ]] ;then</span><br><span class="line">    echo &quot;please input a int&quot;</span><br><span class="line">    exit 10</span><br><span class="line">elif [ $age -ge 150 ];then</span><br><span class="line">    echo &quot;your age is wrong&quot;</span><br><span class="line">    exit 20</span><br><span class="line">elif [ $age -gt 18 ];then</span><br><span class="line">    echo &quot;good good work,day day up&quot;</span><br><span class="line">else</span><br><span class="line">    echo &quot;good good study,day day up&quot;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>请输入成绩，先判断输入的是否含有除数字以外的字符，有，就报错；没有，继续判断是否大于100，是否大于85，是否大于60。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#判断分数</span><br><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line">read -p &quot;Please input your score: &quot; score</span><br><span class="line">if [[ $score &#x3D;~ [^0-9] ]] ;then</span><br><span class="line">    echo &quot;please input a int&quot;</span><br><span class="line">    exit 10</span><br><span class="line">elif [ $score -gt 100 ];then</span><br><span class="line">    echo &quot;Your score is wrong&quot;</span><br><span class="line">    exit 20</span><br><span class="line">elif [ $score -ge 85 ];then</span><br><span class="line">    echo &quot;Your score is very good&quot;</span><br><span class="line">elif [ $score -ge 60 ];then</span><br><span class="line">    echo &quot;Your score is soso&quot;</span><br><span class="line">else</span><br><span class="line">    echo &quot;You are loser&quot;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h3 id="2、条件判断-case"><a href="#2、条件判断-case" class="headerlink" title="2、条件判断 case"></a>2、条件判断 case</h3><p><strong>（1）用法格式</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">case $name in;</span><br><span class="line">PART1)</span><br><span class="line">  cmd</span><br><span class="line">  ;;</span><br><span class="line">PART2)</span><br><span class="line">  cmd</span><br><span class="line">  ;;</span><br><span class="line">*)</span><br><span class="line">  cmd</span><br><span class="line">  ;;</span><br><span class="line">esac</span><br><span class="line">注意：case 支持glob 风格的通配符：</span><br><span class="line">  *: 任意长度任意字符</span><br><span class="line">  ?: 任意单个字符</span><br><span class="line">  [] ：指定范围内的任意单个字符</span><br><span class="line">  a|b: a 或b</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>（2）案例：</strong></p>
+<ul>
+<li>请输入yes or no，回答Y/y、yes各种大小写组合为yes；回答N/n、No各种大小写组合为no。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#判断yes or no</span><br><span class="line"></span><br><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line">read -p &quot;Please input yes or no: &quot; anw</span><br><span class="line">case $anw in</span><br><span class="line">[yY][eE][sS]|[yY])</span><br><span class="line">    echo yes</span><br><span class="line">    ;;</span><br><span class="line">[nN][oO]|[nN])</span><br><span class="line">    echo no</span><br><span class="line">    ;;</span><br><span class="line">*)</span><br><span class="line">    echo false</span><br><span class="line">    ;;</span><br><span class="line">esac</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h2 id="二、四个循环"><a href="#二、四个循环" class="headerlink" title="二、四个循环"></a>二、四个循环</h2><h3 id="1、for"><a href="#1、for" class="headerlink" title="1、for"></a>1、for</h3><p><strong>（1）用法格式</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">① for name in 列表 ;do</span><br><span class="line">  循环体</span><br><span class="line">done</span><br><span class="line">② for (( exp1; exp2; exp3 )) ;do</span><br><span class="line">  cmd</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/d5patQGz8KefayvWUNcb7YEicibexFLB65uE8egyrBCk0XcYsKYiaBgwy4CpicqjgTTefqAUiaukeMfgmNnmWcuYCQA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片">exp1只执行一次，相当于在for里嵌了while</p>
+<p>③ 执行机制：</p>
+<ul>
+<li>依次将列表中的元素赋值给“变量名”; 每次赋值后即执行一次循环体; 直到列表中的元素耗尽，循环结束</li>
+<li>列表的表示方法，可以glob 通配符，如{1..10} 、*.sh ；也可以变量引用，如：<code>seq 1 $name</code> </li>
+</ul>
+<p><strong>（2）案例</strong></p>
+<ul>
+<li>sum初始值为0，请输入一个数，先判断输入的是否含有除数字以外的字符，有，就报错；没有判断是否为0，不为0进入for循环，i的范围为1~输入的数，每次的循环为sum=sum+i，循环结束，最后输出sum的值。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#求出（1+2+...+n）的总和</span><br><span class="line">sum&#x3D;0</span><br><span class="line">read -p &quot;Please input a positive integer: &quot; num</span><br><span class="line">if [[ $num &#x3D;~ [^0-9] ]] ;then</span><br><span class="line">    echo &quot;input error&quot;</span><br><span class="line">elif [[ $num -eq 0 ]] ;then</span><br><span class="line">    echo &quot;input error&quot;</span><br><span class="line">else</span><br><span class="line">    for i in &#96;seq 1 $num&#96; ;do</span><br><span class="line">        sum&#x3D;$[$sum+$i]</span><br><span class="line">    done</span><br><span class="line">    echo $sum</span><br><span class="line">fi</span><br><span class="line">unset zhi  </span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>i=1,num=0；当i&lt;=100，进入循环，若i÷2取余=1，则sum=sum+i，i=i+1。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#求出（1+2+...+100）的总和</span><br><span class="line"></span><br><span class="line">for (( i&#x3D;1,num&#x3D;0;i&lt;&#x3D;100;i++ ));do</span><br><span class="line">        [ $[i%2] -eq 1 ] &amp;&amp; let sum+&#x3D;i</span><br><span class="line">done</span><br><span class="line">echo sum&#x3D;$sum</span><br></pre></td></tr></table></figure>
+<h3 id="2、while"><a href="#2、while" class="headerlink" title="2、while"></a>2、while</h3><p><strong>（1）用法格式</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">while 循环控制条件 ;do</span><br><span class="line">  循环</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<p>循环控制条件；进入循环之前，先做一次判断；每一次循环之后会再次做判断；条件为“true” ，则执行一次循环；直到条件测试状态为“false” 终止循环</p>
+<p><strong>（2）特殊用法（遍历文件的每一行）：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">while read line; do控制变量初始化</span><br><span class="line">  循环体</span><br><span class="line">done &lt; &#x2F;PATH&#x2F;FROM&#x2F;SOMEFILE</span><br><span class="line">或cat &#x2F;PATH&#x2F;FROM&#x2F;SOMEFILE | while read line; do</span><br><span class="line">  循环体</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<p>依次读取/PATH/FROM/SOMEFILE文件中的每一行，且将行赋值给变量line</p>
+<p><strong>（3）案例：</strong></p>
+<ul>
+<li>sum初始值为0，i的初始值为1；请输入一个数，先判断输入的是否含有除数字以外的字符，有，就报错；没有当i&lt;100时，进入循环，判断 i÷2取余 是否不为0，不为0时为奇数，sum=sum+i，i+1，为0，i+1；循环结束，最后输出sum的值。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#100以内所有正奇数之和</span><br><span class="line">sum&#x3D;0</span><br><span class="line">i&#x3D;1</span><br><span class="line">while [ $i -le 100 ] ;do</span><br><span class="line">if [ $[$i%2] -ne 0 ];then</span><br><span class="line">    let sum+&#x3D;i</span><br><span class="line">    let i++</span><br><span class="line">else</span><br><span class="line">    let i++</span><br><span class="line">fi</span><br><span class="line">done</span><br><span class="line">echo &quot;sum is $sum&quot;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="3、until-循环"><a href="#3、until-循环" class="headerlink" title="3、until 循环"></a>3、until 循环</h3><p><strong>（1）用法</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">unitl 循环条件 ;do</span><br><span class="line">  循环</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<p>进入条件：循环条件为true ；退出条件：循环条件为false；刚好和while相反，所以不常用，用while就行。</p>
+<p><strong>（2）案例</strong></p>
+<ul>
+<li>每隔0.5秒扫描，直到发现xiaoming用户登录，杀死这个进程，退出脚本，用于监控用户登录。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#监控xiaoming用户，登录就杀死</span><br><span class="line">until pgrep -u xiaoming &amp;&gt; &#x2F;dev&#x2F;null ;do</span><br><span class="line">        sleep 0.5</span><br><span class="line">done</span><br><span class="line">pkill -9 -u xiaoming</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="4、select-循环与菜单"><a href="#4、select-循环与菜单" class="headerlink" title="4、select 循环与菜单"></a>4、select 循环与菜单</h3><p><strong>（1）用法</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">select variable in list</span><br><span class="line">do</span><br><span class="line">  循环体命令</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<ul>
+<li>① select 循环主要用于创建菜单，按数字顺序排列的示菜单项将显示在标准错误上，并显示PS3 提示符，等待用户输入</li>
+<li>② 用户输入菜单列表中的某个数字，执行相应的命令</li>
+<li>③ 用户输入被保存在内置变量 REPLY 中</li>
+<li>④ select 是个无限循环，因此要记住用 break 命令退出循环，或用 exit 按 命令终止脚本。也可以按 ctrl+c退出循环</li>
+<li>⑤ select 和 经常和 case 联合使用</li>
+<li>⑥ 与for循环类似，可以省略 in list， 此时使用位置参量</li>
+</ul>
+<p><strong>（2）案例</strong></p>
+<ul>
+<li>PS3是select的提示符，自动生成菜单，选择5break退出循环。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#生成菜单，并显示选中的价钱</span><br><span class="line">PS3&#x3D;&quot;Please choose the menu: &quot;</span><br><span class="line">select menu in mifan huimian jiaozi babaozhou quit</span><br><span class="line">do</span><br><span class="line">        case $REPLY in</span><br><span class="line">        1|4)</span><br><span class="line">                echo &quot;the price is 15&quot;</span><br><span class="line">                ;;</span><br><span class="line">        2|3)</span><br><span class="line">                echo &quot;the price is 20&quot;</span><br><span class="line">                ;;</span><br><span class="line">        5)</span><br><span class="line">                break</span><br><span class="line">                ;;</span><br><span class="line">        *)</span><br><span class="line">                echo &quot;no the option&quot;</span><br><span class="line">        esac</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/d5patQGz8KefayvWUNcb7YEicibexFLB652SF3AC8mD67YWTEZicgFyvmh2z86gOeySXRBUBvh9PRQsfhS2pe7yog/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<h2 id="三、循环里的一些用法"><a href="#三、循环里的一些用法" class="headerlink" title="三、循环里的一些用法"></a>三、循环里的一些用法</h2><h3 id="1、循环控制语句"><a href="#1、循环控制语句" class="headerlink" title="1、循环控制语句"></a>1、循环控制语句</h3><p><strong>（1）语法</strong></p>
+<p>continue [N]：提前结束第N层的本轮循环，而直接进入下一轮判断；最内层为第1层 break [N]：提前结束第N层循环，最内侧为第1层</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> 例：while CONDTITON1; do</span><br><span class="line">  CMD1</span><br><span class="line">if CONDITION2; then</span><br><span class="line">  continue &#x2F; break</span><br><span class="line">fi</span><br><span class="line">  CMD2</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<p><strong>（2）案例：</strong></p>
+<ul>
+<li><strong>分析</strong>：做1+2+…+100的循环，当i=51时，跳过这次循环，但是继续整个循环，结果为：sum=2449</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#①求（1+3+...+49+53+...+100）的和</span><br><span class="line"></span><br><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line">sum&#x3D;0</span><br><span class="line">for i in &#123;1..100&#125; ;do</span><br><span class="line">        [ $i -eq 51 ] &amp;&amp; continue</span><br><span class="line">        [ $[$i%2] -eq 1 ] &amp;&amp; &#123; let sum+&#x3D;i;let i++; &#125;</span><br><span class="line">done</span><br><span class="line">echo sum&#x3D;$sum</span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li><strong>分析</strong>：做1+2+…+100的循环，当i=51时，跳出整个循环，结果为：sum=625</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#②求（1+3+...+49）的和</span><br><span class="line"></span><br><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line">sum&#x3D;0</span><br><span class="line">for i in &#123;1..100&#125; ;do</span><br><span class="line">        [ $i -eq 51 ] &amp;&amp; break</span><br><span class="line">        [ $[$i%2] -eq 1 ] &amp;&amp; &#123; let sum+&#x3D;i;let i++; &#125;</span><br><span class="line">done</span><br><span class="line">echo sum&#x3D;$sum</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="2、循环控制shift命令"><a href="#2、循环控制shift命令" class="headerlink" title="2、循环控制shift命令"></a>2、循环控制shift命令</h3><p><strong>（1）作用</strong></p>
+<p>用于将参数列表list左移指定次数，最左端的那个参数就从列表中删除，其后边的参数继续进入循环</p>
+<p><strong>（2）案例：</strong></p>
+<ul>
+<li><strong>分析</strong>：如果没有输入参数（参数的总数为0），提示错误并退出；反之，进入循环；若第一个参数不为空字符，则创建以第一个参数为名的用户，并移除第一个参数，将紧跟的参数左移作为第一个参数，直到没有第一个参数，退出。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#①创建指定的多个用户</span><br><span class="line"></span><br><span class="line">#!&#x2F;binbash</span><br><span class="line">if [ $# -eq 0 ] ;then</span><br><span class="line">        echo &quot;Please input a arg(eg:&#96;basename $0&#96; arg1)&quot;</span><br><span class="line">        exit 1</span><br><span class="line">else</span><br><span class="line">        while [ -n &quot;$1&quot; ];do</span><br><span class="line">                useradd $1 &amp;&gt; &#x2F;dev&#x2F;null</span><br><span class="line">                shift</span><br><span class="line">        done</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#②打印直角三角形的字符</span><br><span class="line"></span><br><span class="line">#!&#x2F;binbash</span><br><span class="line">while (( $# &gt; 0 ))</span><br><span class="line">do</span><br><span class="line">        echo &quot;$*&quot;</span><br><span class="line">        shift</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># ③ 返回值结果</span><br><span class="line">true 永远返回成功结果</span><br><span class="line">: null command ,什么也不干，返回成功结果</span><br><span class="line">false 永远返回错误结果</span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>创建无限循环</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">while true ;do</span><br><span class="line">  循环体</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="4、循环中可并行执行，使脚本运行更快"><a href="#4、循环中可并行执行，使脚本运行更快" class="headerlink" title="4、循环中可并行执行，使脚本运行更快"></a>4、循环中可并行执行，使脚本运行更快</h3><p><strong>（1）用法</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">for name in 列表 ;do</span><br><span class="line">  &#123;</span><br><span class="line">  循环体</span><br><span class="line">  &#125;&amp;</span><br><span class="line">done</span><br><span class="line">wait</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>（2）实例：</strong></p>
+<ul>
+<li><strong>分析</strong>：请输入一个IP地址例192.168.37.234，如果格式不是0.0.0.0 则报错退出；正确则进入循环，IP变量的值为192.168.37.  i的范围为1-254，并行ping 192.168.37.1-154，ping通就输出此IP为UP。直到循环结束。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#搜寻自己指定ip（子网掩码为24的）的网段中，UP的ip地址</span><br><span class="line">read -p &quot;Please input network (eg:192.168.0.0): &quot; net</span><br><span class="line">echo $net |egrep -o &quot;\&lt;(([0-9]|[1-9][0-9]|1[0-9]&#123;2&#125;|2[0-4][0-9]|25[0-5])\.)&#123;3&#125;([0-9]|[1-9][0-9]|1[0-9]&#123;2&#125;|2[0-4][0-9]|25[0-5])\&gt;&quot;</span><br><span class="line">[ $? -eq 0 ] || ( echo &quot;input error&quot;;exit 10 )</span><br><span class="line">IP&#x3D;&#96;echo $net |egrep -o &quot;^([0-9]&#123;1,3&#125;\.)&#123;3&#125;&quot;&#96;</span><br><span class="line">for i in &#123;1..254&#125;;do</span><br><span class="line">        &#123;</span><br><span class="line">        ping -c 1 -w 1 $IP$i &amp;&gt; &#x2F;dev&#x2F;null &amp;&amp; \</span><br><span class="line">        echo &quot;$IP$i is up&quot; </span><br><span class="line">        &#125;&amp;</span><br><span class="line"></span><br><span class="line">done</span><br><span class="line">wait</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="四、信号捕获trap"><a href="#四、信号捕获trap" class="headerlink" title="四、信号捕获trap"></a>四、信号捕获trap</h2><h3 id="1、用法格式"><a href="#1、用法格式" class="headerlink" title="1、用法格式"></a>1、用法格式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">trap &#39; 触发指令&#39; 信号，自定义进程收到系统发出的指定信号后，将执行触发指令，而不会执行原操作</span><br><span class="line">trap &#39;&#39; 信号，忽略信号的操作</span><br><span class="line">trap &#39;-&#39; 信号，恢复原信号的操作</span><br><span class="line">trap -p，列出自定义信号操作</span><br></pre></td></tr></table></figure>
+<p>信号可以3种表达方法：信号的数字2、全名SIGINT、缩写INT</p>
+<h3 id="2、常用信号"><a href="#2、常用信号" class="headerlink" title="2、常用信号"></a>2、常用信号</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1) SIGHUP: 无须关闭进程而让其重读配置文件</span><br><span class="line">2) SIGINT: 中止正在运行的进程；相当于Ctrl+c</span><br><span class="line">3) SIGQUIT: 相当于ctrl+\</span><br><span class="line">9) SIGKILL: 强制杀死正在运行的进程</span><br><span class="line">15) SIGTERM ：终止正在运行的进程（默认为15）</span><br><span class="line">18) SIGCONT ：继续运行</span><br><span class="line">19) SIGSTOP ：后台休眠</span><br><span class="line">9 信号，强制杀死，捕获不住</span><br></pre></td></tr></table></figure>
+<h3 id="3、案例"><a href="#3、案例" class="headerlink" title="3、案例"></a>3、案例</h3><ul>
+<li><strong>分析</strong>：i=0，当i&lt;10，每休眠1秒，i+1，捕获2信号，并执行echo press ctrl+c</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#①打印0-9，ctrl+c不能终止</span><br><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line">trap &#39;echo press ctrl+c&#39; 2</span><br><span class="line">for ((i&#x3D;0;i&lt;10;i++));do</span><br><span class="line">        sleep 1</span><br><span class="line">        echo $i</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/d5patQGz8KefayvWUNcb7YEicibexFLB656dm10qjmtyB2BaVTDBowiaT4NjYnab4rQ8Lx4mqEdbYd8c1S4ucPSqQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<ul>
+<li><strong>分析</strong>：i=0，当i&lt;3，每休眠1秒，i+1，捕获2信号；i&gt;3时，解除捕获2信号。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#②打印0-3，ctrl+c不能终止，3之后恢复，能终止</span><br><span class="line"></span><br><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line">trap &#39;&#39; 2</span><br><span class="line">trap -p</span><br><span class="line">for ((i&#x3D;0;i&lt;3;i++));do</span><br><span class="line">        sleep 1</span><br><span class="line">        echo $i</span><br><span class="line">done</span><br><span class="line">trap &#39;-&#39; SIGINT</span><br><span class="line">for ((i&#x3D;3;i&lt;10;i++));do</span><br><span class="line">        sleep 1</span><br><span class="line">        echo $i</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/d5patQGz8KefayvWUNcb7YEicibexFLB65gFnXlKdkG7keeRKicRppiczfXZHbSm8c5BIVEbp00ZJibh2nDvqDicv2Xg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<h2 id="五、脚本小知识"><a href="#五、脚本小知识" class="headerlink" title="五、脚本小知识"></a>五、脚本小知识</h2><p>1、生成随机字符 cat /dev/urandom</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#生成8个随机大小写字母或数字 </span><br><span class="line">cat &#x2F;dev&#x2F;urandom |tr -dc [:alnum:] |head -c 8</span><br></pre></td></tr></table></figure>
+<p>2、生成随机数 echo $RANDOM</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">确定范围 echo $[RANDOM%7] 随机7个数（0-6）</span><br><span class="line">echo $[$[RANDOM%7]+31] 随机7个数（31-37）</span><br></pre></td></tr></table></figure>
+<p>3、echo打印颜色字</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">echo -e &quot;\033[31malong\033[0m&quot; 显示红色along</span><br><span class="line">echo -e &quot;\033[1;31malong\033[0m&quot; 高亮显示红色along</span><br><span class="line">echo -e &quot;\033[41malong\033[0m&quot; 显示背景色为红色的along</span><br><span class="line">echo -e &quot;\033[31;5malong\033[0m&quot; 显示闪烁的红色along</span><br><span class="line">color&#x3D;$[$[RANDOM%7]+31]</span><br><span class="line">echo -ne &quot;\033[1;$&#123;color&#125;;5m*\033[0m&quot; 显示闪烁的随机色along</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="六、分享几个有意思的小脚本"><a href="#六、分享几个有意思的小脚本" class="headerlink" title="六、分享几个有意思的小脚本"></a>六、分享几个有意思的小脚本</h2><h3 id="1、9x9乘法表"><a href="#1、9x9乘法表" class="headerlink" title="1、9x9乘法表"></a>1、9x9乘法表</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line">for a in &#123;1..9&#125;;do</span><br><span class="line">        for b in &#96;seq 1 $a&#96;;do</span><br><span class="line">                let c&#x3D;$a*$b ;echo -e &quot;$&#123;a&#125;x$&#123;b&#125;&#x3D;$c\t\c&quot;</span><br><span class="line">        done</span><br><span class="line">        echo    </span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="2、彩色等腰三角形"><a href="#2、彩色等腰三角形" class="headerlink" title="2、彩色等腰三角形"></a>2、彩色等腰三角形</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line">read -p &quot;Please input a num: &quot; num</span><br><span class="line">if [[ $num &#x3D;~ [^0-9] ]];then</span><br><span class="line">        echo &quot;input error&quot; </span><br><span class="line">else</span><br><span class="line">        for i in &#96;seq 1 $num&#96; ;do</span><br><span class="line">                xing&#x3D;$[2*$i-1]</span><br><span class="line">                for j in &#96;seq 1 $[$num-$i]&#96;;do</span><br><span class="line">                        echo -ne &quot; &quot;</span><br><span class="line">                done</span><br><span class="line">                for k in &#96;seq 1 $xing&#96;;do</span><br><span class="line">                        color&#x3D;$[$[RANDOM%7]+31]</span><br><span class="line">                        echo -ne &quot;\033[1;$&#123;color&#125;;5m*\033[0m&quot;</span><br><span class="line">                done</span><br><span class="line">                echo</span><br><span class="line">        done</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/d5patQGz8KefayvWUNcb7YEicibexFLB65mwrmPgSv9bibknDIGpqr7w79ibeExu8EddCkKtyoF1EZY4HNEHSJR2iaw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p><strong>3、国际象棋棋盘</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line">red&#x3D;&quot;\033[1;41m  \033[0m&quot;</span><br><span class="line">yellow&#x3D;&quot;\033[1;43m  \033[0m&quot;</span><br><span class="line"></span><br><span class="line">for i in &#123;1..8&#125;;do</span><br><span class="line">        if [ $[i%2] -eq 0 ];then</span><br><span class="line">                for i in &#123;1..4&#125;;do</span><br><span class="line">                        echo -e -n &quot;$red$yellow&quot;;</span><br><span class="line">                done</span><br><span class="line">                echo</span><br><span class="line">        else</span><br><span class="line">                for i in &#123;1..4&#125;;do</span><br><span class="line">                        echo -e -n &quot;$yellow$red&quot;;</span><br><span class="line">                done</span><br><span class="line">                echo </span><br><span class="line">        fi</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/d5patQGz8KefayvWUNcb7YEicibexFLB65tYHIfzo5bFCIyvnNxHia9eOeViaWQU1wBugzU9noKlMVlPL5TtjeFxpA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Jay</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://jay1zhang.github.io/2021/05/10/Computer%20Science/Linux/%E3%80%8CShell%E3%80%8DShell%20%E8%84%9A%E6%9C%AC%E8%BF%9B%E9%98%B6%E3%80%81%E7%BB%8F%E5%85%B8%E7%94%A8%E6%B3%95%E5%8F%8A%E5%85%B6%E6%A1%88%E4%BE%8B/">http://jay1zhang.github.io/2021/05/10/Computer%20Science/Linux/%E3%80%8CShell%E3%80%8DShell%20%E8%84%9A%E6%9C%AC%E8%BF%9B%E9%98%B6%E3%80%81%E7%BB%8F%E5%85%B8%E7%94%A8%E6%B3%95%E5%8F%8A%E5%85%B6%E6%A1%88%E4%BE%8B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Shell/">Shell</a></div><div class="post_share"><div class="social-share" data-image="http://jayyy1.gitee.io/images/pictures/cartoons/003.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/05/11/Computer%20Science/Deep%20Learning/%E3%80%8C%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%8D%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E7%AE%97%E6%B3%95%20Yolo/"><img class="prev-cover" src="http://jayyy1.gitee.io/images/pictures/cartoons/039.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">「深度学习」目标检测算法</div></div></a></div><div class="next-post pull-right"><a href="/2021/05/03/Computer%20Science/Deep%20Learning/%E3%80%8C%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E3%80%8D%E5%B8%B8%E8%A7%81normalization%E6%96%B9%E6%B3%95%E5%8E%9F%E7%90%86%E5%8F%8A%E5%AF%B9%E6%AF%94/"><img class="next-cover" src="http://jayyy1.gitee.io/images/pictures/cartoons/001.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">「深度学习」常见normalization方法原理及对比</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2021/01/16/Computer Science/Linux/「Shell」一键build：zip2jar/" title="「Shell」一键build：*.zip -> *.jar"><img class="cover" src="http://jayyy1.gitee.io/images/pictures/cartoons/029.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-16</div><div class="title">「Shell」一键build：*.zip -> *.jar</div></div></a></div><div><a href="/2021/01/20/Computer Science/Linux/「Shell」Linux Commander/" title="「Shell」Linux Commander"><img class="cover" src="http://jayyy1.gitee.io/images/pictures/cartoons/001.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-20</div><div class="title">「Shell」Linux Commander</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%9D%A1%E4%BB%B6%E9%80%89%E6%8B%A9%E3%80%81%E5%88%A4%E6%96%AD"><span class="toc-text">一、条件选择、判断</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E6%9D%A1%E4%BB%B6%E9%80%89%E6%8B%A9if"><span class="toc-text">1、条件选择if</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E6%9D%A1%E4%BB%B6%E5%88%A4%E6%96%AD-case"><span class="toc-text">2、条件判断 case</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%9B%9B%E4%B8%AA%E5%BE%AA%E7%8E%AF"><span class="toc-text">二、四个循环</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81for"><span class="toc-text">1、for</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81while"><span class="toc-text">2、while</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81until-%E5%BE%AA%E7%8E%AF"><span class="toc-text">3、until 循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81select-%E5%BE%AA%E7%8E%AF%E4%B8%8E%E8%8F%9C%E5%8D%95"><span class="toc-text">4、select 循环与菜单</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%BE%AA%E7%8E%AF%E9%87%8C%E7%9A%84%E4%B8%80%E4%BA%9B%E7%94%A8%E6%B3%95"><span class="toc-text">三、循环里的一些用法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E5%BE%AA%E7%8E%AF%E6%8E%A7%E5%88%B6%E8%AF%AD%E5%8F%A5"><span class="toc-text">1、循环控制语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E5%BE%AA%E7%8E%AF%E6%8E%A7%E5%88%B6shift%E5%91%BD%E4%BB%A4"><span class="toc-text">2、循环控制shift命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81%E5%BE%AA%E7%8E%AF%E4%B8%AD%E5%8F%AF%E5%B9%B6%E8%A1%8C%E6%89%A7%E8%A1%8C%EF%BC%8C%E4%BD%BF%E8%84%9A%E6%9C%AC%E8%BF%90%E8%A1%8C%E6%9B%B4%E5%BF%AB"><span class="toc-text">4、循环中可并行执行，使脚本运行更快</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E4%BF%A1%E5%8F%B7%E6%8D%95%E8%8E%B7trap"><span class="toc-text">四、信号捕获trap</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E7%94%A8%E6%B3%95%E6%A0%BC%E5%BC%8F"><span class="toc-text">1、用法格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E5%B8%B8%E7%94%A8%E4%BF%A1%E5%8F%B7"><span class="toc-text">2、常用信号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E6%A1%88%E4%BE%8B"><span class="toc-text">3、案例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E8%84%9A%E6%9C%AC%E5%B0%8F%E7%9F%A5%E8%AF%86"><span class="toc-text">五、脚本小知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%88%86%E4%BA%AB%E5%87%A0%E4%B8%AA%E6%9C%89%E6%84%8F%E6%80%9D%E7%9A%84%E5%B0%8F%E8%84%9A%E6%9C%AC"><span class="toc-text">六、分享几个有意思的小脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%819x9%E4%B9%98%E6%B3%95%E8%A1%A8"><span class="toc-text">1、9x9乘法表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E5%BD%A9%E8%89%B2%E7%AD%89%E8%85%B0%E4%B8%89%E8%A7%92%E5%BD%A2"><span class="toc-text">2、彩色等腰三角形</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url(http://jayyy1.gitee.io/images/pictures/cartoons/012.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Jay</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><div class="search-dialog__title" id="algolia-search-title">Algolia</div><div id="algolia-input-panel"><div id="algolia-search-input"></div></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

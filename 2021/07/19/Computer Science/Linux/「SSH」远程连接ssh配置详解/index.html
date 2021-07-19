@@ -1,0 +1,353 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>「SSH」远程连接ssh配置.md | J1z's Blog</title><meta name="keywords" content="CUDA"><meta name="author" content="Jay"><meta name="copyright" content="Jay"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="SSH 简介SSH（Secure Shell 的缩写）是一种网络协议，它主要用于保证远程登录和远程通信的安全，任何网络服务都可以用这个协议来加密。 SSH 的软件架构是服务器-客户端模式（Server - Client）。在这个架构中，SSH 软件分成两个部分：向服务器发出请求的部分，称为客户端（client），OpenSSH 的实现为 ssh；接收客户端发出的请求的部分，称为服务器（server">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「SSH」远程连接ssh配置.md">
+<meta property="og:url" content="http://jay1zhang.github.io/2021/07/19/Computer%20Science/Linux/%E3%80%8CSSH%E3%80%8D%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5ssh%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="J1z&#39;s Blog">
+<meta property="og:description" content="SSH 简介SSH（Secure Shell 的缩写）是一种网络协议，它主要用于保证远程登录和远程通信的安全，任何网络服务都可以用这个协议来加密。 SSH 的软件架构是服务器-客户端模式（Server - Client）。在这个架构中，SSH 软件分成两个部分：向服务器发出请求的部分，称为客户端（client），OpenSSH 的实现为 ssh；接收客户端发出的请求的部分，称为服务器（server">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://jayyy1.gitee.io/images/pictures/cartoons/016.jpg">
+<meta property="article:published_time" content="2021-07-19T12:00:24.000Z">
+<meta property="article:modified_time" content="2021-07-19T12:37:46.938Z">
+<meta property="article:author" content="Jay">
+<meta property="article:tag" content="CUDA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://jayyy1.gitee.io/images/pictures/cartoons/016.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://jay1zhang.github.io/2021/07/19/Computer%20Science/Linux/%E3%80%8CSSH%E3%80%8D%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5ssh%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.5/dist/instantsearch.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.10.5/dist/instantsearch.min.js" defer></script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"WKEK6XV2V5","apiKey":"e093fbb9f29fdf5c7ddd56ec43e9ae05","indexName":"Jay","hits":{"per_page":10},"languages":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}.","hits_stats":"${hits} results found in ${time} ms"}},
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"Traditional Chinese Activated Manually","cht_to_chs":"Simplified Chinese Activated Manually","day_to_night":"Dark Mode Activated Manually","night_to_day":"Light Mode Activated Manually","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-07-19 20:37:46'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">57</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">16</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">11</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-heart"></i><span> Link</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(http://jayyy1.gitee.io/images/pictures/cartoons/016.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">J1z's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-heart"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">「SSH」远程连接ssh配置.md</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-07-19T12:00:24.000Z" title="Created 2021-07-19 20:00:24">2021-07-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-07-19T12:37:46.938Z" title="Updated 2021-07-19 20:37:46">2021-07-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Computer-Science/">Computer Science</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Computer-Science/Linux/">Linux</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">3.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>12min</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="SSH-简介"><a href="#SSH-简介" class="headerlink" title="SSH 简介"></a>SSH 简介</h1><p>SSH（Secure Shell 的缩写）是一种网络协议，它主要用于保证远程登录和远程通信的安全，任何网络服务都可以用这个协议来加密。</p>
+<p>SSH 的软件架构是服务器-客户端模式（Server - Client）。在这个架构中，SSH 软件分成两个部分：向服务器发出请求的部分，称为客户端（client），OpenSSH 的实现为 ssh；接收客户端发出的请求的部分，称为服务器（server），OpenSSH 的实现为 sshd。</p>
+<p>另外，OpenSSH 还提供一些辅助工具软件（比如 ssh-keygen 、ssh-agent）和专门的客户端工具（比如 scp 和 sftp）。</p>
+<h1 id="SSH-客户端"><a href="#SSH-客户端" class="headerlink" title="SSH 客户端"></a>SSH 客户端</h1><h2 id="1-OpenSSH-简介"><a href="#1-OpenSSH-简介" class="headerlink" title="1. OpenSSH 简介"></a>1. OpenSSH 简介</h2><p>OpenSSH 的客户端是二进制程序 ssh。它在 Linux/Unix 系统的位置是<code>/usr/local/bin/ssh</code>，Windows 系统的位置是<code>\Program Files\OpenSSH\bin\ssh.exe</code>。</p>
+<p>Linux 系统一般都自带 ssh，如果没有就需要安装。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># Ubuntu 和 Debian</span><br><span class="line">$ sudo apt install openssh-client</span><br><span class="line"></span><br><span class="line"># CentOS 和 Fedora</span><br><span class="line">$ sudo dnf install openssh-clients</span><br></pre></td></tr></table></figure>
+<p>安装以后，可以使用<code>-V</code>参数输出版本号，查看一下是否安装成功。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh -V</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="2-基本用法"><a href="#2-基本用法" class="headerlink" title="2. 基本用法"></a>2. 基本用法</h2><p>ssh 最常见的用途就是登录服务器，这要求服务器安装并正在运行 SSH 服务器软件。</p>
+<p>ssh 登录服务器的命令如下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh hostname</span><br></pre></td></tr></table></figure>
+<p>上面命令中，<code>hostname</code>是主机名，它可以是域名，也可能是 IP 地址或局域网内部的主机名。不指定用户名的情况下，将使用客户端的当前用户名，作为远程服务器的登录用户名。如果要指定用户名，可以采用下面的语法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh user@hostname</span><br></pre></td></tr></table></figure>
+<p>上面的命令中，用户名和主机名写在一起了，之间使用<code>@</code>分隔。</p>
+<p>用户名也可以使用<code>ssh</code>的<code>-l</code>参数指定，这样的话，用户名和主机名就不用写在一起了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh -l username host</span><br></pre></td></tr></table></figure>
+<p>ssh 默认连接服务器的22端口，<code>-p</code>参数可以指定其他端口。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh -p 8821 foo.com</span><br></pre></td></tr></table></figure>
+<p>上面命令连接服务器<code>foo.com</code>的8821端口。</p>
+<h2 id="3-连接流程"><a href="#3-连接流程" class="headerlink" title="3. 连接流程"></a>3. 连接流程</h2><p>ssh 连接远程服务器后，首先有一个验证过程，验证远程服务器是否为陌生地址。</p>
+<p>如果是第一次连接某一台服务器，命令行会显示一段文字，表示不认识这台机器，提醒用户确认是否需要连接。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">The authenticity of host &#39;foo.com (192.168.121.111)&#39; can&#39;t be established.</span><br><span class="line">ECDSA key fingerprint is SHA256:Vybt22mVXuNuB5unE++yowF7lgA&#x2F;9&#x2F;2bLSiO3qmYWBY.</span><br><span class="line">Are you sure you want to continue connecting (yes&#x2F;no)?</span><br></pre></td></tr></table></figure>
+<p>上面这段文字告诉用户，<code>foo.com</code>这台服务器的指纹是陌生的，让用户选择是否要继续连接（输入 yes 或 no）。</p>
+<p>所谓“服务器指纹”，指的是 SSH 服务器公钥的哈希值。每台 SSH 服务器都有唯一一对密钥，用于跟客户端通信，其中公钥的哈希值就可以用来识别服务器。</p>
+<p>下面的命令可以查看某个公钥的指纹。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen -l -f &#x2F;etc&#x2F;ssh&#x2F;ssh_host_ecdsa_key.pub</span><br><span class="line">256 da:24:43:0b:2e:c1:3f:a1:84:13:92:01:52:b4:84:ff   (ECDSA)</span><br></pre></td></tr></table></figure>
+<p>上面的例子中，<code>ssh-keygen -l -f</code>命令会输出公钥<code>/etc/ssh/ssh_host_ecdsa_key.pub</code>的指纹。</p>
+<p><strong>ssh 会将本机连接过的所有服务器公钥的指纹，都储存在本机的 <code>~/.ssh/known_hosts</code>文件中</strong>。每次连接服务器时，通过该文件判断是否为陌生主机（陌生公钥）。</p>
+<p>在上面这段文字后面，输入<code>yes</code>，就可以将当前服务器的指纹也储存在本机 <code>~/.ssh/known_hosts</code> 文件中，并显示下面的提示。以后再连接的时候，就不会再出现警告了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Warning: Permanently added &#39;foo.com (192.168.121.111)&#39; (RSA) to the list of known hosts</span><br></pre></td></tr></table></figure>
+<p>然后，客户端就会跟服务器建立连接。接着，ssh 就会要求用户输入所要登录账户的密码。用户输入并验证密码正确以后，就能登录远程服务器的 Shell 了。</p>
+<h2 id="4-服务器密钥变更"><a href="#4-服务器密钥变更" class="headerlink" title="4. 服务器密钥变更"></a>4. 服务器密钥变更</h2><p>服务器指纹可以防止有人恶意冒充远程主机。如果服务器的密钥发生变更（比如重装了 SSH 服务器），客户端再次连接时，就会发生公钥指纹不吻合的情况。这时，客户端就会中断连接，并显示一段警告信息。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</span><br><span class="line">@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @</span><br><span class="line">@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</span><br><span class="line">IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!</span><br><span class="line">Someone could be eavesdropping on you right now (man-in-the-middle attack)!</span><br><span class="line">It is also possible that the RSA host key has just been changed.</span><br><span class="line">The fingerprint for the RSA key sent by the remote host is</span><br><span class="line">77:a5:69:81:9b:eb:40:76:7b:13:04:a9:6c:f4:9c:5d.</span><br><span class="line">Please contact your system administrator.</span><br><span class="line">Add correct host key in &#x2F;home&#x2F;me&#x2F;.ssh&#x2F;known_hosts to get rid of this message.</span><br><span class="line">Offending key in &#x2F;home&#x2F;me&#x2F;.ssh&#x2F;known_hosts:36</span><br></pre></td></tr></table></figure>
+<p>上面这段文字的意思是，该主机的公钥指纹跟<code>~/.ssh/known_hosts</code>文件储存的不一样，必须处理以后才能连接。这时，你需要确认是什么原因，使得公钥指纹发生变更，到底是恶意劫持，还是管理员变更了 SSH 服务器公钥。</p>
+<p>如果新的公钥确认可以信任，需要继续执行连接，你可以执行下面的命令，将原来的公钥指纹从<code>~/.ssh/known_hosts</code>文件删除。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen -R hostname</span><br></pre></td></tr></table></figure>
+<p>上面命令中，<code>hostname</code>是发生公钥变更的主机名。</p>
+<p>除了使用上面的命令，你也可以手工修改<code>known_hosts</code>文件，将公钥指纹删除。</p>
+<p>删除了原来的公钥指纹以后，重新执行 ssh 命令连接远程服务器，将新的指纹加入<code>known_hosts</code>文件，就可以顺利连接了。</p>
+<h2 id="5-客户端-本地配置"><a href="#5-客户端-本地配置" class="headerlink" title="5. 客户端/本地配置"></a>5. 客户端/本地配置</h2><h3 id="5-1-位置"><a href="#5-1-位置" class="headerlink" title="5.1 位置"></a>5.1 位置</h3><p>SSH 客户端的全局配置文件是<code>/etc/ssh/ssh_config</code>，用户个人的配置文件在<code>~/.ssh/config</code>，优先级高于全局配置文件。</p>
+<p>除了配置文件，<code>~/.ssh</code>目录还有一些用户个人的密钥文件和其他文件。下面是其中一些常见的文件。</p>
+<ul>
+<li><code>~/.ssh/id_ecdsa</code>：用户的 ECDSA 私钥。</li>
+<li><code>~/.ssh/id_ecdsa.pub</code>：用户的 ECDSA 公钥。</li>
+<li><code>~/.ssh/id_rsa</code>：用于 SSH 协议版本2 的 RSA 私钥。</li>
+<li><code>~/.ssh/id_rsa.pub</code>：用于SSH 协议版本2 的 RSA 公钥。</li>
+<li><code>~/.ssh/identity</code>：用于 SSH 协议版本1 的 RSA 私钥。</li>
+<li><code>~/.ssh/identity.pub</code>：用于 SSH 协议版本1 的 RSA 公钥。</li>
+<li><code>~/.ssh/known_hosts</code>：包含 SSH 服务器的公钥指纹。</li>
+</ul>
+<h3 id="5-2-本地配置文件"><a href="#5-2-本地配置文件" class="headerlink" title="5.2 本地配置文件"></a>5.2 本地配置文件</h3><p>用户个人的配置文件<code>~/.ssh/config</code>，可以按照不同服务器，列出各自的连接参数，从而不必每一次登录都输入重复的参数。下面是一个例子。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Host *</span><br><span class="line">     Port 2222</span><br><span class="line"></span><br><span class="line">Host remoteserver</span><br><span class="line">     HostName remote.example.com</span><br><span class="line">     User neo</span><br><span class="line">     Port 2112</span><br></pre></td></tr></table></figure>
+<p>上面代码中，<code>Host *</code>表示对所有主机生效，后面的<code>Port 2222</code>表示所有主机的默认连接端口都是2222，这样就不用在登录时特别指定端口了。这里的缩进并不是必需的，只是为了视觉上，易于识别针对不同主机的设置。</p>
+<p>后面的<code>Host remoteserver</code>表示，下面的设置只对主机<code>remoteserver</code>生效。<code>remoteserver</code>只是一个别名，具体的主机由<code>HostName</code>命令指定，<code>User</code>和<code>Port</code>这两项分别表示用户名和端口。这里的<code>Port</code>会覆盖上面<code>Host *</code>部分的<code>Port</code>设置。</p>
+<p>以后，登录<code>remote.example.com</code>时，只要执行<code>ssh remoteserver</code>命令，就会自动套用 config 文件里面指定的参数。<br>单个主机的配置格式如下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ssh remoteserver</span><br><span class="line"># 等同于</span><br><span class="line">$ ssh -p 2112 neo@remote.example.com</span><br></pre></td></tr></table></figure>
+<p><code>Host</code>命令的值可以使用通配符，比如<code>Host *</code>表示对所有主机都有效的设置，<code>Host *.edu</code>表示只对一级域名为<code>.edu</code>的主机有效的设置。它们的设置都可以被单个主机的设置覆盖。</p>
+<h1 id="SSH-密钥登录"><a href="#SSH-密钥登录" class="headerlink" title="SSH 密钥登录"></a>SSH 密钥登录</h1><h2 id="1-密钥是什么"><a href="#1-密钥是什么" class="headerlink" title="1. 密钥是什么"></a>1. 密钥是什么</h2><p>密钥（key）是一个非常大的数字，通过加密算法得到。对称加密只需要一个密钥，非对称加密需要两个密钥成对使用，分为公钥（public key）和私钥（private key）。</p>
+<p>SSH 密钥登录采用的是非对称加密，每个用户通过自己的密钥登录。其中，私钥必须私密保存，不能泄漏；公钥则是公开的，可以对外发送。它们的关系是，公钥和私钥是一一对应的，每一个私钥都有且仅有一个对应的公钥，反之亦然。</p>
+<p>如果数据使用公钥加密，那么只有使用对应的私钥才能解密，其他密钥都不行；反过来，如果使用私钥加密（这个过程一般称为“签名”），也只有使用对应的公钥解密。</p>
+<h2 id="2-密钥登录的过程"><a href="#2-密钥登录的过程" class="headerlink" title="2. 密钥登录的过程"></a>2. 密钥登录的过程</h2><p>SSH 密钥登录分为以下的步骤。</p>
+<p>预备步骤，客户端通过<code>ssh-keygen</code>生成自己的公钥和私钥。</p>
+<ol>
+<li>第一步，手动将客户端的公钥放入远程服务器的指定位置。</li>
+<li>第二步，客户端向服务器发起 SSH 登录的请求。</li>
+<li>第三步，服务器收到用户 SSH 登录的请求，发送一些随机数据给用户，要求用户证明自己的身份。</li>
+<li>第四步，客户端收到服务器发来的数据，使用私钥对数据进行签名，然后再发还给服务器。</li>
+<li>第五步，服务器收到客户端发来的加密签名后，使用对应的公钥解密，然后跟原始数据比较。如果一致，就允许用户登录。</li>
+</ol>
+<h2 id="3-生成密钥：ssh-key"><a href="#3-生成密钥：ssh-key" class="headerlink" title="3. 生成密钥：ssh-key"></a>3. 生成密钥：ssh-key</h2><h3 id="3-1-基本用法"><a href="#3-1-基本用法" class="headerlink" title="3.1 基本用法"></a>3.1 基本用法</h3><p>密钥登录时，首先需要生成公钥和私钥。OpenSSH 提供了一个工具程序<code>ssh-keygen</code>命令，用来生成密钥。</p>
+<p>直接输入<code>ssh-keygen</code>，程序会询问一系列问题，然后生成密钥。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen</span><br></pre></td></tr></table></figure>
+<p>通常做法是使用<code>-t</code>参数，指定密钥的加密算法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen -t dsa</span><br></pre></td></tr></table></figure>
+<p>上面示例中，<code>-t</code>参数用来指定密钥的加密算法，一般会选择<code>dsa</code>算法或<code>rsa</code>算法。注意，这个参数没有默认值。</p>
+<p>输入上面的命令以后，<code>ssh-keygen</code>会要求用户回答一些问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen -t dsa</span><br><span class="line">Generating public&#x2F;private dsa key pair.</span><br><span class="line">Enter file in which to save the key (&#x2F;home&#x2F;username&#x2F;.ssh&#x2F;id_dsa):  press ENTER</span><br><span class="line">Enter passphrase (empty for no passphrase): ********</span><br><span class="line">Enter same passphrase again: ********</span><br><span class="line">Your identification has been saved in &#x2F;home&#x2F;username&#x2F;.ssh&#x2F;id_dsa.</span><br><span class="line">Your public key has been saved in &#x2F;home&#x2F;username&#x2F;.ssh&#x2F;id_dsa.pub.</span><br><span class="line">The key fingerprint is:</span><br><span class="line">14:ba:06:98:a8:98:ad:27:b5:ce:55:85:ec:64:37:19 username@shell.isp.com</span><br></pre></td></tr></table></figure>
+<p>上面示例中，执行<code>ssh-keygen</code>命令以后，会出现第一个问题，询问密钥保存的文件名，默认是<code>~/.ssh/id_dsa</code>文件，这个是私钥的文件名，对应的公钥文件<code>~/.ssh/id_dsa.pub</code>是自动生成的。用户的密钥一般都放在主目录的<code>.ssh</code>目录里面。</p>
+<p>如果选择<code>rsa</code>算法，生成的密钥文件默认就会是<code>~/.ssh/id_rsa</code>（私钥）和<code>~/.ssh/id_rsa.pub</code>（公钥）。</p>
+<p>接着，就会是第二个问题，询问是否要为私钥文件设定密码保护（passphrase）。这样的话，即使入侵者拿到私钥，还是需要破解密码。如果为了方便，不想设定密码保护，可以直接按回车键，密码就会为空。后面还会让你再输入一次密码，两次输入必须一致。注意，这里“密码”的英文单词是 passphrase，这是为了避免与 Linux 账户的密码单词 password 混淆，表示这不是用户系统账户的密码。</p>
+<p>最后，就会生成私钥和公钥，屏幕上还会给出公钥的指纹，以及当前的用户名和主机名作为注释，用来识别密钥的来源。</p>
+<p>公钥文件和私钥文件都是文本文件，可以用文本编辑器看一下它们的内容。公钥文件的内容类似下面这样。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAIEAvpB4lUbAaEbh9u6HLig7amsfywD4fqSZq2ikACIUBn3GyRPfeF93l&#x2F;</span><br><span class="line">weQh702ofXbDydZAKMcDvBJqRhUotQUwqV6HJxqoqPDlPGUUyo8RDIkLUIPRyq</span><br><span class="line">ypZxmK9aCXokFiHoGCXfQ9imUP&#x2F;w&#x2F;jfqb9ByDtG97tUJF6nFMP5WzhM&#x3D; username@shell.isp.com</span><br></pre></td></tr></table></figure>
+<p>上面示例中，末尾的<code>username@shell.isp.com</code>是公钥的注释，用来识别不同的公钥，表示这是哪台主机（<code>shell.isp.com</code>）的哪个用户（<code>username</code>）的公钥，不是必需项。</p>
+<p><strong>注意，公钥只有一行</strong>。因为它太长了，所以上面分成三行显示。</p>
+<p>下面的命令可以列出用户所有的公钥。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ls -l ~&#x2F;.ssh&#x2F;id_*.pub</span><br></pre></td></tr></table></figure>
+<p>生成密钥以后，建议修改它们的权限，防止其他人读取。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ chmod 600 ~&#x2F;.ssh&#x2F;id_rsa</span><br><span class="line">$ chmod 600 ~&#x2F;.ssh&#x2F;id_rsa.pub</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="4-手动上传公钥"><a href="#4-手动上传公钥" class="headerlink" title="4. 手动上传公钥"></a>4. 手动上传公钥</h2><p>生成密钥以后，公钥必须上传到服务器，才能使用公钥登录。</p>
+<p>OpenSSH 规定，用户公钥保存在服务器的<code>~/.ssh/authorized_keys</code>文件。你要以哪个用户的身份登录到服务器，密钥就必须保存在该用户主目录的<code>~/.ssh/authorized_keys</code>文件。只要把公钥添加到这个文件之中，就相当于公钥上传到服务器了。每个公钥占据一行。如果该文件不存在，可以手动创建。</p>
+<p>用户可以手动编辑该文件，把公钥粘贴进去，也可以在本机计算机上，执行下面的命令。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat ~&#x2F;.ssh&#x2F;id_rsa.pub | ssh user@host &quot;mkdir -p ~&#x2F;.ssh &amp;&amp; cat &gt;&gt; ~&#x2F;.ssh&#x2F;authorized_keys&quot;</span><br></pre></td></tr></table></figure>
+<p>上面示例中，<code>user@host</code>要替换成你所要登录的用户名和主机名。</p>
+<h1 id="VSCode-SSH"><a href="#VSCode-SSH" class="headerlink" title="VSCode + SSH"></a>VSCode + SSH</h1><h2 id="1-SSH-配置"><a href="#1-SSH-配置" class="headerlink" title="1. SSH 配置"></a>1. SSH 配置</h2><h3 id="1-在本地创建密钥文件"><a href="#1-在本地创建密钥文件" class="headerlink" title="1 在本地创建密钥文件"></a>1 在本地创建密钥文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -b 4096 -f ~&#x2F;.ssh&#x2F;id_rsa</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="2-将公钥上传到服务器"><a href="#2-将公钥上传到服务器" class="headerlink" title="2 将公钥上传到服务器"></a>2 将公钥上传到服务器</h3><ul>
+<li><p>可以直接使用 <code>scp</code> 命令将ssh key传到服务器上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp ~&#x2F;.ssh&#x2F;id_rsa.pub 用户名@ip:&#x2F;home&#x2F;usr&#x2F;.ssh&#x2F;id_rsa.pub</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li><p>当scp无法正常连接时，比如需要跳转机的情况，也可以直接再开个终端ssh连接到服务器，然后手动复制到服务器上。</p>
+<ul>
+<li><p>本地：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pbcopy &lt; ~&#x2F;.ssh&#x2F;id_rsa.pub</span><br></pre></td></tr></table></figure></li>
+<li><p>服务器：</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh jump01.sh.sensetime.com</span><br><span class="line">pbpaste &gt; ~&#x2F;.ssh&#x2F;id_rsa.pub</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<h3 id="3-将公钥写入服务器的ssh认证文件中"><a href="#3-将公钥写入服务器的ssh认证文件中" class="headerlink" title="3 将公钥写入服务器的ssh认证文件中"></a>3 将公钥写入服务器的ssh认证文件中</h3><p>注意下面一定是 <code>&gt;&gt;</code> 追加写入！！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat ~&#x2F;.ssh&#x2F;id_rsa.pub &gt;&gt; ~&#x2F;.ssh&#x2F;authorized_keys</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="2-VSCode-配置"><a href="#2-VSCode-配置" class="headerlink" title="2. VSCode 配置"></a>2. VSCode 配置</h2><p>Remote-SSH 扩展组件</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_38834590/article/details/113105067">远程开发|MAC+VS code+Remote-SSH</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Jay</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://jay1zhang.github.io/2021/07/19/Computer%20Science/Linux/%E3%80%8CSSH%E3%80%8D%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5ssh%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3/">http://jay1zhang.github.io/2021/07/19/Computer%20Science/Linux/%E3%80%8CSSH%E3%80%8D%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5ssh%E9%85%8D%E7%BD%AE%E8%AF%A6%E8%A7%A3/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/CUDA/">CUDA</a></div><div class="post_share"><div class="social-share" data-image="http://jayyy1.gitee.io/images/pictures/cartoons/016.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2021/06/12/Review/%E3%80%8C%E7%94%9F%E6%B4%BB%E9%9A%8F%E7%AC%94%E3%80%8D%E6%96%B0%E6%89%8B%E7%9B%B8%E6%9C%BA%E9%80%89%E8%B4%AD%E6%8C%87%E5%8D%97/"><img class="next-cover" src="http://jayyy1.gitee.io/images/pictures/cartoons/030.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">「生活随笔」新手相机选购指南</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2021/04/08/Computer Science/Linux/「CUDA」nvidia-smi 命令详解/" title="「CUDA」nvidia-smi 命令详解"><img class="cover" src="http://jayyy1.gitee.io/images/pictures/cartoons/021.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-08</div><div class="title">「CUDA」nvidia-smi 命令详解</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SSH-%E7%AE%80%E4%BB%8B"><span class="toc-text">SSH 简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SSH-%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-text">SSH 客户端</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-OpenSSH-%E7%AE%80%E4%BB%8B"><span class="toc-text">1. OpenSSH 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="toc-text">2. 基本用法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%BF%9E%E6%8E%A5%E6%B5%81%E7%A8%8B"><span class="toc-text">3. 连接流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AF%86%E9%92%A5%E5%8F%98%E6%9B%B4"><span class="toc-text">4. 服务器密钥变更</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%AE%A2%E6%88%B7%E7%AB%AF-%E6%9C%AC%E5%9C%B0%E9%85%8D%E7%BD%AE"><span class="toc-text">5. 客户端&#x2F;本地配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E4%BD%8D%E7%BD%AE"><span class="toc-text">5.1 位置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E6%9C%AC%E5%9C%B0%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-text">5.2 本地配置文件</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SSH-%E5%AF%86%E9%92%A5%E7%99%BB%E5%BD%95"><span class="toc-text">SSH 密钥登录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%AF%86%E9%92%A5%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-text">1. 密钥是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%AF%86%E9%92%A5%E7%99%BB%E5%BD%95%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-text">2. 密钥登录的过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%94%9F%E6%88%90%E5%AF%86%E9%92%A5%EF%BC%9Assh-key"><span class="toc-text">3. 生成密钥：ssh-key</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="toc-text">3.1 基本用法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%89%8B%E5%8A%A8%E4%B8%8A%E4%BC%A0%E5%85%AC%E9%92%A5"><span class="toc-text">4. 手动上传公钥</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#VSCode-SSH"><span class="toc-text">VSCode + SSH</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-SSH-%E9%85%8D%E7%BD%AE"><span class="toc-text">1. SSH 配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%9C%A8%E6%9C%AC%E5%9C%B0%E5%88%9B%E5%BB%BA%E5%AF%86%E9%92%A5%E6%96%87%E4%BB%B6"><span class="toc-text">1 在本地创建密钥文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%B0%86%E5%85%AC%E9%92%A5%E4%B8%8A%E4%BC%A0%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-text">2 将公钥上传到服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%B0%86%E5%85%AC%E9%92%A5%E5%86%99%E5%85%A5%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84ssh%E8%AE%A4%E8%AF%81%E6%96%87%E4%BB%B6%E4%B8%AD"><span class="toc-text">3 将公钥写入服务器的ssh认证文件中</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-VSCode-%E9%85%8D%E7%BD%AE"><span class="toc-text">2. VSCode 配置</span></a></li></ol></li></ol></div></div></div></div></main><footer id="footer" style="background-image: url(http://jayyy1.gitee.io/images/pictures/cartoons/012.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Jay</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><div class="search-dialog__title" id="algolia-search-title">Algolia</div><div id="algolia-input-panel"><div id="algolia-search-input"></div></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/algolia.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>
